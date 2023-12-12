@@ -24,7 +24,7 @@ import io.maestro3.sdk.v3.model.billing.SdkBillingKpiRecord;
 import java.util.List;
 
 @JsonDeserialize(builder = AddConsumptionDetailsRequest.AddConsumptionDetailsRequestBuilder.class)
-public class AddConsumptionDetailsRequest extends AbstractConsumptionRequest {
+public class AddConsumptionDetailsRequest extends AbstractConsumptionDetailsRequest {
 
     private final List<SdkBillingKpiRecord> records;
 
@@ -47,7 +47,7 @@ public class AddConsumptionDetailsRequest extends AbstractConsumptionRequest {
     }
 
     public static final class AddConsumptionDetailsRequestBuilder
-        extends AbstractConsumptionRequestBuilder<AddConsumptionDetailsRequest.AddConsumptionDetailsRequestBuilder, AddConsumptionDetailsRequest> {
+        extends AbstractConsumptionDetailsRequestBuilder<AddConsumptionDetailsRequestBuilder, AddConsumptionDetailsRequest> {
 
         private List<SdkBillingKpiRecord> records;
 
@@ -63,6 +63,7 @@ public class AddConsumptionDetailsRequest extends AbstractConsumptionRequest {
 
         @Override
         public AddConsumptionDetailsRequest build() {
+            validateParams();
             Assert.notEmpty(records, "records");
             return new AddConsumptionDetailsRequest(this);
         }

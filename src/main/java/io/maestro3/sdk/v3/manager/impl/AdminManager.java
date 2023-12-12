@@ -18,12 +18,12 @@ package io.maestro3.sdk.v3.manager.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.maestro3.sdk.internal.executor.IM3ApiActionExecutor;
-import io.maestro3.sdk.v3.core.ActionType;
 import io.maestro3.sdk.v3.core.IPrincipal;
 import io.maestro3.sdk.v3.core.M3Result;
 import io.maestro3.sdk.v3.manager.IAdminManager;
 import io.maestro3.sdk.v3.model.user.SdkGetUserPositionResponse;
 import io.maestro3.sdk.v3.request.ExecuteAdminCommandRequest;
+import io.maestro3.sdk.v3.request.user.GetUserPositionRequest;
 
 import java.util.Map;
 
@@ -41,7 +41,7 @@ public class AdminManager extends AbstractManager implements IAdminManager {
     }
 
     @Override
-    public M3Result<SdkGetUserPositionResponse> getUserPositions(IPrincipal principal) {
-        return execute(principal, () -> ActionType.GET_USER_POSITIONS, new TypeReference<>() {});
+    public M3Result<SdkGetUserPositionResponse> getUserPositions(IPrincipal principal, GetUserPositionRequest request) {
+        return execute(principal, request, new TypeReference<>() {});
     }
 }

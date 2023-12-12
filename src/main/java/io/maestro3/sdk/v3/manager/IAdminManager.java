@@ -20,6 +20,7 @@ import io.maestro3.sdk.v3.core.IPrincipal;
 import io.maestro3.sdk.v3.core.M3Result;
 import io.maestro3.sdk.v3.model.user.SdkGetUserPositionResponse;
 import io.maestro3.sdk.v3.request.ExecuteAdminCommandRequest;
+import io.maestro3.sdk.v3.request.user.GetUserPositionRequest;
 
 import java.util.Map;
 
@@ -27,5 +28,5 @@ public interface IAdminManager {
 
     M3Result<Map<String, Object>> executeCommand(IPrincipal principal, ExecuteAdminCommandRequest request);
 
-    M3Result<SdkGetUserPositionResponse> getUserPositions(IPrincipal principal);
+    M3Result<SdkGetUserPositionResponse> getUserPositions(IPrincipal principal, GetUserPositionRequest request);
 }

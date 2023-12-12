@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.v3.core.ActionType;
 import io.maestro3.sdk.v3.request.IRequest;
 
-@JsonDeserialize(builder = AwsWorkspacesWithBillableHoursRequest.class)
+@JsonDeserialize(builder = AwsWorkspacesWithBillableHoursRequest.Builder.class)
 public class AwsWorkspacesWithBillableHoursRequest implements IRequest {
     private final long month;
 

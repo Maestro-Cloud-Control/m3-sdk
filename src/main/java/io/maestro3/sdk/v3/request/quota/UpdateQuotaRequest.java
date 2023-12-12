@@ -18,11 +18,12 @@ package io.maestro3.sdk.v3.request.quota;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.v3.core.ActionType;
+import io.maestro3.sdk.v3.model.SdkCloud;
 import io.maestro3.sdk.v3.model.quota.SdkPriceQuota;
-import io.maestro3.sdk.v3.request.IRequest;
+import io.maestro3.sdk.v3.request.ITenantRequest;
 
 @JsonDeserialize(builder = UpdateQuotaRequest.Builder.class)
-public class UpdateQuotaRequest implements IRequest {
+public class UpdateQuotaRequest implements ITenantRequest {
 
     private final SdkPriceQuota quota;
 
@@ -41,6 +42,16 @@ public class UpdateQuotaRequest implements IRequest {
     @Override
     public ActionType getActionType() {
         return ActionType.UPDATE_QUOTA;
+    }
+
+    @Override
+    public String getTenantName() {
+        return quota.getTenantDisplayName();
+    }
+
+    @Override
+    public SdkCloud getCloud() {
+        return quota.getType().getNullableCloud();
     }
 
     public static final class Builder {

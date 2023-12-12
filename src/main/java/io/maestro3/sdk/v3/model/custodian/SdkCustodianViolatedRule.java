@@ -16,13 +16,25 @@
 
 package io.maestro3.sdk.v3.model.custodian;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SdkCustodianViolatedRule {
+    private String resource;
     private String description;
     private String name;
     private String severity;
 
     public SdkCustodianViolatedRule() {
         // for JSON
+    }
+
+    public String getResource() {
+        return resource;
+    }
+
+    public void setResource(String resource) {
+        this.resource = resource;
     }
 
     public String getDescription() {

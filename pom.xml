@@ -22,10 +22,10 @@
 
     <groupId>io.maestro3.sdk</groupId>
     <artifactId>m3-sdk</artifactId>
-    <version>3.97.1</version>
+    <version>3.101.25</version>
 
     <properties>
-        <m3.cadf.version>3.97.1</m3.cadf.version>
+        <m3.cadf.version>3.97.2</m3.cadf.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -37,7 +37,7 @@
         <httpasyncclient.version>4.1.4</httpasyncclient.version>
         <httpclient.version>4.5.13</httpclient.version>
         <jackson.version>2.15.2</jackson.version>
-        <junit.version>4.13.1</junit.version>
+        <junit.version>4.13.2</junit.version>
         <logback.version>1.2.9</logback.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <mockito.version>3.3.3</mockito.version>

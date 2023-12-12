@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.v3.core.ActionType;
 
 @JsonDeserialize(builder = GetConsumptionDetailsRequest.GetConsumptionDetailsRequestBuilder.class)
-public class GetConsumptionDetailsRequest extends AbstractConsumptionRequest {
+public class GetConsumptionDetailsRequest extends AbstractConsumptionDetailsRequest {
 
     private GetConsumptionDetailsRequest(GetConsumptionDetailsRequestBuilder builder) {
         super(builder);
@@ -36,7 +36,7 @@ public class GetConsumptionDetailsRequest extends AbstractConsumptionRequest {
     }
 
     public static final class GetConsumptionDetailsRequestBuilder
-        extends AbstractConsumptionRequestBuilder<GetConsumptionDetailsRequestBuilder, GetConsumptionDetailsRequest> {
+        extends AbstractConsumptionDetailsRequestBuilder<GetConsumptionDetailsRequestBuilder, GetConsumptionDetailsRequest> {
 
         @Override
         protected GetConsumptionDetailsRequestBuilder getThis() {
@@ -45,6 +45,7 @@ public class GetConsumptionDetailsRequest extends AbstractConsumptionRequest {
 
         @Override
         public GetConsumptionDetailsRequest build() {
+            validateParams();
             return new GetConsumptionDetailsRequest(this);
         }
     }

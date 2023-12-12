@@ -27,8 +27,6 @@ import java.util.Map;
 
 public class ServiceManager extends AbstractManager implements IServiceManager {
 
-    public static final TypeReference<Map<String, Object>> MAP_TYPE = new TypeReference<>() {};
-
     public ServiceManager(IM3ApiActionExecutor actionExecutor, boolean isAsync) {
         super(actionExecutor, isAsync);
     }
@@ -60,6 +58,21 @@ public class ServiceManager extends AbstractManager implements IServiceManager {
 
     @Override
     public M3Result<Map<String, Object>> deactivateRightsizer(IPrincipal principal, IServiceRequest request) {
+        return execute(principal, request, new TypeReference<>() {});
+    }
+
+    @Override
+    public M3Result<Map<String, Object>> activateK8s(IPrincipal principal, IServiceRequest request) {
+        return execute(principal, request, new TypeReference<>() {});
+    }
+
+    @Override
+    public M3Result<Map<String, Object>> deactivateK8s(IPrincipal principal, IServiceRequest request) {
+        return execute(principal, request, new TypeReference<>() {});
+    }
+
+    @Override
+    public M3Result<Map<String, Object>> rotateCredentials(IPrincipal principal, IServiceRequest request) {
         return execute(principal, request, new TypeReference<>() {});
     }
 }

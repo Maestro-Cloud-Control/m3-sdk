@@ -38,6 +38,7 @@ import io.maestro3.sdk.v3.model.resource.SdkRegionInfo;
 import io.maestro3.sdk.v3.model.resource.SdkResource;
 import io.maestro3.sdk.v3.model.resource.SdkTenantInfo;
 import io.maestro3.sdk.v3.model.shape.SdkShapeInfo;
+import io.maestro3.sdk.v3.request.custodian.CustodianLastK8sClusterScanRequest;
 import io.maestro3.sdk.v3.request.custodian.CustodianLastResourceScanRequest;
 import io.maestro3.sdk.v3.request.image.CreateImageRequest;
 import io.maestro3.sdk.v3.request.image.DeleteImageRequest;
@@ -71,7 +72,9 @@ import io.maestro3.sdk.v3.request.ssh.DescribeKeysRequest;
 import io.maestro3.sdk.v3.request.ssh.RenameKeyRequest;
 import io.maestro3.sdk.v3.request.ssh.UpdateKeyRequest;
 import io.maestro3.sdk.v3.request.tag.DeleteTagsRequest;
+import io.maestro3.sdk.v3.request.tag.DescribeResourceTagsRequest;
 import io.maestro3.sdk.v3.request.tag.DescribeTagRequest;
+import io.maestro3.sdk.v3.request.tag.UpdateResourceTagsRequest;
 import io.maestro3.sdk.v3.request.tag.UpdateTagsRequest;
 import io.maestro3.sdk.v3.request.volume.AttachVolumeRequest;
 import io.maestro3.sdk.v3.request.volume.CreateAndAttachVolumeRequest;
@@ -118,7 +121,17 @@ public class ResourceManager extends AbstractManager implements IResourceManager
     }
 
     @Override
+    public M3Result<List<SdkResourceTagDto>> describeResourceTags(IPrincipal principal, DescribeResourceTagsRequest request) {
+        return execute(principal, request, TAG_LIST_RESULT);
+    }
+
+    @Override
     public M3Result<List<SdkResourceTagDto>> updateTags(IPrincipal principal, UpdateTagsRequest request) {
+        return execute(principal, request, TAG_LIST_RESULT);
+    }
+
+    @Override
+    public M3Result<List<SdkResourceTagDto>> updateResourceTags(IPrincipal principal, UpdateResourceTagsRequest request) {
         return execute(principal, request, TAG_LIST_RESULT);
     }
 
@@ -290,6 +303,11 @@ public class ResourceManager extends AbstractManager implements IResourceManager
 
     @Override
     public M3Result<List<SdkCustodianResourceScanResults>> getCustodianLastResourceScanResults(IPrincipal principal, CustodianLastResourceScanRequest request) {
+        return execute(principal, request, CUSTODIAN_LAST_RESOURCE_SCAN_RESULT);
+    }
+
+    @Override
+    public M3Result<List<SdkCustodianResourceScanResults>> getCustodianLastK8sClusterScanResults(IPrincipal principal, CustodianLastK8sClusterScanRequest request) {
         return execute(principal, request, CUSTODIAN_LAST_RESOURCE_SCAN_RESULT);
     }
 

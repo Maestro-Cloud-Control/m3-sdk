@@ -19,6 +19,7 @@ package io.maestro3.sdk.v3.request.schedule;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.v3.core.ActionType;
 import io.maestro3.sdk.v3.model.SdkCloud;
+import io.maestro3.sdk.v3.model.schedule.SdkSchedulePriorityFilter;
 import io.maestro3.sdk.v3.request.IRegionRequest;
 import io.maestro3.sdk.v3.request.ITenantRequest;
 
@@ -34,6 +35,7 @@ public class DescribeSchedulesRequest implements ITenantRequest, IRegionRequest 
     private final String scheduleType;
     private final String scheduleAction;
     private String email;
+    private final SdkSchedulePriorityFilter filter;
 
     private DescribeSchedulesRequest(Builder builder) {
         this.scheduleName = builder.scheduleName;
@@ -45,6 +47,7 @@ public class DescribeSchedulesRequest implements ITenantRequest, IRegionRequest 
         this.scheduleType = builder.scheduleType;
         this.scheduleAction = builder.scheduleAction;
         this.email = builder.email;
+        this.filter = builder.filter;
     }
 
     public static Builder builder() {
@@ -87,6 +90,10 @@ public class DescribeSchedulesRequest implements ITenantRequest, IRegionRequest 
         return instanceId;
     }
 
+    public SdkSchedulePriorityFilter getFilter() {
+        return filter;
+    }
+
     @Override
     public ActionType getActionType() {
         return ActionType.DESCRIBE_SCHEDULES;
@@ -103,6 +110,7 @@ public class DescribeSchedulesRequest implements ITenantRequest, IRegionRequest 
         private String scheduleType;
         private String scheduleAction;
         private String email;
+        private SdkSchedulePriorityFilter filter = SdkSchedulePriorityFilter.PRIORITIZED;
 
         private Builder() {
         }
@@ -152,9 +160,16 @@ public class DescribeSchedulesRequest implements ITenantRequest, IRegionRequest 
             return this;
         }
 
+        public Builder withFilter(SdkSchedulePriorityFilter filter) {
+            this.filter = filter;
+            return this;
+        }
+
         public DescribeSchedulesRequest build() {
             return new DescribeSchedulesRequest(this);
         }
+
     }
+
 }
 

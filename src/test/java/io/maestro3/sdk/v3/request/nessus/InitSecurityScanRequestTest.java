@@ -27,7 +27,7 @@ public class InitSecurityScanRequestTest {
     @Test
     public void test() {
         InitNessusSecurityScanRequest request = InitNessusSecurityScanRequest.builder()
-                .withResourceId("resourceId")
+                .withResourceGroup("resourceGroup")
                 .withTemplateId("templateId")
                 .withPolicyId("policyId")
                 .withInstanceId("instanceId")
@@ -36,7 +36,7 @@ public class InitSecurityScanRequestTest {
                 .withTenantName("tenantName")
                 .withAvailabilityZone("availabilityZone")
                 .build();
-        assertEquals("resourceId", request.getResourceGroupId());
+        assertEquals("resourceGroup", request.getResourceGroup());
         assertEquals("templateId", request.getTemplateId());
         assertEquals("policyId", request.getPolicyId());
         assertEquals("instanceId", request.getInstanceId());

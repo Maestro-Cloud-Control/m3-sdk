@@ -17,14 +17,21 @@
 package io.maestro3.sdk.v3.request.billing;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import io.maestro3.sdk.internal.util.Assert;
 
-public abstract class AbstractAdjustmentRequest extends AbstractConsumptionRequest {
+public abstract class AbstractAdjustmentRequest extends AbstractConsumptionApiRequest {
 
+    private final String description;
     private final String creditType;
 
     protected AbstractAdjustmentRequest(AbstractAdjustmentRequestBuilder<?, ?> builder) {
         super(builder);
+        this.description = builder.description;
         this.creditType = builder.creditType;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getCreditType() {
@@ -33,14 +40,30 @@ public abstract class AbstractAdjustmentRequest extends AbstractConsumptionReque
 
     public abstract static class AbstractAdjustmentRequestBuilder
         <B extends AbstractAdjustmentRequest.AbstractAdjustmentRequestBuilder<B, R>, R extends AbstractAdjustmentRequest>
-        extends AbstractConsumptionRequestBuilder<B, R> {
+        extends AbstractConsumptionApiRequestBuilder<B, R> {
 
+        private String description;
         private String creditType;
 
+        public B withDescription(String description) {
+            this.description = description;
+            return getThis();
+        }
+
+        /**
+         * @param creditType available options: ['PREPAYMENT', 'SURCHARGE']
+         */
         @JsonAlias("credit_type")
         public AbstractAdjustmentRequestBuilder<B, R> withCreditType(String creditType) {
             this.creditType = creditType;
             return getThis();
+        }
+
+        @Override
+        protected void validateParams() {
+            super.validateParams();
+            Assert.hasText(description, "description");
+            Assert.hasText(creditType, "credit_type");
         }
     }
 }

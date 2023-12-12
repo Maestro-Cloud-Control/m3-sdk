@@ -61,6 +61,7 @@ public class AddConsumptionRequest extends AbstractConsumptionRequest {
 
         @Override
         public AddConsumptionRequest build() {
+            validateParams();
             return new AddConsumptionRequest(this);
         }
     }

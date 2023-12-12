@@ -33,6 +33,9 @@ public class DescribeVolumeRequest implements IRegionRequest {
     private final Set<String> volumeIds;
     private final boolean all;
     private final Boolean attached;
+    private final Boolean system;
+    private final String availabilityZone;
+    private final Set<String> names;
 
     private DescribeVolumeRequest(Builder builder) {
         this.tenantName = builder.tenantName;
@@ -41,6 +44,9 @@ public class DescribeVolumeRequest implements IRegionRequest {
         this.volumeIds = builder.volumeIds;
         this.all = builder.all;
         this.attached = builder.attached;
+        this.system = builder.system;
+        this.availabilityZone = builder.availabilityZone;
+        this.names = builder.names;
     }
 
     public static Builder builder() {
@@ -71,6 +77,18 @@ public class DescribeVolumeRequest implements IRegionRequest {
         return attached;
     }
 
+    public Boolean getSystem() {
+        return system;
+    }
+
+    public String getAvailabilityZone() {
+        return availabilityZone;
+    }
+
+    public Set<String> getNames() {
+        return names;
+    }
+
     @Override
     public ActionType getActionType() {
         return ActionType.DESCRIBE_VOLUME;
@@ -84,6 +102,9 @@ public class DescribeVolumeRequest implements IRegionRequest {
         private Set<String> volumeIds = Collections.emptySet();
         private boolean all;
         private Boolean attached;
+        private Boolean system;
+        private String availabilityZone;
+        private Set<String> names;
 
         public Builder withTenantName(String tenantName) {
             this.tenantName = tenantName;
@@ -113,6 +134,21 @@ public class DescribeVolumeRequest implements IRegionRequest {
 
         public Builder withAttached(Boolean attached) {
             this.attached = attached;
+            return this;
+        }
+
+        public Builder withSystem(Boolean system) {
+            this.system = system;
+            return this;
+        }
+
+        public Builder withAvailabilityZone(String availabilityZone) {
+            this.availabilityZone = availabilityZone;
+            return this;
+        }
+
+        public Builder withNames(Set<String> names) {
+            this.names = names;
             return this;
         }
 

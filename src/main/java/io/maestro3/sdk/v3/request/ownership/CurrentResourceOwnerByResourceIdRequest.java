@@ -19,10 +19,10 @@ package io.maestro3.sdk.v3.request.ownership;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.core.ActionType;
-import io.maestro3.sdk.v3.request.IRequest;
+import io.maestro3.sdk.v3.request.IResourceRequest;
 
 @JsonDeserialize(builder = CurrentResourceOwnerByResourceIdRequest.Builder.class)
-public class CurrentResourceOwnerByResourceIdRequest implements IRequest {
+public class CurrentResourceOwnerByResourceIdRequest implements IResourceRequest {
 
     private final boolean includeFinished;
     private final ResourceIdRequest resourceIdRequest;

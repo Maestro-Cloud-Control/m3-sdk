@@ -20,50 +20,26 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.core.ActionType;
-import io.maestro3.sdk.v3.model.SdkCloud;
-import io.maestro3.sdk.v3.request.ITenantRequest;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(builder = CustodianLastResourceScanRequest.Builder.class)
-public class CustodianLastResourceScanRequest implements ITenantRequest {
+public class CustodianLastResourceScanRequest extends AbstractCustodianLastScanRequest {
 
-    private final SdkCloud cloud;
-    /**
-     * display name
-     */
-    private final String tenantName;
     private final String region;
     /**
      * The value by which the search will be performed
      */
     private final String identifier;
-    private final String resourceType;
-    private final boolean exactMatch;
     /**
      * List of fields to search by, separated by comma (e.g. "id,name", if it is empty - default list of fields will be used for search
      */
     private final String searchBy;
-    private final boolean searchByAll;
 
     private CustodianLastResourceScanRequest(Builder builder) {
-        this.tenantName = builder.tenantName;
-        this.identifier = builder.identifier;
-        this.cloud = builder.cloud;
-        this.exactMatch = builder.exactMatch;
+        super(builder);
         this.region = builder.region;
-        this.searchByAll = builder.searchByAll;
-        this.resourceType = builder.resourceType;
+        this.identifier = builder.identifier;
         this.searchBy = builder.searchBy;
-    }
-
-    @Override
-    public SdkCloud getCloud() {
-        return cloud;
-    }
-
-    @Override
-    public String getTenantName() {
-        return tenantName;
     }
 
     public String getRegion() {
@@ -74,20 +50,8 @@ public class CustodianLastResourceScanRequest implements ITenantRequest {
         return identifier;
     }
 
-    public String getResourceType() {
-        return resourceType;
-    }
-
-    public boolean getExactMatch() {
-        return exactMatch;
-    }
-
     public String getSearchBy() {
         return searchBy;
-    }
-
-    public boolean getSearchByAll() {
-        return searchByAll;
     }
 
     public static Builder builder() {
@@ -99,25 +63,11 @@ public class CustodianLastResourceScanRequest implements ITenantRequest {
         return ActionType.GET_CUSTODIAN_LAST_RESOURCE_SCAN_RESULTS;
     }
 
-    public static final class Builder {
-        private SdkCloud cloud;
-        private String tenantName;
+    public static final class Builder extends AbstractCustodianLastScanRequest.Builder<CustodianLastResourceScanRequest.Builder, CustodianLastResourceScanRequest> {
+
         private String region;
         private String identifier;
-        private String resourceType;
-        private boolean exactMatch;
         private String searchBy;
-        private boolean searchByAll;
-
-        public Builder withCloud(SdkCloud cloud) {
-            this.cloud = cloud;
-            return this;
-        }
-
-        public Builder withTenantName(String tenantName) {
-            this.tenantName = tenantName;
-            return this;
-        }
 
         public Builder withRegion(String region) {
             this.region = region;
@@ -129,31 +79,23 @@ public class CustodianLastResourceScanRequest implements ITenantRequest {
             return this;
         }
 
-        public Builder withResourceType(String resourceType) {
-            this.resourceType = resourceType;
-            return this;
-        }
-
-        public Builder withExactMatch(boolean exactMatch) {
-            this.exactMatch = exactMatch;
-            return this;
-        }
-
         public Builder withSearchBy(String searchBy) {
             this.searchBy = searchBy;
-            return this;
+            return getThis();
         }
 
-        public Builder withSearchByAll(boolean searchByAll) {
-            this.searchByAll = searchByAll;
+        @Override
+        protected Builder getThis() {
             return this;
         }
 
         public CustodianLastResourceScanRequest build() {
-            Assert.hasText(tenantName, "tenantName");
+            super.validateParams();
             Assert.hasText(identifier, "identifier");
-            Assert.notNull(cloud, "cloud");
+            Assert.hasText(searchBy, "searchBy");
             return new CustodianLastResourceScanRequest(this);
         }
+
     }
+
 }

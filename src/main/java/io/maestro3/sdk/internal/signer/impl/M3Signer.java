@@ -64,7 +64,7 @@ public class M3Signer implements IM3Signer {
         M3Credentials credentials = credentialsProvider.getCredentials(accessKey);
         long date = request.getTimestamp();
 
-        String signature = generateSign(date, credentials);
+        String signature = generateSign(date, credentials, request.getUserIdentifier());
 
         request.setAccessKey(accessKey);
         request.setSignature(signature);
@@ -72,10 +72,10 @@ public class M3Signer implements IM3Signer {
     }
 
     @Override
-    public boolean isSignValid(String sign, long date, String accessKey) {
+    public boolean isSignValid(String sign, long date, String accessKey, String userIdentifier) {
         Assert.hasText(sign, "sign");
         M3Credentials credentials = credentialsProvider.getCredentials(accessKey);
-        String expectedSign = generateSign(date, credentials);
+        String expectedSign = generateSign(date, credentials, userIdentifier);
         return sign.equals(expectedSign);
     }
 
@@ -129,7 +129,7 @@ public class M3Signer implements IM3Signer {
         return new SecretKeySpec(secKey.getBytes(), ENCRYPTION_ALGORITHM);
     }
 
-    private String generateSign(long date, M3Credentials credentials) {
+    private String generateSign(long date, M3Credentials credentials, String userIdentifier) {
         String accessKey = credentials.getAccessKey();
         String secretKey = credentials.getSecretKey();
 
@@ -141,7 +141,7 @@ public class M3Signer implements IM3Signer {
         } catch (InvalidKeyException e) {
             throw new M3SdkException("Failed to init signer");
         }
-        byte[] message = hmacSha256.get().doFinal(String.format("M3-POST:%s:%s", accessKey, date).getBytes());
+        byte[] message = hmacSha256.get().doFinal(String.format("M3-POST:%s:%s:%s", accessKey, date, userIdentifier).getBytes());
         return generateHash(message);
     }
 

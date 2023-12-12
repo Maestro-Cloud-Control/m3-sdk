@@ -22,7 +22,7 @@ public interface IM3Signer {
 
     M3ApiRequest sign(M3ApiRequest request, String accessKey);
 
-    boolean isSignValid(String sign, long date, String accessKey);
+    boolean isSignValid(String sign, long date, String accessKey, String userIdentifier);
 
     String encrypt(String dataToEncrypt, String accessKey);
 

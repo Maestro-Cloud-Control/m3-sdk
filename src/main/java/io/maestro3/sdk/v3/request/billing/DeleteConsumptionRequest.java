@@ -45,6 +45,7 @@ public class DeleteConsumptionRequest extends AbstractConsumptionRequest {
 
         @Override
         public DeleteConsumptionRequest build() {
+            validateParams();
             return new DeleteConsumptionRequest(this);
         }
     }

@@ -24,12 +24,10 @@ import io.maestro3.sdk.v3.request.IRequest;
 public class ResendNotificationRequestParams implements IRequest {
 
     private final String uuid;
-    private final String requester;
     private final String notificationProcessorType;
 
     private ResendNotificationRequestParams(Builder builder) {
         this.uuid = builder.uuid;
-        this.requester = builder.requester;
         this.notificationProcessorType = builder.notificationProcessorType;
     }
 
@@ -39,10 +37,6 @@ public class ResendNotificationRequestParams implements IRequest {
 
     public String getUuid() {
         return uuid;
-    }
-
-    public String getRequester() {
-        return requester;
     }
 
     public String getNotificationProcessorType() {
@@ -57,16 +51,10 @@ public class ResendNotificationRequestParams implements IRequest {
     public static final class Builder {
 
         private String uuid;
-        private String requester;
         private String notificationProcessorType;
 
         public Builder withUuid(String uuid) {
             this.uuid = uuid;
-            return this;
-        }
-
-        public Builder withRequester(String requester) {
-            this.requester = requester;
             return this;
         }
 

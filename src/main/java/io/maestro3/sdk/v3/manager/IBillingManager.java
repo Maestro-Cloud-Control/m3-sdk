@@ -28,6 +28,7 @@ import io.maestro3.sdk.v3.request.billing.AddConsumptionDetailsRequest;
 import io.maestro3.sdk.v3.request.billing.AddConsumptionRequest;
 import io.maestro3.sdk.v3.request.billing.BillingInvoiceRequest;
 import io.maestro3.sdk.v3.request.billing.BillingTagRequest;
+import io.maestro3.sdk.v3.request.billing.CheckTenantStatusRequest;
 import io.maestro3.sdk.v3.request.billing.CostAndUsageReportRequest;
 import io.maestro3.sdk.v3.request.billing.CostObjectDetailsRequest;
 import io.maestro3.sdk.v3.request.billing.DailyReportByTenantGroupRequest;
@@ -85,4 +86,6 @@ public interface IBillingManager extends IManager {
     M3Result<Object> addAdjustment(IPrincipal principal, AddAdjustmentRequest request);
 
     M3Result<Object> deleteAdjustment(IPrincipal principal, DeleteAdjustmentRequest request);
+
+    M3Result<Object> checkTenantStatusRequest(IPrincipal principal, CheckTenantStatusRequest request);
 }

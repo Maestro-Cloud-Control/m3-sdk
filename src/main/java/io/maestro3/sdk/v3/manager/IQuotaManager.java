@@ -18,6 +18,7 @@ package io.maestro3.sdk.v3.manager;
 
 import io.maestro3.sdk.v3.core.IPrincipal;
 import io.maestro3.sdk.v3.core.M3Result;
+import io.maestro3.sdk.v3.model.operation.SdkOperation;
 import io.maestro3.sdk.v3.model.quota.SdkPriceQuota;
 import io.maestro3.sdk.v3.model.resource.quota.SdkInstanceQuota;
 import io.maestro3.sdk.v3.model.resource.quota.SdkVolumeQuota;
@@ -64,13 +65,13 @@ public interface IQuotaManager {
 
     M3Result<List<SdkPriceQuota>> getQuotasByTenant(IPrincipal principal, QuotasByTenantRequest request);
 
-    M3Result<Void> create(IPrincipal principal, CreateQuotaRequest request);
+    M3Result<SdkOperation> create(IPrincipal principal, CreateQuotaRequest request);
 
-    M3Result<Void> update(IPrincipal principal, UpdateQuotaRequest request);
+    M3Result<SdkOperation> update(IPrincipal principal, UpdateQuotaRequest request);
 
     M3Result<Set<String>> exists(IPrincipal principal, QuotaExistsRequest request);
 
-    M3Result<Void> remove(IPrincipal principal, RemoveQuotaRequest request);
+    M3Result<SdkOperation> remove(IPrincipal principal, RemoveQuotaRequest request);
 
     //resource quotas
     M3Result<SdkInstanceQuota> getInstanceQuota(IPrincipal principal, GetInstanceQuotaRequest request);

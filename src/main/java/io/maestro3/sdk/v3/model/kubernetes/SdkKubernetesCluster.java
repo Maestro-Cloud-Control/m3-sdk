@@ -16,11 +16,41 @@
 
 package io.maestro3.sdk.v3.model.kubernetes;
 
-public class SdkKubernetesCluster {
-    private String name;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-    public SdkKubernetesCluster() {
-        // for JSON
+import java.util.Map;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.EXISTING_PROPERTY,
+    property = "type",
+    visible = true)
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = SdkAwsK8sCluster.class, name = "EKS"),
+    @JsonSubTypes.Type(value = SdkAzureK8sCluster.class, name = "AKS"),
+    @JsonSubTypes.Type(value = SdkGoogleK8sCluster.class, name = "GKE"),
+    @JsonSubTypes.Type(value = SdkSelfManagedK8sCluster.class, name = "SELF_MANAGED"),
+})
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public abstract class SdkKubernetesCluster {
+
+    private String clusterId;
+    private String name;
+    private String endpoint;
+    private String type;
+    private String tenantName;
+    private String regionName;
+    private String state;
+    private Boolean deleted;
+    private Map<String, Object> properties;
+
+    public String getClusterId() {
+        return clusterId;
+    }
+
+    public void setClusterId(String clusterId) {
+        this.clusterId = clusterId;
     }
 
     public String getName() {
@@ -29,5 +59,61 @@ public class SdkKubernetesCluster {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTenantName() {
+        return tenantName;
+    }
+
+    public void setTenantName(String tenantName) {
+        this.tenantName = tenantName;
+    }
+
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public Boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
     }
 }

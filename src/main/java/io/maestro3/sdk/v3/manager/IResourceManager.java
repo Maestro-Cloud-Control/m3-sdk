@@ -34,6 +34,7 @@ import io.maestro3.sdk.v3.model.resource.SdkRegionInfo;
 import io.maestro3.sdk.v3.model.resource.SdkResource;
 import io.maestro3.sdk.v3.model.resource.SdkTenantInfo;
 import io.maestro3.sdk.v3.model.shape.SdkShapeInfo;
+import io.maestro3.sdk.v3.request.custodian.CustodianLastK8sClusterScanRequest;
 import io.maestro3.sdk.v3.request.custodian.CustodianLastResourceScanRequest;
 import io.maestro3.sdk.v3.request.image.CreateImageRequest;
 import io.maestro3.sdk.v3.request.image.DeleteImageRequest;
@@ -67,7 +68,9 @@ import io.maestro3.sdk.v3.request.ssh.DescribeKeysRequest;
 import io.maestro3.sdk.v3.request.ssh.RenameKeyRequest;
 import io.maestro3.sdk.v3.request.ssh.UpdateKeyRequest;
 import io.maestro3.sdk.v3.request.tag.DeleteTagsRequest;
+import io.maestro3.sdk.v3.request.tag.DescribeResourceTagsRequest;
 import io.maestro3.sdk.v3.request.tag.DescribeTagRequest;
+import io.maestro3.sdk.v3.request.tag.UpdateResourceTagsRequest;
 import io.maestro3.sdk.v3.request.tag.UpdateTagsRequest;
 import io.maestro3.sdk.v3.request.volume.AttachVolumeRequest;
 import io.maestro3.sdk.v3.request.volume.CreateAndAttachVolumeRequest;
@@ -85,7 +88,11 @@ public interface IResourceManager {
 
     M3Result<List<SdkResourceTagDto>> describeTags(IPrincipal principal, DescribeTagRequest request);
 
+    M3Result<List<SdkResourceTagDto>> describeResourceTags(IPrincipal principal, DescribeResourceTagsRequest request);
+
     M3Result<List<SdkResourceTagDto>> updateTags(IPrincipal principal, UpdateTagsRequest request);
+
+    M3Result<List<SdkResourceTagDto>> updateResourceTags(IPrincipal principal, UpdateResourceTagsRequest request);
 
     M3Result<List<SdkResourceTagDto>> deleteTags(IPrincipal principal, DeleteTagsRequest request);
 
@@ -162,6 +169,8 @@ public interface IResourceManager {
     M3Result<List<SdkRecommendation>> getRecommendations(IPrincipal principal, DescribeRecommendationsRequest request);
 
     M3Result<List<SdkCustodianResourceScanResults>> getCustodianLastResourceScanResults(IPrincipal principal, CustodianLastResourceScanRequest request);
+
+    M3Result<List<SdkCustodianResourceScanResults>> getCustodianLastK8sClusterScanResults(IPrincipal principal, CustodianLastK8sClusterScanRequest request);
 
     M3Result<List<SdkRecommendationSetting>> getRecommendationSettings(IPrincipal principal, DescribeRecommendationSettingsRequest request);
 

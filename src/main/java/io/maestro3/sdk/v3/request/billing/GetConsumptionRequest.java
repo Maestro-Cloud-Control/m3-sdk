@@ -45,6 +45,7 @@ public class GetConsumptionRequest extends AbstractConsumptionRequest {
 
         @Override
         public GetConsumptionRequest build() {
+            validateParams();
             return new GetConsumptionRequest(this);
         }
     }

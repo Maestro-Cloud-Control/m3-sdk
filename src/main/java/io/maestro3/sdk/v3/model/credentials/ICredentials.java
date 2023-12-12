@@ -31,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = GoogleUserCredentials.class, name = "GCP_USER_CREDENTIALS"),
     @JsonSubTypes.Type(value = GoogleServiceAccountCredentials.class, name = "GCP_SERVICE_CREDENTIALS"),
     @JsonSubTypes.Type(value = YandexAuthorizedKeys.class, name = "YANDEX"),
+    @JsonSubTypes.Type(value = KubeConfigCredentials.class, name = "KUBE_CONFIG"),
 })
 public interface ICredentials {
 

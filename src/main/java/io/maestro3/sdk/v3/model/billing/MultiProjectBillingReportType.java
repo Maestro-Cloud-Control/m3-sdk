@@ -25,6 +25,7 @@ public enum MultiProjectBillingReportType {
     NOT_PMC,
     CUSTOMERS,
     UNITS,
+    ANNUAL,
     SPONSORS,
     BSS,
     BSS_CUSTOMERS,

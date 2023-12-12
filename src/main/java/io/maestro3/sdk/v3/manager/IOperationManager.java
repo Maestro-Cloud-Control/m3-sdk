@@ -23,4 +23,6 @@ import io.maestro3.sdk.v3.request.operation.GetOperationRequest;
 
 public interface IOperationManager extends IManager {
     M3Result<SdkOperation> getOperation(IPrincipal principal, GetOperationRequest request);
+
+    <T> M3Result<T> getResultByOperation(IPrincipal principal, GetOperationRequest request);
 }

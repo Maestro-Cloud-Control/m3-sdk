@@ -30,7 +30,8 @@ public enum ResourceType {
     SECURITY_GROUP,
     SUBNET,
     VPC,
-    UNKNOWN;
+    UNKNOWN,
+    K8S_CLUSTER;
 
     @Override
     public String toString() {

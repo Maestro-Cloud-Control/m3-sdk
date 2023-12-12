@@ -17,6 +17,7 @@
 package io.maestro3.sdk.v3.request.security;
 
 import io.maestro3.sdk.internal.util.Assert;
+import io.maestro3.sdk.internal.util.StringUtils;
 import io.maestro3.sdk.v3.model.SdkCloud;
 import io.maestro3.sdk.v3.request.IRegionRequest;
 import io.maestro3.sdk.v3.request.ITenantRequest;
@@ -28,7 +29,7 @@ public abstract class InitSecurityScanRequest implements ITenantRequest, IRegion
     private final String region;
     private final String instanceId;
     private final String availabilityZone;
-    private final String resourceId;
+    private final String resourceGroup;
 
     protected InitSecurityScanRequest(AbstractInitSecurityScanRequestBuilder<?, ?> builder) {
         this.cloud = builder.cloud;
@@ -36,7 +37,7 @@ public abstract class InitSecurityScanRequest implements ITenantRequest, IRegion
         this.region = builder.region;
         this.instanceId = builder.instanceId;
         this.availabilityZone = builder.availabilityZone;
-        this.resourceId = builder.resourceId;
+        this.resourceGroup = builder.resourceGroup;
     }
 
     public SdkCloud getCloud() {
@@ -59,19 +60,19 @@ public abstract class InitSecurityScanRequest implements ITenantRequest, IRegion
         return availabilityZone;
     }
 
-    public String getResourceGroupId() {
-        return resourceId;
+    public String getResourceGroup() {
+        return resourceGroup;
     }
 
     public abstract static class AbstractInitSecurityScanRequestBuilder
-        <B extends AbstractInitSecurityScanRequestBuilder<B, R>, R extends InitSecurityScanRequest> {
+            <B extends AbstractInitSecurityScanRequestBuilder<B, R>, R extends InitSecurityScanRequest> {
 
         private SdkCloud cloud;
         private String tenantName;
         private String region;
         private String instanceId;
         private String availabilityZone;
-        private String resourceId;
+        private String resourceGroup;
 
         protected abstract B getThis();
 
@@ -102,8 +103,8 @@ public abstract class InitSecurityScanRequest implements ITenantRequest, IRegion
             return getThis();
         }
 
-        public B withResourceId(String resourceId) {
-            this.resourceId = resourceId;
+        public B withResourceGroup(String resourceGroup) {
+            this.resourceGroup = resourceGroup;
             return getThis();
         }
 
@@ -111,6 +112,13 @@ public abstract class InitSecurityScanRequest implements ITenantRequest, IRegion
             Assert.notNull(cloud, "cloud");
             Assert.hasText(region, "region");
             Assert.hasText(tenantName, "tenantName");
+            if (StringUtils.isNotBlank(instanceId)) {
+                if (cloud == SdkCloud.AZURE) {
+                    Assert.hasText(resourceGroup, "resourceGroup");
+                } else if (cloud == SdkCloud.GOOGLE) {
+                    Assert.hasText(availabilityZone, "availabilityZone");
+                }
+            }
         }
     }
 }

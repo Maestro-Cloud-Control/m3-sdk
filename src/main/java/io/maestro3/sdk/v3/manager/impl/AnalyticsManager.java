@@ -27,6 +27,7 @@ import io.maestro3.sdk.v3.model.analytics.SdkBillingAuditEvent;
 import io.maestro3.sdk.v3.model.analytics.SdkBillingConfig;
 import io.maestro3.sdk.v3.model.analytics.SdkBillingTimeLine;
 import io.maestro3.sdk.v3.model.analytics.SdkCloudRadarRecord;
+import io.maestro3.sdk.v3.model.analytics.SdkInstanceAnalytic;
 import io.maestro3.sdk.v3.model.analytics.SdkMonitoringRecord;
 import io.maestro3.sdk.v3.model.instance.SdkInstance;
 import io.maestro3.sdk.v3.request.analytics.AuditEventRequest;
@@ -36,17 +37,21 @@ import io.maestro3.sdk.v3.request.analytics.BillingTimeLineRequest;
 import io.maestro3.sdk.v3.request.analytics.CloudRadarReportRequest;
 import io.maestro3.sdk.v3.request.analytics.LowUtilizedInstanceRequest;
 import io.maestro3.sdk.v3.request.analytics.MonitoringReportRequest;
-import io.maestro3.sdk.v3.request.analytics.StoppedInstanceAnalyticReportRequest;
+import io.maestro3.sdk.v3.request.analytics.InstanceAnalyticReportRequest;
 
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 
 public class AnalyticsManager extends AbstractManager implements IAnalyticsManager {
 
     private static final TypeReference<SdkBillingConfig> BILLING_CONFIG_RESULT = new TypeReference<SdkBillingConfig>() {};
-    private static final TypeReference<List<SdkBillingTimeLine>> BILLING_TIME_LINES_RESULT = new TypeReference<List<SdkBillingTimeLine>>() {};
-    private static final TypeReference<Map<String, Integer>> STOPPED_INSTANCES_ANALYTIC_RESULT = new TypeReference<Map<String, Integer>>() {};
-    private static final TypeReference<List<SdkBillingAuditEvent>> AUDIT_EVENTS_RESULT = new TypeReference<List<SdkBillingAuditEvent>>() {};
+    private static final TypeReference<List<SdkBillingTimeLine>> BILLING_TIME_LINES_RESULT = new TypeReference<List<SdkBillingTimeLine>>() {
+    };
+    private static final TypeReference<SdkInstanceAnalytic> INSTANCES_ANALYTIC_RESULT = new TypeReference<SdkInstanceAnalytic>() {
+    };
+    private static final TypeReference<List<SdkBillingAuditEvent>> AUDIT_EVENTS_RESULT = new TypeReference<List<SdkBillingAuditEvent>>() {
+    };
     private static final TypeReference<List<SdkInstance>> LOW_UTILIZED_INSTANCE_RESULT = new TypeReference<List<SdkInstance>>() {};
     private static final TypeReference<List<SdkAwsWorkspaceDescription>> AWS_WORKSPACES_RESULT = new TypeReference<List<SdkAwsWorkspaceDescription>>() {};
     private static final TypeReference<List<SdkCloudRadarRecord>> CLOUD_RADAR_RECORD_LIST_RESULT = new TypeReference<List<SdkCloudRadarRecord>>() {};
@@ -77,8 +82,8 @@ public class AnalyticsManager extends AbstractManager implements IAnalyticsManag
     }
 
     @Override
-    public M3Result<Map<String, Integer>> getStoppedInstanceAnalytic(IPrincipal principal, StoppedInstanceAnalyticReportRequest request) {
-        return execute(principal, request, STOPPED_INSTANCES_ANALYTIC_RESULT);
+    public M3Result<SdkInstanceAnalytic> getInstanceAnalytic(IPrincipal principal, InstanceAnalyticReportRequest request) {
+        return execute(principal, request, INSTANCES_ANALYTIC_RESULT);
     }
 
     @Override

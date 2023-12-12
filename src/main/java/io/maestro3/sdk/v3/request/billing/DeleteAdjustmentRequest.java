@@ -45,6 +45,7 @@ public class DeleteAdjustmentRequest extends AbstractAdjustmentRequest {
 
         @Override
         public DeleteAdjustmentRequest build() {
+            validateParams();
             return new DeleteAdjustmentRequest(this);
         }
     }

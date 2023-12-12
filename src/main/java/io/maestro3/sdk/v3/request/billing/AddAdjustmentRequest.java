@@ -75,6 +75,7 @@ public class AddAdjustmentRequest extends AbstractAdjustmentRequest {
 
         @Override
         public AddAdjustmentRequest build() {
+            validateParams();
             return new AddAdjustmentRequest(this);
         }
     }

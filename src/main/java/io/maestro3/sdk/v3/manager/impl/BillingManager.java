@@ -35,6 +35,7 @@ import io.maestro3.sdk.v3.request.billing.AddConsumptionDetailsRequest;
 import io.maestro3.sdk.v3.request.billing.AddConsumptionRequest;
 import io.maestro3.sdk.v3.request.billing.BillingInvoiceRequest;
 import io.maestro3.sdk.v3.request.billing.BillingTagRequest;
+import io.maestro3.sdk.v3.request.billing.CheckTenantStatusRequest;
 import io.maestro3.sdk.v3.request.billing.CostAndUsageReportRequest;
 import io.maestro3.sdk.v3.request.billing.CostObjectDetailsRequest;
 import io.maestro3.sdk.v3.request.billing.DailyReportByTenantGroupRequest;
@@ -64,7 +65,6 @@ public class BillingManager extends AbstractManager implements IBillingManager {
     private static final String PRIVATE_ZONES = "PRIVATE";
     private static final String SINGLE_ZONE = "SINGLE_ZONE";
     private static final String AWS_UNREACHABLE = "AWS_UNREACHABLE";
-    private static final String AZURE_NATIVE = "AZURE_NATIVE";
 
     public BillingManager(IM3ApiActionExecutor executor, boolean isAsync) {
         super(executor, isAsync);
@@ -174,7 +174,7 @@ public class BillingManager extends AbstractManager implements IBillingManager {
             if (reportUnitDetails.getCloud() == SdkCloud.AWS){
                 multiprojectRequestBuilder.withReportZoneType(AWS_UNREACHABLE);
             } else if (reportUnitDetails.getCloud() == SdkCloud.AZURE){
-                multiprojectRequestBuilder.withReportZoneType(AZURE_NATIVE);
+                multiprojectRequestBuilder.withReportZoneType(SdkCloud.AZURE.name());
             } else {
                 throw new IllegalArgumentException(reportUnitDetails.getCloud() + " doesn't support native currency");
             }
@@ -255,6 +255,11 @@ public class BillingManager extends AbstractManager implements IBillingManager {
 
     @Override
     public M3Result<Object> deleteAdjustment(IPrincipal principal, DeleteAdjustmentRequest request) {
+        return execute(principal, request, new TypeReference<>() {});
+    }
+
+    @Override
+    public M3Result<Object> checkTenantStatusRequest(IPrincipal principal, CheckTenantStatusRequest request) {
         return execute(principal, request, new TypeReference<>() {});
     }
 }

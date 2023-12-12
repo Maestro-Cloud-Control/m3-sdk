@@ -68,7 +68,7 @@ public class M3SignerTest {
     public void testIsSignValidWhenAccessKeyIsTheSame() {
         request = signer.sign(request, accessKey);
 
-        boolean result = signer.isSignValid(request.getSignature(), request.getTimestamp(), request.getAccessKey());
+        boolean result = signer.isSignValid(request.getSignature(), request.getTimestamp(), request.getAccessKey(), request.getUserIdentifier());
 
         assertTrue(result);
     }
@@ -79,7 +79,7 @@ public class M3SignerTest {
 
         String accessKey = UUID.randomUUID().toString();
         signer = new M3Signer(new M3StaticCredentialsProvider(accessKey, UUID.randomUUID().toString().substring(0, 15)));
-        boolean result = signer.isSignValid(request.getSignature(), request.getTimestamp(), accessKey);
+        boolean result = signer.isSignValid(request.getSignature(), request.getTimestamp(), accessKey, request.getUserIdentifier());
         assertFalse(result);
     }
 

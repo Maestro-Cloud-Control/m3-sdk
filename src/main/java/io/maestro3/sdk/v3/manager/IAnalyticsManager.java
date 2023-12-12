@@ -23,6 +23,7 @@ import io.maestro3.sdk.v3.model.analytics.SdkBillingAuditEvent;
 import io.maestro3.sdk.v3.model.analytics.SdkBillingConfig;
 import io.maestro3.sdk.v3.model.analytics.SdkBillingTimeLine;
 import io.maestro3.sdk.v3.model.analytics.SdkCloudRadarRecord;
+import io.maestro3.sdk.v3.model.analytics.SdkInstanceAnalytic;
 import io.maestro3.sdk.v3.model.analytics.SdkMonitoringRecord;
 import io.maestro3.sdk.v3.model.instance.SdkInstance;
 import io.maestro3.sdk.v3.request.analytics.AuditEventRequest;
@@ -32,8 +33,9 @@ import io.maestro3.sdk.v3.request.analytics.BillingTimeLineRequest;
 import io.maestro3.sdk.v3.request.analytics.CloudRadarReportRequest;
 import io.maestro3.sdk.v3.request.analytics.LowUtilizedInstanceRequest;
 import io.maestro3.sdk.v3.request.analytics.MonitoringReportRequest;
-import io.maestro3.sdk.v3.request.analytics.StoppedInstanceAnalyticReportRequest;
+import io.maestro3.sdk.v3.request.analytics.InstanceAnalyticReportRequest;
 
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +49,7 @@ public interface IAnalyticsManager extends IManager {
 
     M3Result<List<SdkBillingTimeLine>> getBillingTimeLines(IPrincipal principal, BillingTimeLineRequest request);
 
-    M3Result<Map<String, Integer>> getStoppedInstanceAnalytic(IPrincipal principal, StoppedInstanceAnalyticReportRequest request);
+    M3Result<SdkInstanceAnalytic> getInstanceAnalytic(IPrincipal principal, InstanceAnalyticReportRequest request);
 
     M3Result<List<SdkBillingAuditEvent>> getAuditEvents(IPrincipal principal, AuditEventRequest request);
 

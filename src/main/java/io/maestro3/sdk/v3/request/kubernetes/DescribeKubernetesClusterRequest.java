@@ -31,14 +31,14 @@ public class DescribeKubernetesClusterRequest implements IRegionRequest {
      */
     private final String tenantName;
     private final String region;
-    private final SdkCloud cloud;
-    private final Set<String> clusterNames;
+    private final String clusterId;
+    private final boolean wide;
 
     private DescribeKubernetesClusterRequest(Builder builder) {
         this.tenantName = builder.tenantName;
         this.region = builder.region;
-        this.cloud = builder.cloud;
-        this.clusterNames = builder.clusterNames;
+        this.clusterId = builder.clusterId;
+        this.wide = builder.wide;
     }
 
     public static Builder builder() {
@@ -55,12 +55,12 @@ public class DescribeKubernetesClusterRequest implements IRegionRequest {
         return region;
     }
 
-    public SdkCloud getCloud() {
-        return cloud;
+    public String getClusterId() {
+        return clusterId;
     }
 
-    public Set<String> getClusterNames() {
-        return clusterNames;
+    public boolean isWide() {
+        return wide;
     }
 
     @Override
@@ -72,13 +72,8 @@ public class DescribeKubernetesClusterRequest implements IRegionRequest {
 
         private String tenantName;
         private String region;
-        private SdkCloud cloud;
-        private Set<String> clusterNames;
-
-        public Builder withCloud(SdkCloud cloud) {
-            this.cloud = cloud;
-            return this;
-        }
+        private String clusterId;
+        private boolean wide;
 
         public Builder withTenantName(String tenantName) {
             this.tenantName = tenantName;
@@ -90,15 +85,22 @@ public class DescribeKubernetesClusterRequest implements IRegionRequest {
             return this;
         }
 
-        public Builder withClusterNames(Set<String> clusterNames) {
-            this.clusterNames = clusterNames;
+        public Builder withClusterId(String clusterId) {
+            this.clusterId = clusterId;
+            return this;
+        }
+
+        /**
+         * Collect additional properties like: "namespaces", "services", "pods", "endpoints", "ingresses", "replica-sets"
+         */
+        public Builder withWide(boolean wide) {
+            this.wide = wide;
             return this;
         }
 
         public DescribeKubernetesClusterRequest build() {
             Assert.hasText(tenantName, "tenantName");
             Assert.hasText(region, "region");
-            Assert.notNull(cloud, "cloud");
             return new DescribeKubernetesClusterRequest(this);
         }
     }

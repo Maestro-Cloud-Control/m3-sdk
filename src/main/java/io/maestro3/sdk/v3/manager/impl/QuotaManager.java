@@ -21,6 +21,7 @@ import io.maestro3.sdk.internal.executor.IM3ApiActionExecutor;
 import io.maestro3.sdk.v3.core.IPrincipal;
 import io.maestro3.sdk.v3.core.M3Result;
 import io.maestro3.sdk.v3.manager.IQuotaManager;
+import io.maestro3.sdk.v3.model.operation.SdkOperation;
 import io.maestro3.sdk.v3.model.quota.SdkPriceQuota;
 import io.maestro3.sdk.v3.model.resource.quota.SdkInstanceQuota;
 import io.maestro3.sdk.v3.model.resource.quota.SdkVolumeQuota;
@@ -90,13 +91,13 @@ public class QuotaManager extends AbstractManager implements IQuotaManager {
     }
 
     @Override
-    public M3Result<Void> create(IPrincipal principal, CreateQuotaRequest request) {
-        return execute(principal, request, VOID_RESULT);
+    public M3Result<SdkOperation> create(IPrincipal principal, CreateQuotaRequest request) {
+        return execute(principal, request, new TypeReference<>() {});
     }
 
     @Override
-    public M3Result<Void> update(IPrincipal principal, UpdateQuotaRequest request) {
-        return execute(principal, request, VOID_RESULT);
+    public M3Result<SdkOperation> update(IPrincipal principal, UpdateQuotaRequest request) {
+        return execute(principal, request, new TypeReference<>() {});
     }
 
     @Override
@@ -115,8 +116,8 @@ public class QuotaManager extends AbstractManager implements IQuotaManager {
     }
 
     @Override
-    public M3Result<Void> remove(IPrincipal principal, RemoveQuotaRequest request) {
-        return execute(principal, request, VOID_RESULT);
+    public M3Result<SdkOperation> remove(IPrincipal principal, RemoveQuotaRequest request) {
+        return execute(principal, request, new TypeReference<>() {});
     }
 
     //resource quotas

@@ -58,18 +58,7 @@ public class ReportRecord {
     private String unit;
     private String currencyCode;
     private BigDecimal totalPrice;
-    private BigDecimal epcTotalPrice;
-    private BigDecimal awsTotalPrice;
-    private BigDecimal azureTotalPrice;
-    private BigDecimal googleTotalPrice;
-    private BigDecimal hardwareTotalPrice;
-    private BigDecimal mobileTotalPrice;
-    private BigDecimal enterpriseTotalPrice;
-    private BigDecimal swiftStackTotalPrice;
-    private BigDecimal reportPortalTotalPrice;
-    private BigDecimal awsWorkspacesTotalPrice;
-    private BigDecimal azureWorkspacesTotalPrice;
-    private BigDecimal aosTotalPrice;
+    private Map<String, BigDecimal> zoneTypesTotalPrice;
     private BigDecimal yearTotalPrice;
     private String monthOverMonth;
     private String businessUnitName;
@@ -319,100 +308,12 @@ public class ReportRecord {
         this.totalPrice = totalPrice;
     }
 
-    public BigDecimal getEpcTotalPrice() {
-        return epcTotalPrice;
+    public Map<String, BigDecimal> getZoneTypesTotalPrice() {
+        return zoneTypesTotalPrice;
     }
 
-    public void setEpcTotalPrice(BigDecimal epcTotalPrice) {
-        this.epcTotalPrice = epcTotalPrice;
-    }
-
-    public BigDecimal getAwsTotalPrice() {
-        return awsTotalPrice;
-    }
-
-    public void setAwsTotalPrice(BigDecimal awsTotalPrice) {
-        this.awsTotalPrice = awsTotalPrice;
-    }
-
-    public BigDecimal getAzureTotalPrice() {
-        return azureTotalPrice;
-    }
-
-    public void setAzureTotalPrice(BigDecimal azureTotalPrice) {
-        this.azureTotalPrice = azureTotalPrice;
-    }
-
-    public BigDecimal getGoogleTotalPrice() {
-        return googleTotalPrice;
-    }
-
-    public void setGoogleTotalPrice(BigDecimal googleTotalPrice) {
-        this.googleTotalPrice = googleTotalPrice;
-    }
-
-    public BigDecimal getHardwareTotalPrice() {
-        return hardwareTotalPrice;
-    }
-
-    public void setHardwareTotalPrice(BigDecimal hardwareTotalPrice) {
-        this.hardwareTotalPrice = hardwareTotalPrice;
-    }
-
-    public BigDecimal getMobileTotalPrice() {
-        return mobileTotalPrice;
-    }
-
-    public void setMobileTotalPrice(BigDecimal mobileTotalPrice) {
-        this.mobileTotalPrice = mobileTotalPrice;
-    }
-
-    public BigDecimal getEnterpriseTotalPrice() {
-        return enterpriseTotalPrice;
-    }
-
-    public void setEnterpriseTotalPrice(BigDecimal enterpriseTotalPrice) {
-        this.enterpriseTotalPrice = enterpriseTotalPrice;
-    }
-
-    public BigDecimal getSwiftStackTotalPrice() {
-        return swiftStackTotalPrice;
-    }
-
-    public void setSwiftStackTotalPrice(BigDecimal swiftStackTotalPrice) {
-        this.swiftStackTotalPrice = swiftStackTotalPrice;
-    }
-
-    public BigDecimal getReportPortalTotalPrice() {
-        return reportPortalTotalPrice;
-    }
-
-    public void setReportPortalTotalPrice(BigDecimal reportPortalTotalPrice) {
-        this.reportPortalTotalPrice = reportPortalTotalPrice;
-    }
-
-    public BigDecimal getAwsWorkspacesTotalPrice() {
-        return awsWorkspacesTotalPrice;
-    }
-
-    public void setAwsWorkspacesTotalPrice(BigDecimal awsWorkspacesTotalPrice) {
-        this.awsWorkspacesTotalPrice = awsWorkspacesTotalPrice;
-    }
-
-    public BigDecimal getAzureWorkspacesTotalPrice() {
-        return azureWorkspacesTotalPrice;
-    }
-
-    public void setAzureWorkspacesTotalPrice(BigDecimal azureWorkspacesTotalPrice) {
-        this.azureWorkspacesTotalPrice = azureWorkspacesTotalPrice;
-    }
-
-    public BigDecimal getAosTotalPrice() {
-        return aosTotalPrice;
-    }
-
-    public void setAosTotalPrice(BigDecimal aosTotalPrice) {
-        this.aosTotalPrice = aosTotalPrice;
+    public void setZoneTypesTotalPrice(Map<String, BigDecimal> zoneTypesTotalPrice) {
+        this.zoneTypesTotalPrice = zoneTypesTotalPrice;
     }
 
     public String getMonthOverMonth() {
@@ -588,12 +489,12 @@ public class ReportRecord {
         if (this == o) return true;
         if (!(o instanceof ReportRecord)) return false;
         ReportRecord that = (ReportRecord) o;
-        return Objects.equals(number, that.number) && Objects.equals(recordType, that.recordType) && Objects.equals(customer, that.customer) && Objects.equals(zone, that.zone) && Objects.equals(projectCode, that.projectCode) && Objects.equals(originalProjectCode, that.originalProjectCode) && Objects.equals(projectType, that.projectType) && Objects.equals(billingPeriodStartDate, that.billingPeriodStartDate) && Objects.equals(billingPeriodEndDate, that.billingPeriodEndDate) && Objects.equals(productName, that.productName) && Objects.equals(resource, that.resource) && Objects.equals(usageType, that.usageType) && Objects.equals(resourceType, that.resourceType) && Objects.equals(operation, that.operation) && Objects.equals(resourceId, that.resourceId) && Objects.equals(resourceName, that.resourceName) && Objects.equals(resourceDescription, that.resourceDescription) && Objects.equals(operationSystem, that.operationSystem) && Objects.equals(virtualDataCenter, that.virtualDataCenter) && Objects.equals(instance, that.instance) && Objects.equals(description, that.description) && Objects.equals(usageStartDate, that.usageStartDate) && Objects.equals(usageEndDate, that.usageEndDate) && Objects.equals(quantity, that.quantity) && Objects.equals(unit, that.unit) && Objects.equals(currencyCode, that.currencyCode) && Objects.equals(totalPrice, that.totalPrice) && Objects.equals(epcTotalPrice, that.epcTotalPrice) && Objects.equals(awsTotalPrice, that.awsTotalPrice) && Objects.equals(azureTotalPrice, that.azureTotalPrice) && Objects.equals(googleTotalPrice, that.googleTotalPrice) && Objects.equals(hardwareTotalPrice, that.hardwareTotalPrice) && Objects.equals(mobileTotalPrice, that.mobileTotalPrice) && Objects.equals(enterpriseTotalPrice, that.enterpriseTotalPrice) && Objects.equals(swiftStackTotalPrice, that.swiftStackTotalPrice) && Objects.equals(reportPortalTotalPrice, that.reportPortalTotalPrice) && Objects.equals(awsWorkspacesTotalPrice, that.awsWorkspacesTotalPrice) && Objects.equals(azureWorkspacesTotalPrice, that.azureWorkspacesTotalPrice) && Objects.equals(aosTotalPrice, that.aosTotalPrice) && Objects.equals(yearTotalPrice, that.yearTotalPrice) && Objects.equals(monthOverMonth, that.monthOverMonth) && Objects.equals(businessUnitName, that.businessUnitName) && Objects.equals(tag, that.tag) && Objects.equals(costCenterName, that.costCenterName) && Objects.equals(additionalInfo, that.additionalInfo) && Objects.equals(accountManager, that.accountManager) && Objects.equals(projectSponsor, that.projectSponsor) && Objects.equals(projectDeactivationDate, that.projectDeactivationDate) && Objects.equals(projectUpsaDeactivationDate, that.projectUpsaDeactivationDate) && Objects.equals(comments, that.comments) && Objects.equals(serverOwner, that.serverOwner) && Objects.equals(serverName, that.serverName) && Objects.equals(serverUsage, that.serverUsage) && Objects.equals(invoiceId, that.invoiceId) && Objects.equals(invoiceDate, that.invoiceDate) && Objects.equals(subscriptionId, that.subscriptionId) && Objects.equals(azureBillingProvider, that.azureBillingProvider) && Objects.equals(tenantName, that.tenantName) && Objects.equals(originalTenantName, that.originalTenantName);
+        return Objects.equals(number, that.number) && Objects.equals(recordType, that.recordType) && Objects.equals(customer, that.customer) && Objects.equals(zone, that.zone) && Objects.equals(projectCode, that.projectCode) && Objects.equals(originalProjectCode, that.originalProjectCode) && Objects.equals(projectType, that.projectType) && Objects.equals(billingPeriodStartDate, that.billingPeriodStartDate) && Objects.equals(billingPeriodEndDate, that.billingPeriodEndDate) && Objects.equals(productName, that.productName) && Objects.equals(resource, that.resource) && Objects.equals(usageType, that.usageType) && Objects.equals(resourceType, that.resourceType) && Objects.equals(operation, that.operation) && Objects.equals(resourceId, that.resourceId) && Objects.equals(resourceName, that.resourceName) && Objects.equals(resourceDescription, that.resourceDescription) && Objects.equals(operationSystem, that.operationSystem) && Objects.equals(virtualDataCenter, that.virtualDataCenter) && Objects.equals(instance, that.instance) && Objects.equals(description, that.description) && Objects.equals(usageStartDate, that.usageStartDate) && Objects.equals(usageEndDate, that.usageEndDate) && Objects.equals(quantity, that.quantity) && Objects.equals(unit, that.unit) && Objects.equals(currencyCode, that.currencyCode) && Objects.equals(totalPrice, that.totalPrice) && Objects.equals(zoneTypesTotalPrice, that.zoneTypesTotalPrice) && Objects.equals(yearTotalPrice, that.yearTotalPrice) && Objects.equals(monthOverMonth, that.monthOverMonth) && Objects.equals(businessUnitName, that.businessUnitName) && Objects.equals(tag, that.tag) && Objects.equals(costCenterName, that.costCenterName) && Objects.equals(additionalInfo, that.additionalInfo) && Objects.equals(accountManager, that.accountManager) && Objects.equals(projectSponsor, that.projectSponsor) && Objects.equals(projectDeactivationDate, that.projectDeactivationDate) && Objects.equals(projectUpsaDeactivationDate, that.projectUpsaDeactivationDate) && Objects.equals(comments, that.comments) && Objects.equals(serverOwner, that.serverOwner) && Objects.equals(serverName, that.serverName) && Objects.equals(serverUsage, that.serverUsage) && Objects.equals(invoiceId, that.invoiceId) && Objects.equals(invoiceDate, that.invoiceDate) && Objects.equals(subscriptionId, that.subscriptionId) && Objects.equals(azureBillingProvider, that.azureBillingProvider) && Objects.equals(tenantName, that.tenantName) && Objects.equals(originalTenantName, that.originalTenantName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, recordType, customer, zone, projectCode, originalProjectCode, projectType, billingPeriodStartDate, billingPeriodEndDate, productName, resource, usageType, resourceType, operation, resourceId, resourceName, resourceDescription, operationSystem, virtualDataCenter, instance, description, usageStartDate, usageEndDate, quantity, unit, currencyCode, totalPrice, epcTotalPrice, awsTotalPrice, azureTotalPrice, googleTotalPrice, hardwareTotalPrice, mobileTotalPrice, enterpriseTotalPrice, swiftStackTotalPrice, reportPortalTotalPrice, awsWorkspacesTotalPrice, azureWorkspacesTotalPrice, aosTotalPrice, yearTotalPrice, monthOverMonth, businessUnitName, tag, costCenterName, additionalInfo, accountManager, projectSponsor, projectDeactivationDate, projectUpsaDeactivationDate, comments, serverOwner, serverName, serverUsage, invoiceId, invoiceDate, subscriptionId, azureBillingProvider, tenantName, originalTenantName);
+        return Objects.hash(number, recordType, customer, zone, projectCode, originalProjectCode, projectType, billingPeriodStartDate, billingPeriodEndDate, productName, resource, usageType, resourceType, operation, resourceId, resourceName, resourceDescription, operationSystem, virtualDataCenter, instance, description, usageStartDate, usageEndDate, quantity, unit, currencyCode, totalPrice, zoneTypesTotalPrice, yearTotalPrice, monthOverMonth, businessUnitName, tag, costCenterName, additionalInfo, accountManager, projectSponsor, projectDeactivationDate, projectUpsaDeactivationDate, comments, serverOwner, serverName, serverUsage, invoiceId, invoiceDate, subscriptionId, azureBillingProvider, tenantName, originalTenantName);
     }
 
     @Override

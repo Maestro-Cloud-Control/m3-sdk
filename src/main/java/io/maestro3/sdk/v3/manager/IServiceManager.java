@@ -35,4 +35,10 @@ public interface IServiceManager {
     M3Result<Map<String, Object>> activateRightsizer(IPrincipal principal, IServiceRequest request);
 
     M3Result<Map<String, Object>> deactivateRightsizer(IPrincipal principal, IServiceRequest request);
+
+    M3Result<Map<String, Object>> activateK8s(IPrincipal principal, IServiceRequest request);
+
+    M3Result<Map<String, Object>> deactivateK8s(IPrincipal principal, IServiceRequest request);
+
+    M3Result<Map<String, Object>> rotateCredentials(IPrincipal principal, IServiceRequest request);
 }

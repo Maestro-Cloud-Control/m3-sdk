@@ -92,4 +92,9 @@ public class JsonUtils {
             throw new M3SdkException("Cannot parse json from map", e);
         }
     }
+
+    public static <T> T parseObject(Object object, TypeReference<T> clazz) {
+        String json = convertObjectToJson(object, false);
+        return parseJson(json, clazz);
+    }
 }
