@@ -31,6 +31,7 @@ public class OnboardingPrivateRequest extends AbstractOnboardingRequest {
     static {
         ACTION_TYPE_MAP.put(SdkCloud.OPEN_STACK, ActionType.ONBOARDING_OPENSTACK_TENANT);
         ACTION_TYPE_MAP.put(SdkCloud.VMWARE, ActionType.ONBOARDING_VMWARE_TENANT);
+        ACTION_TYPE_MAP.put(SdkCloud.OPEN_NEBULA, ActionType.ONBOARDING_OPEN_NEBULA_TENANT);
         ACTION_TYPE_MAP.put(SdkCloud.VSPHERE, ActionType.ONBOARDING_VSPHERE_TENANT);
     }
 

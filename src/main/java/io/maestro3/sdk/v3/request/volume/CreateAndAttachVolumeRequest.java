@@ -22,18 +22,24 @@ import io.maestro3.sdk.v3.core.ActionType;
 import io.maestro3.sdk.v3.request.IRequest;
 import io.maestro3.sdk.v3.request.instance.InstanceActionRequest;
 
+import java.util.Map;
+
 @JsonDeserialize(builder = CreateAndAttachVolumeRequest.VolumeRequestBuilder.class)
 public class CreateAndAttachVolumeRequest extends InstanceActionRequest implements IRequest {
 
     private final String volumeName;
     private final String volumeId;
     private final Integer sizeInGB;
+    private final Boolean deleteOnTermination;
+    private final Map<String, String> additionalData;
 
     private CreateAndAttachVolumeRequest(VolumeRequestBuilder builder) {
         super(builder);
         this.volumeId = builder.volumeId;
         this.volumeName = builder.volumeName;
         this.sizeInGB = builder.sizeInGB;
+        this.deleteOnTermination = builder.deleteOnTermination;
+        this.additionalData = builder.additionalData;
     }
 
     public static VolumeRequestBuilder builder() {
@@ -52,6 +58,14 @@ public class CreateAndAttachVolumeRequest extends InstanceActionRequest implemen
         return sizeInGB;
     }
 
+    public Boolean isDeleteOnTermination() {
+        return deleteOnTermination;
+    }
+
+    public Map<String, String> getAdditionalData() {
+        return additionalData;
+    }
+
     @Override
     public ActionType getActionType() {
         return ActionType.CREATE_AND_ATTACH_VOLUME;
@@ -63,6 +77,8 @@ public class CreateAndAttachVolumeRequest extends InstanceActionRequest implemen
         private String volumeName;
         private String volumeId;
         private Integer sizeInGB;
+        private Boolean deleteOnTermination;
+        private Map<String, String> additionalData;
 
         public VolumeRequestBuilder withVolumeId(String volumeId) {
             this.volumeId = volumeId;
@@ -76,6 +92,16 @@ public class CreateAndAttachVolumeRequest extends InstanceActionRequest implemen
 
         public VolumeRequestBuilder withSizeInGB(Integer sizeInGB) {
             this.sizeInGB = sizeInGB;
+            return this;
+        }
+
+        public VolumeRequestBuilder withDeleteOnTermination(Boolean deleteOnTermination) {
+            this.deleteOnTermination = deleteOnTermination;
+            return this;
+        }
+
+        public VolumeRequestBuilder withAdditionalData(Map<String, String> additionalData) {
+            this.additionalData = additionalData;
             return this;
         }
 

@@ -45,9 +45,11 @@ public enum AuditEventGroupType {
     PRIVATE_AGENT("private_agent"),
     VOLUME_DATA("volume_data"),
     ONBOARDING_DATA("onboarding_data"),
-    CUSTODIAN_DATA("custodian_data");
+    CUSTODIAN_DATA("syndicate_rule_engine_data"),
+    METRIC_DATA("metric_data"),
+    ;
 
-    private String groupTypeName;
+    private final String groupTypeName;
 
     AuditEventGroupType(String groupTypeName) {
         this.groupTypeName = groupTypeName;
@@ -60,7 +62,7 @@ public enum AuditEventGroupType {
     public static String getQualifier(AuditEventGroupType group, AuditEventGroupType... groups) {
         Assert.notNull(group, "Group can not be null");
         StringBuilder sb = new StringBuilder(group.getGroupTypeName());
-        if (groups != null && groups.length > 0) {
+        if (groups != null) {
             for (AuditEventGroupType iGroup : groups) {
                 sb.append(";").append(iGroup.getGroupTypeName());
             }

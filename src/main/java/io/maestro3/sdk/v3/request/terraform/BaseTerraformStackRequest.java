@@ -18,6 +18,7 @@ package io.maestro3.sdk.v3.request.terraform;
 
 import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.model.SdkCloud;
+import io.maestro3.sdk.v3.model.annotation.SecuredParams;
 import io.maestro3.sdk.v3.model.terraform.TerraformTask;
 import io.maestro3.sdk.v3.model.terraform.TerraformTaskVariable;
 import io.maestro3.sdk.v3.model.terraform.template.SdkTemplateType;
@@ -34,9 +35,11 @@ public abstract class BaseTerraformStackRequest implements ITenantRequest {
     private final String templateName;
     private final String taskInitiatorEmail;
     private final TerraformTask task;
+    @SecuredParams
     private final Map<String, TerraformTaskVariable> variables;
     private final String serviceEntryId;
     private final boolean paasRequest;
+    @SecuredParams
     private final Map<String, Object> metadata;
     private final String agentId;
     private final String region;

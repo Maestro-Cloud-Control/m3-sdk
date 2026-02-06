@@ -29,14 +29,18 @@ public class DescribeTenantsRequest implements IRequest {
     // optional params
     private final SdkCloud cloud;
     private final Set<String> tenantNames;
-    private final boolean inactive; //include inactive regions
-    private final boolean hidden; //include hidden regions
+    private final boolean inactive; // only inactive tenants
+    private final boolean hidden; // include hidden regions
+    private final boolean all; // active + inactive + hidden
+    private final boolean full; // add resources quotas, etc.
 
     private DescribeTenantsRequest(Builder builder) {
         this.cloud = builder.cloud;
         this.tenantNames = builder.tenantNames;
         this.inactive = builder.inactive;
         this.hidden = builder.hidden;
+        this.all = builder.all;
+        this.full = builder.full;
     }
 
     public SdkCloud getCloud() {
@@ -55,6 +59,14 @@ public class DescribeTenantsRequest implements IRequest {
         return hidden;
     }
 
+    public boolean isAll() {
+        return all;
+    }
+
+    public boolean isFull() {
+        return full;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -70,6 +82,8 @@ public class DescribeTenantsRequest implements IRequest {
         private Set<String> tenantNames;
         private boolean inactive;
         private boolean hidden;
+        private boolean all;
+        private boolean full;
 
         public Builder withCloud(SdkCloud cloud) {
             this.cloud = cloud;
@@ -88,6 +102,16 @@ public class DescribeTenantsRequest implements IRequest {
 
         public Builder withHidden(boolean hidden) {
             this.hidden = hidden;
+            return this;
+        }
+
+        public Builder withAll(boolean all) {
+            this.all = all;
+            return this;
+        }
+
+        public Builder withFull(boolean full) {
+            this.full = full;
             return this;
         }
 

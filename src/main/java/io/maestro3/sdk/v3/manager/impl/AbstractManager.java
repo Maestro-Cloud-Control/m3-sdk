@@ -74,7 +74,7 @@ abstract class AbstractManager implements IManager {
         } catch (M3SdkHostConnectException e) {
             throw e;
         } catch (Exception e) {
-            throw new M3SdkException("Cannot execute action: " + apiAction.getType() + " with request: " + apiAction.getParams().get("body"), e);
+            throw new M3SdkException("Cannot execute action: " + apiAction.getType() + " with request ID: " + apiAction.getId(), e);
         }
 
         if (result == null || result.getStatus() == null) {

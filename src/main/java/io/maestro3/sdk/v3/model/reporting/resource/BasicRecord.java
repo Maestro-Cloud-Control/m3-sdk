@@ -28,6 +28,7 @@ public class BasicRecord implements ITableRecord {
     private List<String> rowData;
 
     protected BasicRecord() {
+        // db
     }
 
     public BasicRecord(List<String> rowData) {

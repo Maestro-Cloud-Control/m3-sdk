@@ -17,5 +17,5 @@
 package io.maestro3.sdk.v3.core;
 
 public enum ApprovalActionType {
-    SAME_ACTION, APPROVE, REJECT
+    SAME_ACTION, APPROVE, REJECT, PERMISSIONS_ACTION
 }

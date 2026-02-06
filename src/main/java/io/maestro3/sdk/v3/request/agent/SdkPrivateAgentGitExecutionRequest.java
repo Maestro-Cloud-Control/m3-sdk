@@ -18,6 +18,7 @@ package io.maestro3.sdk.v3.request.agent;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.v3.core.ActionType;
+import io.maestro3.sdk.v3.model.annotation.SecuredParams;
 import io.maestro3.sdk.v3.request.IRequest;
 
 @JsonDeserialize(builder = SdkPrivateAgentGitExecutionRequest.Builder.class)
@@ -39,6 +40,7 @@ public class SdkPrivateAgentGitExecutionRequest implements IRequest {
     private final GitType gitType;
     private final Type type;
     private final String username;
+    @SecuredParams
     private final String password;
     private final String gitRepoUri;
     private final String destinationDirectoryPath;
@@ -46,6 +48,7 @@ public class SdkPrivateAgentGitExecutionRequest implements IRequest {
     private final String hash;
     private final String subPath;
     private final String webhookCallbackUrl;
+    @SecuredParams
     private final String secret;
     private final int hookId;
     private final String gitWebHookJson;

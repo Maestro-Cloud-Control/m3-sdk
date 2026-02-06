@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
@@ -27,6 +28,7 @@ import io.maestro3.sdk.exception.M3SdkException;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 public class JsonUtils {
 
@@ -54,6 +56,33 @@ public class JsonUtils {
             }
         } catch (JsonProcessingException e) {
             throw new M3SdkException("Error while serializing request, cause: " + e.getMessage());
+        }
+    }
+
+    public static JsonNode parseJsonToJsonNode(String json) {
+        return Optional.ofNullable(json).map(input -> {
+            try {
+                return objectMapper.readTree(json);
+            } catch (JsonProcessingException e) {
+                throw new IllegalStateException("Failed to parse JSON", e);
+            }
+        }).orElse(null);
+    }
+
+
+    public static <T> JsonNode convertToJsonNode(T object) {
+        try {
+            return objectMapper.valueToTree(object);
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to convert object to JSON node", e);
+        }
+    }
+
+    public static <T> T convertToObject(JsonNode jsonNode, TypeReference<T> typeReference) {
+        try {
+            return objectMapper.readerFor(typeReference).readValue(jsonNode);
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to convert JSON node to object", e);
         }
     }
 

@@ -47,4 +47,9 @@ public interface IPriceQuotaMonthUsage extends IPriceQuotaUsage<IPriceQuotaMonth
     DateTime getEstimatedDepleteDate();
 
     void setEstimatedDepleteDate(DateTime estimatedDepleteDate);
+
+    BigDecimal getEstimatedUsage();
+
+    void setEstimatedUsage(BigDecimal estimatedUsage);
+
 }

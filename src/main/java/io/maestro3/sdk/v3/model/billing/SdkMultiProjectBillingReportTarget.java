@@ -17,8 +17,8 @@
 package io.maestro3.sdk.v3.model.billing;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.maestro3.sdk.exception.M3SdkException;
 import io.maestro3.sdk.internal.util.Assert;
+import io.maestro3.sdk.internal.util.StringUtils;
 import io.maestro3.sdk.v3.model.SdkCloud;
 
 import java.util.Set;
@@ -31,6 +31,9 @@ public class SdkMultiProjectBillingReportTarget {
     private Set<String> tenantGroups;
     private Set<String> tenantNames;
     private String accountId;
+    private String unitId;
+    private String unitContactId;
+    private String unitContactRole;
     private SdkCloud cloud;
     private MultiProjectReportCloudTarget cloudTarget;
 
@@ -89,6 +92,30 @@ public class SdkMultiProjectBillingReportTarget {
         this.accountId = accountId;
     }
 
+    public String getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(String unitId) {
+        this.unitId = unitId;
+    }
+
+    public String getUnitContactId() {
+        return unitContactId;
+    }
+
+    public void setUnitContactId(String unitContactId) {
+        this.unitContactId = unitContactId;
+    }
+
+    public String getUnitContactRole() {
+        return unitContactRole;
+    }
+
+    public void setUnitContactRole(String unitContactRole) {
+        this.unitContactRole = unitContactRole;
+    }
+
     public MultiProjectReportCloudTarget getCloudTarget() {
         return cloudTarget;
     }
@@ -104,6 +131,9 @@ public class SdkMultiProjectBillingReportTarget {
         private Set<String> tenantGroups;
         private Set<String> tenantNames;
         private String accountId;
+        private String unitId;
+        private String unitContactId;
+        private String unitContactRole;
         private SdkCloud cloud;
         private MultiProjectReportCloudTarget cloudTarget;
 
@@ -120,13 +150,6 @@ public class SdkMultiProjectBillingReportTarget {
         }
 
         public Builder cloud(SdkCloud cloud) {
-            if (!SdkCloud.HARDWARE.equals(cloud)
-                && !SdkCloud.ENTERPRISE.equals(cloud)
-                && !SdkCloud.WORKSPACE.equals(cloud)
-                && !SdkCloud.AOS.equals(cloud)
-                && !cloud.isPublic()) {
-                throw new M3SdkException("Multi project report by single cloud available only for public CPs (AWS, Azure, Google), Hardware, Enterprise, Workspace or AOS");
-            }
             this.cloud = cloud;
             this.reportUnit = ReportUnit.CLOUD;
             this.cloudTarget = MultiProjectReportCloudTarget.SINGLE;
@@ -151,6 +174,21 @@ public class SdkMultiProjectBillingReportTarget {
             return this;
         }
 
+        public Builder unitId(String unitId) {
+            this.unitId = unitId;
+            return this;
+        }
+
+        public Builder unitContactId(String unitContactId) {
+            this.unitContactId = unitContactId;
+            return this;
+        }
+
+        public Builder unitContactRole(String unitContactRole) {
+            this.unitContactRole = unitContactRole;
+            return this;
+        }
+
         public Builder tenantGroups(Set<String> tenantGroups) {
             this.tenantGroups = tenantGroups;
             return this;
@@ -172,7 +210,9 @@ public class SdkMultiProjectBillingReportTarget {
                     break;
                 }
                 case ACCOUNT: {
-                    Assert.hasText(accountId, "accountId");
+                    if (StringUtils.isBlank(accountId) && StringUtils.isBlank(unitId) && StringUtils.isBlank(unitContactId)) {
+                        Assert.hasText(accountId, "accountId");
+                    }
                     break;
                 }
                 case REGION: {
@@ -189,6 +229,9 @@ public class SdkMultiProjectBillingReportTarget {
             target.tenantGroups = this.tenantGroups;
             target.tenantNames = this.tenantNames;
             target.accountId = this.accountId;
+            target.unitId = this.unitId;
+            target.unitContactId = this.unitContactId;
+            target.unitContactRole = this.unitContactRole;
             target.cloudTarget = this.cloudTarget;
             return target;
         }

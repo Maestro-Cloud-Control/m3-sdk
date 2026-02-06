@@ -41,4 +41,8 @@ public interface IPriceQuotaUsage<T> extends Comparable<T> {
     DateTime getEstimatedDepleteDate();
 
     void setEstimatedDepleteDate(DateTime estimatedDepleteDate);
+
+    BigDecimal getEstimatedUsage();
+
+    void setEstimatedUsage(BigDecimal estimatedUsage);
 }

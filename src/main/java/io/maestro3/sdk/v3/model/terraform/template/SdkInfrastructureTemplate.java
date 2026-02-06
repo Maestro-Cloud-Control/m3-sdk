@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.maestro3.sdk.internal.util.StringUtils;
 import io.maestro3.sdk.v3.model.SdkCloud;
+import io.maestro3.sdk.v3.model.annotation.SecuredParams;
 import io.maestro3.sdk.v3.request.approval.ApprovalRule;
 
 import java.math.BigDecimal;
@@ -47,6 +48,7 @@ public class SdkInfrastructureTemplate {
     private SdkTerraformTemplateFormat templateFormat;
     private String terraformVersion;
     private SdkTemplateProviderType templateProviderType;
+    @SecuredParams
     private Map<String, String> templateProviderParams;
     private String templateUuid;
     private String terraformCredentialsProvider;

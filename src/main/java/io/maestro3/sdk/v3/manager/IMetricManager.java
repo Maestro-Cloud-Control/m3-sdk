@@ -1,11 +1,11 @@
 /*
- * Copyright 2023 Maestro Cloud Control LLC
+ * Copyright 2024 Maestro Cloud Control LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,6 +17,7 @@
 package io.maestro3.sdk.v3.manager;
 
 import io.maestro3.sdk.v3.core.IPrincipal;
+import io.maestro3.sdk.v3.core.M3BatchResult;
 import io.maestro3.sdk.v3.core.M3Result;
 import io.maestro3.sdk.v3.request.metric.DeleteActionsRequest;
 import io.maestro3.sdk.v3.request.metric.GetActionsForAllDashboardsRequest;
@@ -54,11 +55,13 @@ public interface IMetricManager extends IManager {
 
     M3Result<List<Object>> getAllUserDashboardAction(IPrincipal principal, GetAllUserDashboardActionRequest request);
 
-    M3Result<List<Object>> getAllRealTimeDashboardAction(IPrincipal principal, GetRealTimeDashboardActionRequest request);
+    M3Result<Object> getAllRealTimeDashboardAction(IPrincipal principal, GetRealTimeDashboardActionRequest request);
 
     M3Result<List<Object>> getCustomMetrics(IPrincipal principal, GetCustomMetricsRequest request);
 
     M3Result<String> getGraphMetricImage(IPrincipal principal, GetGraphMetricImageRequest request);
 
     M3Result<Object> getCustomMetricValue(IPrincipal principal, GetCustomMetricValueRequest request);
+
+    M3BatchResult getBatchCustomMetricValues(IPrincipal principal, List<GetCustomMetricValueRequest> requests);
 }

@@ -16,9 +16,12 @@
 
 package io.maestro3.sdk.v3.model.terraform.template;
 
+import io.maestro3.sdk.v3.model.annotation.SecuredParams;
+
 public class SdkStackParameter {
     private String parameterKey;
 
+    @SecuredParams
     private String parameterValue;
 
     private boolean sensitive;

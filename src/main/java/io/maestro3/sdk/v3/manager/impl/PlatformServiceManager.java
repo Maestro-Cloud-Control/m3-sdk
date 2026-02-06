@@ -21,11 +21,13 @@ import io.maestro3.sdk.internal.executor.IM3ApiActionExecutor;
 import io.maestro3.sdk.v3.core.IPrincipal;
 import io.maestro3.sdk.v3.core.M3Result;
 import io.maestro3.sdk.v3.manager.IPlatformServiceManager;
+import io.maestro3.sdk.v3.model.backup.BackupResponse;
 import io.maestro3.sdk.v3.model.paas.SdkPlatformService;
 import io.maestro3.sdk.v3.model.paas.SdkPlatformServiceEntry;
 import io.maestro3.sdk.v3.model.paas.SdkTemplateVariableValidationDto;
 import io.maestro3.sdk.v3.model.terraform.template.SdkInfrastructureStack;
 import io.maestro3.sdk.v3.model.terraform.template.SdkTerraformTemplateVariable;
+import io.maestro3.sdk.v3.request.backup.BackupRequest;
 import io.maestro3.sdk.v3.request.paas.ActivatePlatformServiceRequest;
 import io.maestro3.sdk.v3.request.paas.DeactivatePlatformServiceRequest;
 import io.maestro3.sdk.v3.request.paas.DescribePlatformServiceAvailabilityRequest;
@@ -49,6 +51,8 @@ public class PlatformServiceManager extends AbstractManager implements IPlatform
     private static final TypeReference<List<SdkPlatformServiceEntry>> PLATFORM_SERVICE_ENTRY_LIST_RESULT = new TypeReference<List<SdkPlatformServiceEntry>>() {
     };
     private static final TypeReference<List<String>> LIST_REGIONS_RESULT = new TypeReference<List<String>>() {
+    };
+    private static final TypeReference<List<BackupResponse>> LIST_BACKUP_RESULT = new TypeReference<List<BackupResponse>>() {
     };
     private static final TypeReference<SdkInfrastructureStack> TF_STACK_RESULT = new TypeReference<SdkInfrastructureStack>() {
     };
@@ -74,6 +78,11 @@ public class PlatformServiceManager extends AbstractManager implements IPlatform
     @Override
     public M3Result<List<SdkPlatformServiceEntry>> listEntries(IPrincipal principal, ListPlatformServiceEntriesRequest request) {
         return execute(principal, request, PLATFORM_SERVICE_ENTRY_LIST_RESULT);
+    }
+
+    @Override
+    public M3Result<List<BackupResponse>> executeBackup(IPrincipal principal, BackupRequest request) {
+        return execute(principal, request, LIST_BACKUP_RESULT);
     }
 
     @Override

@@ -23,6 +23,7 @@ import io.maestro3.sdk.v3.model.reporting.SdkBillingCostObjectDetailsResponse;
 import io.maestro3.sdk.v3.model.reporting.SdkBillingInvoicesResponse;
 import io.maestro3.sdk.v3.model.reporting.SdkBillingReportResponse;
 import io.maestro3.sdk.v3.model.reporting.SdkBillingTabularReportResponse;
+import io.maestro3.sdk.v3.model.status.M3BillingStatus;
 import io.maestro3.sdk.v3.request.billing.AddAdjustmentRequest;
 import io.maestro3.sdk.v3.request.billing.AddConsumptionDetailsRequest;
 import io.maestro3.sdk.v3.request.billing.AddConsumptionRequest;
@@ -44,6 +45,7 @@ import io.maestro3.sdk.v3.request.billing.MultiProjectBillingReportRequest;
 import io.maestro3.sdk.v3.request.billing.ResourceBillingReportRequest;
 import io.maestro3.sdk.v3.request.billing.SubTotalBillingReportRequest;
 import io.maestro3.sdk.v3.request.billing.TotalBillingReportRequest;
+import io.maestro3.sdk.v3.request.status.BillingStatusRequest;
 
 public interface IBillingManager extends IManager {
 
@@ -88,4 +90,6 @@ public interface IBillingManager extends IManager {
     M3Result<Object> deleteAdjustment(IPrincipal principal, DeleteAdjustmentRequest request);
 
     M3Result<Object> checkTenantStatusRequest(IPrincipal principal, CheckTenantStatusRequest request);
+
+    M3Result<M3BillingStatus> checkBillingStatus(IPrincipal principal, BillingStatusRequest request);
 }

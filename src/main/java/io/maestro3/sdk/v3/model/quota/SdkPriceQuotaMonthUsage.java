@@ -30,6 +30,7 @@ public class SdkPriceQuotaMonthUsage implements IPriceQuotaMonthUsage {
     private BigDecimal percentUsed;
     private BigDecimal percentDepleted;
     private DateTime estimatedDepleteDate;
+    private BigDecimal estimatedUsage;
 
     public SdkPriceQuotaMonthUsage() {
         this.value = BigDecimal.ZERO;
@@ -59,6 +60,7 @@ public class SdkPriceQuotaMonthUsage implements IPriceQuotaMonthUsage {
         this.percentDepleted = clone.getPercentDepleted();
         this.value = clone.getValue();
         this.estimatedDepleteDate = clone.getEstimatedDepleteDate();
+        this.estimatedUsage = clone.getEstimatedUsage();
     }
 
     public SdkPriceQuotaMonthUsage(BigDecimal value) {
@@ -136,5 +138,15 @@ public class SdkPriceQuotaMonthUsage implements IPriceQuotaMonthUsage {
     @Override
     public void setEstimatedDepleteDate(DateTime estimatedDepleteDate) {
         this.estimatedDepleteDate = estimatedDepleteDate;
+    }
+
+    @Override
+    public BigDecimal getEstimatedUsage() {
+        return estimatedUsage;
+    }
+
+    @Override
+    public void setEstimatedUsage(BigDecimal estimatedUsage) {
+        this.estimatedUsage = estimatedUsage;
     }
 }

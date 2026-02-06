@@ -68,12 +68,12 @@ public abstract class AbstractConsumptionApiRequest implements IRequest {
     public abstract static class AbstractConsumptionApiRequestBuilder
         <B extends AbstractConsumptionApiRequestBuilder<B, R>, R extends AbstractConsumptionApiRequest> {
 
-        private String targetTenant;
-        private String targetAccountNumber;
-        private String targetRegion;
-        private SdkCloud targetCloud;
-        private Integer month;
-        private Integer year;
+        protected String targetTenant;
+        protected String targetAccountNumber;
+        protected String targetRegion;
+        protected SdkCloud targetCloud;
+        protected Integer month;
+        protected Integer year;
 
         protected abstract B getThis();
 

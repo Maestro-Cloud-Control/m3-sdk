@@ -23,12 +23,19 @@ import io.maestro3.sdk.v3.model.billing.BillingReportFormat;
 @JsonDeserialize(builder = TotalBillingReportRequest.Builder.class)
 public class TotalBillingReportRequest extends AbstractBillingReportRequest {
 
+    private final boolean nativeCurrency;
+
     private TotalBillingReportRequest(Builder builder) {
         super(builder, BillingReportFormat.JSON);
+        this.nativeCurrency = builder.nativeCurrency;
     }
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public boolean isNativeCurrency() {
+        return nativeCurrency;
     }
 
     @Override
@@ -37,6 +44,13 @@ public class TotalBillingReportRequest extends AbstractBillingReportRequest {
     }
 
     public static final class Builder extends AbstractBillingReportRequestBuilder<Builder, TotalBillingReportRequest> {
+
+        private boolean nativeCurrency;
+
+        public Builder withNativeCurrency(boolean nativeCurrency) {
+            this.nativeCurrency = nativeCurrency;
+            return getThis();
+        }
 
         @Override
         protected Builder getThis() {

@@ -17,7 +17,6 @@
 package io.maestro3.sdk.v3.request.instance;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.core.ActionType;
 import io.maestro3.sdk.v3.model.SdkCloud;
 import io.maestro3.sdk.v3.request.IRegionRequest;
@@ -26,28 +25,38 @@ import io.maestro3.sdk.v3.request.ITenantRequest;
 @JsonDeserialize(builder = InstanceDetailsRequest.Builder.class)
 public class InstanceDetailsRequest implements ITenantRequest, IRegionRequest {
 
+    private final String tenantId;
+    private final String accountId;
     private final SdkCloud cloud;
     private final String tenantName;
     private final String region;
     private final String instanceId;
     private final String resourceGroup;
     private final String availabilityZone;
-    private final String insightsCategory;
-    private final String riskFactor;
 
     private InstanceDetailsRequest(Builder builder) {
+        this.tenantId = builder.tenantId;
+        this.accountId = builder.accountId;
         this.cloud = builder.cloud;
         this.tenantName = builder.tenantName;
         this.instanceId = builder.instanceId;
         this.region = builder.region;
         this.resourceGroup = builder.resourceGroup;
         this.availabilityZone = builder.availabilityZone;
-        this.insightsCategory = builder.insightsCategory;
-        this.riskFactor = builder.riskFactor;
     }
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    @Override
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    @Override
+    public String getAccountId() {
+        return accountId;
     }
 
     public String getInstanceId() {
@@ -76,28 +85,30 @@ public class InstanceDetailsRequest implements ITenantRequest, IRegionRequest {
         return availabilityZone;
     }
 
-    public String getInsightsCategory() {
-        return insightsCategory;
-    }
-
-    public String getRiskFactor() {
-        return riskFactor;
-    }
-
     @Override
     public ActionType getActionType() {
         return ActionType.INSTANCE_DETAILS_REPORT;
     }
 
     public static final class Builder {
+        private String tenantId;
+        private String accountId;
         private SdkCloud cloud;
         private String tenantName;
         private String region;
         private String instanceId;
         private String resourceGroup;
         private String availabilityZone;
-        private String insightsCategory;
-        private String riskFactor;
+
+        public Builder withTenantId(String tenantId) {
+            this.tenantId = tenantId;
+            return this;
+        }
+
+        public Builder withAccountId(String accountId) {
+            this.accountId = accountId;
+            return this;
+        }
 
         public Builder withCloud(SdkCloud cloud) {
             this.cloud = cloud;
@@ -129,19 +140,8 @@ public class InstanceDetailsRequest implements ITenantRequest, IRegionRequest {
             return this;
         }
 
-        public Builder withInsightsCategory(String insightsCategory) {
-            this.insightsCategory = insightsCategory;
-            return this;
-        }
-
-        public Builder withRiskFactor(String riskFactor) {
-            this.riskFactor = riskFactor;
-            return this;
-        }
-
         public InstanceDetailsRequest build() {
-            Assert.notNull(cloud, "cloud");
-            Assert.hasText(tenantName, "tenantName");
+            ITenantRequest.validateRequest(tenantId, accountId, tenantName, cloud);
             return new InstanceDetailsRequest(this);
         }
     }

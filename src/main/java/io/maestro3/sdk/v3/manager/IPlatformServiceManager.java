@@ -18,11 +18,13 @@ package io.maestro3.sdk.v3.manager;
 
 import io.maestro3.sdk.v3.core.IPrincipal;
 import io.maestro3.sdk.v3.core.M3Result;
+import io.maestro3.sdk.v3.model.backup.BackupResponse;
 import io.maestro3.sdk.v3.model.paas.SdkPlatformService;
 import io.maestro3.sdk.v3.model.paas.SdkPlatformServiceEntry;
 import io.maestro3.sdk.v3.model.paas.SdkTemplateVariableValidationDto;
 import io.maestro3.sdk.v3.model.terraform.template.SdkInfrastructureStack;
 import io.maestro3.sdk.v3.model.terraform.template.SdkTerraformTemplateVariable;
+import io.maestro3.sdk.v3.request.backup.BackupRequest;
 import io.maestro3.sdk.v3.request.paas.ActivatePlatformServiceRequest;
 import io.maestro3.sdk.v3.request.paas.DeactivatePlatformServiceRequest;
 import io.maestro3.sdk.v3.request.paas.DescribePlatformServiceAvailabilityRequest;
@@ -46,6 +48,8 @@ public interface IPlatformServiceManager {
     M3Result<List<SdkPlatformServiceEntry>> listEntries(IPrincipal principal, ListPlatformServiceEntriesRequest request);
 
     M3Result<SdkInfrastructureStack> describeStackByServiceEntryId(IPrincipal principal, DescribeTemplateStackByServiceEntryIdRequest request);
+
+    M3Result<List<BackupResponse>> executeBackup(IPrincipal principal, BackupRequest request);
 
     M3Result<List<SdkPlatformService>> listServiceDefinitions(IPrincipal principal, ListPlatformServicesRequest request);
 

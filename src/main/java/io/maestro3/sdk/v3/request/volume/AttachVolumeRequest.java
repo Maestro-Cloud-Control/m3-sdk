@@ -19,41 +19,30 @@ package io.maestro3.sdk.v3.request.volume;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.core.ActionType;
-import io.maestro3.sdk.v3.request.IRegionRequest;
+import io.maestro3.sdk.v3.request.instance.InstanceActionRequest;
 
 @JsonDeserialize(builder = AttachVolumeRequest.Builder.class)
-public class AttachVolumeRequest implements IRegionRequest {
+public class AttachVolumeRequest extends InstanceActionRequest {
 
-    private final String tenantName;
-    private final String region;
-    private final String instanceId;
     private final String volumeId;
+    private final Boolean deleteOnTermination;
 
     private AttachVolumeRequest(Builder builder) {
-        this.tenantName = builder.tenantName;
-        this.region = builder.region;
-        this.instanceId = builder.instanceId;
+        super(builder);
         this.volumeId = builder.volumeId;
+        this.deleteOnTermination = builder.deleteOnTermination;
     }
 
     public static Builder builder() {
         return new Builder();
     }
 
-    public String getTenantName() {
-        return tenantName;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public String getInstanceId() {
-        return instanceId;
-    }
-
     public String getVolumeId() {
         return volumeId;
+    }
+
+    public Boolean isDeleteOnTermination() {
+        return deleteOnTermination;
     }
 
     @Override
@@ -61,37 +50,29 @@ public class AttachVolumeRequest implements IRegionRequest {
         return ActionType.ATTACH_VOLUME;
     }
 
-    public static final class Builder {
+    public static final class Builder
+            extends AbstractInstanceActionBuilder<Builder, AttachVolumeRequest> {
 
-        private String tenantName;
-        private String region;
-        private String instanceId;
         private String volumeId;
-
-        public Builder withTenantName(String tenantName) {
-            this.tenantName = tenantName;
-            return this;
-        }
-
-        public Builder withRegion(String region) {
-            this.region = region;
-            return this;
-        }
-
-        public Builder withInstanceId(String instanceId) {
-            this.instanceId = instanceId;
-            return this;
-        }
+        private Boolean deleteOnTermination;
 
         public Builder withVolumeId(String volumeId) {
             this.volumeId = volumeId;
             return this;
         }
 
+        public Builder withDeleteOnTermination(Boolean deleteOnTermination) {
+            this.deleteOnTermination = deleteOnTermination;
+            return this;
+        }
+
+        @Override
+        protected Builder getThis() {
+            return this;
+        }
+
         public AttachVolumeRequest build() {
-            Assert.hasText(tenantName, "tenantName");
-            Assert.hasText(region, "region");
-            Assert.hasText(instanceId, "instanceId");
+            validateCommonParams();
             Assert.hasText(volumeId, "volumeId");
             return new AttachVolumeRequest(this);
         }

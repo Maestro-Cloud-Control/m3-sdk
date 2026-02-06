@@ -36,6 +36,7 @@ import java.util.List;
     @JsonSubTypes.Type(value = SdkYandexResource.class, name = "YANDEX"),
     @JsonSubTypes.Type(value = SdkGoogleResource.class, name = "GOOGLE"),
     @JsonSubTypes.Type(value = SdkVmwareResource.class, name = "VMWARE"),
+    @JsonSubTypes.Type(value = SdkOpenNebulaResource.class, name = "OPEN_NEBULA"),
     @JsonSubTypes.Type(value = SdkVSphereResource.class, name = "VSPHERE"),
     @JsonSubTypes.Type(value = SdkNutanixResource.class, name = "NUTANIX"),
     @JsonSubTypes.Type(value = SdkHypervResource.class, name = "HYPERV")

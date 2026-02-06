@@ -31,7 +31,6 @@ public class LockTerraformTemplateRequest implements ITenantRequest {
     private final String tenantName;
     private final String templateName;
     private final String description;
-    private final String userEmail;
     private final long expirationInMillis;
 
     private LockTerraformTemplateRequest(Builder builder) {
@@ -39,7 +38,6 @@ public class LockTerraformTemplateRequest implements ITenantRequest {
         this.tenantName = builder.tenantName;
         this.templateName = builder.templateName;
         this.description = builder.description;
-        this.userEmail = builder.userEmail;
         this.expirationInMillis = builder.expirationInMillis;
     }
 
@@ -63,10 +61,6 @@ public class LockTerraformTemplateRequest implements ITenantRequest {
         return description;
     }
 
-    public String getUserEmail() {
-        return userEmail;
-    }
-
     public long getExpirationInMillis() {
         return expirationInMillis;
     }
@@ -82,7 +76,6 @@ public class LockTerraformTemplateRequest implements ITenantRequest {
         private String tenantName;
         private String templateName;
         private String description;
-        private String userEmail;
         private long expirationInMillis;
 
         public Builder withCloud(SdkCloud cloud) {
@@ -110,17 +103,11 @@ public class LockTerraformTemplateRequest implements ITenantRequest {
             return this;
         }
 
-        public Builder withUserEmail(String userEmail) {
-            this.userEmail = userEmail;
-            return this;
-        }
-
         public LockTerraformTemplateRequest build() {
             Assert.hasText(tenantName, "tenantName");
             Assert.notNull(cloud, "cloud");
             Assert.hasText(templateName, "templateName");
             Assert.hasText(description, "description");
-            Assert.hasText(userEmail, "userEmail");
             Assert.isPositive(expirationInMillis, "expirationInMillis");
             return new LockTerraformTemplateRequest(this);
         }

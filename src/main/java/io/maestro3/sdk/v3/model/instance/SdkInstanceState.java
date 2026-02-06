@@ -27,6 +27,7 @@ public enum SdkInstanceState {
     STOPPING("stopping", true),
     STOPPED("stopped", false),
     REBOOTING("rebooting", true),
+    RESIZING("resizing", true),
     REBOOTED("rebooted", false),
     SUSPENDING("suspending", true),
     SUSPENDED("suspended", false),
@@ -36,6 +37,9 @@ public enum SdkInstanceState {
     ERROR("error", false),
     PAUSED("paused", false),
     RESCUE("rescue", false),
+    CLONING("cloning", true),
+    CANCELLED("cancelled", false),
+    DISASSEMBLED("disassembled", false),
     UNKNOWN("unknown", false);
 
     private String stateName;

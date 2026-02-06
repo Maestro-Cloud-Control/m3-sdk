@@ -18,8 +18,10 @@ package io.maestro3.sdk.v3.model.billing;
 
 public enum MultiProjectBillingReportType {
     ACTIVE,
+    ACTIVE_DETAILED,
     INACTIVE,
     UPSA_INACTIVE,
+    NATIVE,
     ACCOUNT,
     ALL_PERSONAL,
     NOT_PMC,

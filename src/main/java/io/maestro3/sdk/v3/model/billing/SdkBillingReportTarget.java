@@ -1,11 +1,11 @@
 /*
- * Copyright 2023 Maestro Cloud Control LLC
+ * Copyright 2024 Maestro Cloud Control LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,6 +42,8 @@ public class SdkBillingReportTarget {
     private String usageType;
     private String resourceType;
     private boolean onlyGrandTotal;
+    private boolean onlyAdjustments;
+    private boolean includeVendors;
 
     protected SdkBillingReportTarget() {
     }
@@ -142,6 +144,22 @@ public class SdkBillingReportTarget {
         this.onlyGrandTotal = onlyGrandTotal;
     }
 
+    public boolean isOnlyAdjustments() {
+        return onlyAdjustments;
+    }
+
+    public void setOnlyAdjustments(boolean onlyAdjustments) {
+        this.onlyAdjustments = onlyAdjustments;
+    }
+
+    public boolean isIncludeVendors() {
+        return includeVendors;
+    }
+
+    public void setIncludeVendors(boolean includeVendors) {
+        this.includeVendors = includeVendors;
+    }
+
     public static class Builder {
 
         private ReportUnit reportUnit;
@@ -154,6 +172,8 @@ public class SdkBillingReportTarget {
         private String productName;
         private String usageType;
         private String resourceType;
+        private boolean onlyAdjustments;
+        private boolean includeVendors = true;
 
         public Builder tenantGroup(String tenantGroup) {
             Assert.hasText(tenantGroup, "tenantGroup");
@@ -296,6 +316,16 @@ public class SdkBillingReportTarget {
             return this;
         }
 
+        public Builder onlyAdjustments(boolean onlyAdjustments) {
+            this.onlyAdjustments = onlyAdjustments;
+            return this;
+        }
+
+        public Builder includeVendors(boolean includeVendors) {
+            this.includeVendors = includeVendors;
+            return this;
+        }
+
         public SdkBillingReportTarget build() {
             return new SdkBuilder()
                 .withReportUnit(reportUnit)
@@ -308,6 +338,8 @@ public class SdkBillingReportTarget {
                 .withUsageType(usageType)
                 .withResourceType(resourceType)
                 .withNotAllowedTenantRegions(notAllowedTenantRegions)
+                .withOnlyAdjustments(onlyAdjustments)
+                .withIncludeVendors(includeVendors)
                 .build();
         }
     }
@@ -324,6 +356,8 @@ public class SdkBillingReportTarget {
         private String usageType;
         private String resourceType;
         private boolean onlyGrandTotal;
+        private boolean onlyAdjustments;
+        private boolean includeVendors = true;
 
         public SdkBuilder withReportUnit(ReportUnit reportUnit) {
             this.reportUnit = reportUnit;
@@ -380,6 +414,16 @@ public class SdkBillingReportTarget {
             return this;
         }
 
+        public SdkBuilder withOnlyAdjustments(boolean onlyAdjustments) {
+            this.onlyAdjustments = onlyAdjustments;
+            return this;
+        }
+
+        public SdkBuilder withIncludeVendors(boolean includeVendors) {
+            this.includeVendors = includeVendors;
+            return this;
+        }
+
         public SdkBillingReportTarget build() {
             validate();
 
@@ -395,6 +439,8 @@ public class SdkBillingReportTarget {
             details.resourceType = this.resourceType;
             details.notAllowedTenantRegions = this.notAllowedTenantRegions;
             details.onlyGrandTotal = this.onlyGrandTotal;
+            details.onlyAdjustments = this.onlyAdjustments;
+            details.includeVendors = this.includeVendors;
             return details;
         }
 

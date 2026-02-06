@@ -25,6 +25,9 @@ import java.util.Set;
 public class MultiProjectEmailReportRequest extends AbstractMultiProjectReportRequest {
 
     private final String eoAccount;
+    private final String unitId;
+    private final String unitContactId;
+    private final String unitContactRole;
     private final String reportProjectType;
     private final String reportZoneType;
     private final String region;
@@ -35,6 +38,9 @@ public class MultiProjectEmailReportRequest extends AbstractMultiProjectReportRe
     private MultiProjectEmailReportRequest(Builder builder) {
         super(builder);
         this.eoAccount = builder.eoAccount;
+        this.unitId = builder.unitId;
+        this.unitContactId = builder.unitContactId;
+        this.unitContactRole = builder.unitContactRole;
         this.reportProjectType = builder.reportProjectType;
         this.reportZoneType = builder.reportZoneType;
         this.region = builder.region;
@@ -47,8 +53,24 @@ public class MultiProjectEmailReportRequest extends AbstractMultiProjectReportRe
         return new Builder();
     }
 
+    public Builder toBuilder() {
+        return new Builder(this);
+    }
+
     public String getEoAccount() {
         return eoAccount;
+    }
+
+    public String getUnitId() {
+        return unitId;
+    }
+
+    public String getUnitContactId() {
+        return unitContactId;
+    }
+
+    public String getUnitContactRole() {
+        return unitContactRole;
     }
 
     public String getReportProjectType() {
@@ -78,6 +100,9 @@ public class MultiProjectEmailReportRequest extends AbstractMultiProjectReportRe
     public static final class Builder extends AbstractBuilder<Builder, MultiProjectEmailReportRequest> {
 
         private String eoAccount;
+        private String unitId;
+        private String unitContactId;
+        private String unitContactRole;
         private String reportProjectType;
         private String reportZoneType;
         private String region;
@@ -85,8 +110,40 @@ public class MultiProjectEmailReportRequest extends AbstractMultiProjectReportRe
         private Set<String> tenantNames;
         private BillingReportFormat format;
 
+        public Builder() {
+        }
+
+        public Builder(MultiProjectEmailReportRequest request) {
+            super(request);
+            this.eoAccount = request.getEoAccount();
+            this.unitId = request.getUnitId();
+            this.unitContactId = request.getUnitContactId();
+            this.unitContactRole = request.getUnitContactRole();
+            this.reportProjectType = request.getReportProjectType();
+            this.reportZoneType = request.getReportZoneType();
+            this.region = request.getRegion();
+            this.tenantGroups = request.getTenantGroups();
+            this.tenantNames = request.getTenantNames();
+            this.format = request.getFormat();
+        }
+
         public Builder withEoAccount(String eoAccount) {
             this.eoAccount = eoAccount;
+            return this;
+        }
+
+        public Builder withUnitId(String unitId) {
+            this.unitId = unitId;
+            return this;
+        }
+
+        public Builder withUnitContactId(String unitContactId) {
+            this.unitContactId = unitContactId;
+            return this;
+        }
+
+        public Builder withUnitContactRole(String unitContactRole) {
+            this.unitContactRole = unitContactRole;
             return this;
         }
 

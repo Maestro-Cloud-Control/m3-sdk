@@ -20,24 +20,28 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ComplexRecord implements ITableRecord {
 
     private String type;
-    private List<Object> rowData;
+    private List<TableCell> rowData;
 
     protected ComplexRecord() {
+        // db
     }
 
-    public ComplexRecord(List<Object> rowData) {
+    public ComplexRecord(List<TableCell> rowData) {
         this.type = ITableRecord.COMPLEX_RECORD;
         this.rowData = rowData;
     }
 
     @JsonCreator
     protected ComplexRecord(@JsonProperty("type") String type,
-                            @JsonProperty("rowData") List<Object> rowData) {
+                            @JsonProperty("rowData") List<TableCell> rowData) {
         this.type = type;
         this.rowData = rowData;
     }
@@ -46,19 +50,28 @@ public class ComplexRecord implements ITableRecord {
         return type;
     }
 
-    public List<Object> getRowData() {
+    public List<TableCell> getRowData() {
         return rowData;
     }
 
     @JsonIgnore
     @Override
     public void setValue(int headerIndex, Object value) {
-        this.rowData.set(headerIndex, value);
+        this.rowData.set(headerIndex, (TableCell) value);
     }
 
     @JsonIgnore
     @Override
-    public Object getValue(int headerIndex) {
+    public TableCell getValue(int headerIndex) {
         return rowData.get(headerIndex);
+    }
+
+    public static ComplexRecord of(String name, Collection<BigDecimal> rowData) {
+        List<TableCell> cells = new ArrayList<>(rowData.size());
+        cells.add(TableCell.builder().withCellValue(StringValue.of(name)).build());
+        for (BigDecimal rowDatum : rowData) {
+            cells.add(TableCell.builder().withCellValue(NumberValue.of(rowDatum)).build());
+        }
+        return new ComplexRecord(cells);
     }
 }

@@ -18,6 +18,7 @@ package io.maestro3.sdk.v3.manager;
 
 import io.maestro3.sdk.v3.core.IPrincipal;
 import io.maestro3.sdk.v3.core.M3Result;
+import io.maestro3.sdk.v3.model.instance.SdkInstance;
 import io.maestro3.sdk.v3.model.notification.ReceiversMappingConfiguration;
 import io.maestro3.sdk.v3.model.notification.SubscriptionGroupDescription;
 import io.maestro3.sdk.v3.model.notification.TenantSubscription;

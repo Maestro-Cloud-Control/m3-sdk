@@ -22,6 +22,7 @@ public class SdkResourceTagDto {
 
     private SdkResourceTag tag;
     private String errorMessage;
+    private Boolean isSystem;
 
     public SdkResourceTagDto() {
     }
@@ -29,6 +30,11 @@ public class SdkResourceTagDto {
     public SdkResourceTagDto(SdkResourceTag tag, String errorMessage) {
         this.tag = tag;
         this.errorMessage = errorMessage;
+    }
+
+    public SdkResourceTagDto(SdkResourceTag tag, Boolean isSystem) {
+        this.tag = tag;
+        this.isSystem = isSystem;
     }
 
     public SdkResourceTagDto(SdkResourceTag tag) {
@@ -53,6 +59,14 @@ public class SdkResourceTagDto {
 
     public String getErrorMessage() {
         return errorMessage;
+    }
+
+    public Boolean getSystem() {
+        return isSystem;
+    }
+
+    public void setSystem(Boolean system) {
+        isSystem = system;
     }
 
     @Override

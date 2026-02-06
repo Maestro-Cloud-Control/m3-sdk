@@ -16,7 +16,7 @@
 
 package io.maestro3.sdk.v3.model.price;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public class SdkPriceCorrection {

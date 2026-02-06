@@ -26,6 +26,7 @@ public class SubscriptionGroupDescription {
     private boolean critical;
     private boolean financial;
     private boolean withoutPush;
+    private boolean notifyWithEmailByDefault;
 
     public String getGroup() {
         return group;
@@ -91,6 +92,14 @@ public class SubscriptionGroupDescription {
         this.withoutPush = withoutPush;
     }
 
+    public boolean isNotifyWithEmailByDefault() {
+        return notifyWithEmailByDefault;
+    }
+
+    public void setNotifyWithEmailByDefault(boolean notifyWithEmailByDefault) {
+        this.notifyWithEmailByDefault = notifyWithEmailByDefault;
+    }
+
     @Override
     public String toString() {
         return "SubscriptionGroupDescription{" +
@@ -102,6 +111,7 @@ public class SubscriptionGroupDescription {
             ", isCritical=" + critical +
             ", isFinancial=" + financial +
             ", withoutPush=" + withoutPush +
+            ", notifyWithEmailByDefault=" + notifyWithEmailByDefault +
             '}';
     }
 }

@@ -23,14 +23,20 @@ import io.maestro3.sdk.v3.core.ActionType;
 public class DescribeTagRequest extends TagsActionRequest {
 
     private final boolean systemTagsIncluded;
+    private final boolean cloudSpecificIncluded;
 
     private DescribeTagRequest(DescribeTagRequestBuilder builder) {
         super(builder);
         this.systemTagsIncluded = builder.systemTagsIncluded;
+        this.cloudSpecificIncluded = builder.cloudSpecificIncluded;
     }
 
     public boolean isSystemTagsIncluded() {
         return systemTagsIncluded;
+    }
+
+    public boolean isCloudSpecificIncluded() {
+        return cloudSpecificIncluded;
     }
 
     public static DescribeTagRequestBuilder builder() {
@@ -46,6 +52,7 @@ public class DescribeTagRequest extends TagsActionRequest {
         AbstractTagsActionRequestBuilder<DescribeTagRequest.DescribeTagRequestBuilder, DescribeTagRequest> {
 
         private boolean systemTagsIncluded;
+        private boolean cloudSpecificIncluded;
 
         @Override
         protected DescribeTagRequest.DescribeTagRequestBuilder getThis() {
@@ -54,6 +61,11 @@ public class DescribeTagRequest extends TagsActionRequest {
 
         public DescribeTagRequest.DescribeTagRequestBuilder withSystemTagsIncluded(boolean systemTagsIncluded) {
             this.systemTagsIncluded = systemTagsIncluded;
+            return getThis();
+        }
+
+        public DescribeTagRequest.DescribeTagRequestBuilder withCloudSpecificIncluded(boolean cloudSpecificIncluded) {
+            this.cloudSpecificIncluded = cloudSpecificIncluded;
             return getThis();
         }
 

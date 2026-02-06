@@ -21,6 +21,7 @@ import io.maestro3.sdk.internal.executor.IM3ApiActionExecutor;
 import io.maestro3.sdk.v3.core.IPrincipal;
 import io.maestro3.sdk.v3.core.M3Result;
 import io.maestro3.sdk.v3.manager.INotificationManager;
+import io.maestro3.sdk.v3.model.instance.SdkInstance;
 import io.maestro3.sdk.v3.model.notification.ReceiversMappingConfiguration;
 import io.maestro3.sdk.v3.model.notification.SubscriptionGroupDescription;
 import io.maestro3.sdk.v3.model.notification.TenantSubscription;
@@ -60,8 +61,11 @@ public class NotificationManager extends AbstractManager implements INotificatio
         new TypeReference<List<SubscriptionGroupDescription>>() {
         };
     private static final TypeReference<SdkUserNotification> USER_NOTIFICATION_TYPE =
-        new TypeReference<SdkUserNotification>() {
-        };
+            new TypeReference<SdkUserNotification>() {
+            };
+    private static final TypeReference<SdkInstance> INSTANCE_TYPE =
+            new TypeReference<SdkInstance>() {
+            };
     private static final TypeReference<List<SdkNotificationAudit>> NOTIFICATION_AUDIT_LIST_TYPE =
         new TypeReference<List<SdkNotificationAudit>>() {
         };

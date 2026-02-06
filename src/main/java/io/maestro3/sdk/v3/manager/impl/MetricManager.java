@@ -1,11 +1,11 @@
 /*
- * Copyright 2023 Maestro Cloud Control LLC
+ * Copyright 2024 Maestro Cloud Control LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,7 @@ package io.maestro3.sdk.v3.manager.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.maestro3.sdk.internal.executor.IM3ApiActionExecutor;
 import io.maestro3.sdk.v3.core.IPrincipal;
+import io.maestro3.sdk.v3.core.M3BatchResult;
 import io.maestro3.sdk.v3.core.M3Result;
 import io.maestro3.sdk.v3.manager.IMetricManager;
 import io.maestro3.sdk.v3.request.metric.DeleteActionsRequest;
@@ -91,8 +92,8 @@ public class MetricManager extends AbstractManager implements IMetricManager {
     }
 
     @Override
-    public M3Result<List<Object>> getAllRealTimeDashboardAction(IPrincipal principal, GetRealTimeDashboardActionRequest request) {
-        return execute(principal, request, OBJECT_LIST_RESULT);
+    public M3Result<Object> getAllRealTimeDashboardAction(IPrincipal principal, GetRealTimeDashboardActionRequest request) {
+        return execute(principal, request, OBJECT_RESULT);
     }
 
     @Override
@@ -108,5 +109,10 @@ public class MetricManager extends AbstractManager implements IMetricManager {
     @Override
     public M3Result<Object> getCustomMetricValue(IPrincipal principal, GetCustomMetricValueRequest request) {
         return execute(principal, request, OBJECT_RESULT);
+    }
+
+    @Override
+    public M3BatchResult getBatchCustomMetricValues(IPrincipal principal, List<GetCustomMetricValueRequest> requests) {
+        return executeBatch(principal, requests);
     }
 }

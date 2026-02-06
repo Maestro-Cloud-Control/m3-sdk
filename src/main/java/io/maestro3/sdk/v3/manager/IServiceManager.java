@@ -1,11 +1,11 @@
 /*
- * Copyright 2023 Maestro Cloud Control LLC
+ * Copyright 2024 Maestro Cloud Control LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,6 +27,16 @@ public interface IServiceManager {
     M3Result<Map<String, Object>> activateBilling(IPrincipal principal, IServiceRequest request);
 
     M3Result<Map<String, Object>> deactivateBilling(IPrincipal principal, IServiceRequest request);
+
+    M3Result<Map<String, Object>> activateManagement(IPrincipal principal, IServiceRequest request);
+
+    M3Result<Map<String, Object>> deactivateManagement(IPrincipal principal, IServiceRequest request);
+
+    M3Result<Map<String, Object>> activateBudget(IPrincipal principal, IServiceRequest request);
+
+    M3Result<Map<String, Object>> deactivateBudget(IPrincipal principal, IServiceRequest request);
+
+    M3Result<Map<String, Object>> describeCustodianLicenses(IPrincipal principal, IServiceRequest request);
 
     M3Result<Map<String, Object>> activateCustodian(IPrincipal principal, IServiceRequest request);
 

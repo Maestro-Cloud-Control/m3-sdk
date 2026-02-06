@@ -30,11 +30,13 @@ public class DescribeShapesRequest implements ITenantRequest, IRegionRequest {
     private final SdkCloud cloud;
     private final String tenantName;
     private final String region;
+    private final boolean nativeShapes;
 
     private DescribeShapesRequest(Builder builder) {
         this.cloud = builder.cloud;
         this.tenantName = builder.tenantName;
         this.region = builder.region;
+        this.nativeShapes = builder.nativeShapes;
     }
 
     public static Builder builder() {
@@ -55,6 +57,10 @@ public class DescribeShapesRequest implements ITenantRequest, IRegionRequest {
         return region;
     }
 
+    public boolean isNativeShapes() {
+        return nativeShapes;
+    }
+
     @Override
     public ActionType getActionType() {
         return ActionType.LIST_REGION_SHAPES;
@@ -65,6 +71,7 @@ public class DescribeShapesRequest implements ITenantRequest, IRegionRequest {
         private SdkCloud cloud;
         private String tenantName;
         private String region;
+        private boolean nativeShapes;
 
         public Builder withCloud(SdkCloud cloud) {
             this.cloud = cloud;
@@ -81,11 +88,22 @@ public class DescribeShapesRequest implements ITenantRequest, IRegionRequest {
             return this;
         }
 
+        /**
+         * @param nativeShapes if true -> describes native instance types for specified region in tenant from the cloud
+         *                     if false -> describes maestro shape mappings for specified region in tenant
+         */
+        public Builder withNativeShapes(boolean nativeShapes) {
+            this.nativeShapes = nativeShapes;
+            return this;
+        }
+
         public DescribeShapesRequest build() {
             Assert.notNull(cloud, "cloud");
             Assert.hasText(tenantName, "tenantName");
             Assert.hasText(region, "region");
             return new DescribeShapesRequest(this);
         }
+
     }
+
 }

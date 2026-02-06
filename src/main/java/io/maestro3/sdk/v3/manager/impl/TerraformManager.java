@@ -22,6 +22,7 @@ import io.maestro3.sdk.v3.core.ActionType;
 import io.maestro3.sdk.v3.core.IPrincipal;
 import io.maestro3.sdk.v3.core.M3Result;
 import io.maestro3.sdk.v3.manager.ITerraformManager;
+import io.maestro3.sdk.v3.model.cf.SdkTemplate;
 import io.maestro3.sdk.v3.model.locks.SdkLock;
 import io.maestro3.sdk.v3.model.terraform.SdkDeleteInfrastructureTemplateResponse;
 import io.maestro3.sdk.v3.model.terraform.SdkSetupInfrastructureTemplateResponse;
@@ -30,6 +31,8 @@ import io.maestro3.sdk.v3.model.terraform.TerraformPolicies;
 import io.maestro3.sdk.v3.model.terraform.resource.SdkInfrastructureResources;
 import io.maestro3.sdk.v3.model.terraform.template.SdkInfrastructureStack;
 import io.maestro3.sdk.v3.model.terraform.template.SdkInfrastructureTemplate;
+import io.maestro3.sdk.v3.request.resource.template.GetStackResourcesRequest;
+import io.maestro3.sdk.v3.request.resource.template.GetTemplateContentRequest;
 import io.maestro3.sdk.v3.request.terraform.ActivateTerraformRequest;
 import io.maestro3.sdk.v3.request.terraform.DeactivateTerraformRequest;
 import io.maestro3.sdk.v3.request.terraform.DeleteTerraformTemplateRequest;
@@ -72,6 +75,7 @@ public class TerraformManager extends AbstractManager implements ITerraformManag
     private static final TypeReference<List<SdkInfrastructureTemplate>> TF_TEMPLATE_LIST_RESULT = new TypeReference<List<SdkInfrastructureTemplate>>() {};
     private static final TypeReference<List<SdkInfrastructureStack>> TF_STACK_LIST_RESULT = new TypeReference<List<SdkInfrastructureStack>>() {};
     private static final TypeReference<TerraformPolicies> TF_POLICIES_RESULT = new TypeReference<TerraformPolicies>() {};
+    private static final TypeReference<SdkTemplate> TEMPLATE_CONTENT_RESULT = new TypeReference<SdkTemplate>() {};
 
     public TerraformManager(IM3ApiActionExecutor actionExecutor, boolean isAsync) {
         super(actionExecutor, isAsync);
@@ -222,4 +226,15 @@ public class TerraformManager extends AbstractManager implements ITerraformManag
     public M3Result<String> exportTemplate(IPrincipal principal, ExportTerraformTemplateRequest request) {
         return execute(principal, request, STRING_RESULT);
     }
+
+    @Override
+    public M3Result<SdkTemplate> getTemplateContent(IPrincipal principal, GetTemplateContentRequest request) {
+        return execute(principal, request, TEMPLATE_CONTENT_RESULT);
+    }
+
+    @Override
+    public M3Result<String> getStackResources(IPrincipal principal, GetStackResourcesRequest request) {
+        return execute(principal, request, STRING_RESULT);
+    }
+
 }

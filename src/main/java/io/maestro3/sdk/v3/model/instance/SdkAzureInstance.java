@@ -27,6 +27,7 @@ public class SdkAzureInstance extends SdkInstance {
     private String nativeInstanceType;
     private String networkInterfaceReferenceId;
     private List<SdkAzureDiskInfo> diskInfos;
+    private boolean spot;
 
     public SdkAzureInstance() {
         this.setCloud(SdkCloud.AZURE);
@@ -70,5 +71,13 @@ public class SdkAzureInstance extends SdkInstance {
 
     public void setNativeInstanceType(String nativeInstanceType) {
         this.nativeInstanceType = nativeInstanceType;
+    }
+
+    public boolean isSpot() {
+        return spot;
+    }
+
+    public void setSpot(boolean spot) {
+        this.spot = spot;
     }
 }

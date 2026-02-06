@@ -25,6 +25,7 @@ import io.maestro3.sdk.v3.manager.IAnalyticsManager;
 import io.maestro3.sdk.v3.manager.IApprovalManager;
 import io.maestro3.sdk.v3.manager.IAuditManager;
 import io.maestro3.sdk.v3.manager.IBillingManager;
+import io.maestro3.sdk.v3.manager.ICfTemplateManager;
 import io.maestro3.sdk.v3.manager.IChefManager;
 import io.maestro3.sdk.v3.manager.IFileManager;
 import io.maestro3.sdk.v3.manager.IMetricManager;
@@ -41,6 +42,7 @@ import io.maestro3.sdk.v3.manager.IScriptManager;
 import io.maestro3.sdk.v3.manager.ISecurityManager;
 import io.maestro3.sdk.v3.manager.IServiceManager;
 import io.maestro3.sdk.v3.manager.IStatusManager;
+import io.maestro3.sdk.v3.manager.ISupportManager;
 import io.maestro3.sdk.v3.manager.ITerraformManager;
 import io.maestro3.sdk.v3.request.IRequest;
 
@@ -97,5 +99,9 @@ public interface IM3Client extends AutoCloseable{
 
     IServiceManager serviceManager();
 
+    ISupportManager supportManager();
+
     M3BatchResult executeBatch(IPrincipal principal, Collection<? extends IRequest> requestData);
+
+    ICfTemplateManager cfTemplateManager();
 }

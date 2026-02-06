@@ -38,6 +38,8 @@ public class NotificationRequest implements IRequest {
     protected Map<String, String> summaryParams = new HashMap<>();
     private final Integer priority;
     private String language;
+    private boolean externalData;
+    protected boolean onDemand;
 
     protected NotificationRequest(String notificationType, List<String> notificationProcessorTypes) {
         this(notificationType, notificationProcessorTypes, DEFAULT_NOTIFICATION_PRIORITY);
@@ -51,13 +53,22 @@ public class NotificationRequest implements IRequest {
         this.priority = priority;
     }
 
+    protected NotificationRequest(String notificationType, List<String> notificationProcessorTypes, Integer priority,
+                                  boolean externalData, boolean onDemand) {
+        this(notificationType, notificationProcessorTypes, priority);
+        this.externalData = externalData;
+        this.onDemand = onDemand;
+    }
+
     @JsonCreator
     protected NotificationRequest(@JsonProperty("notificationType") String notificationType,
                                   @JsonProperty("notificationProcessorTypes") List<String> notificationProcessorTypes,
                                   @JsonProperty("optionalParams") Map<String, String> optionalParams,
                                   @JsonProperty("summaryParams") Map<String, String> summaryParams,
-                                  @JsonProperty("priority") Integer priority) {
-        this(notificationType, notificationProcessorTypes, priority);
+                                  @JsonProperty("priority") Integer priority,
+                                  @JsonProperty("externalData") boolean externalData,
+                                  @JsonProperty("onDemand") boolean onDemand) {
+        this(notificationType, notificationProcessorTypes, priority, externalData, onDemand);
         this.optionalParams = optionalParams;
         this.summaryParams = summaryParams;
     }
@@ -94,6 +105,14 @@ public class NotificationRequest implements IRequest {
         this.language = language;
     }
 
+    public boolean isExternalData() {
+        return externalData;
+    }
+
+    public boolean isOnDemand() {
+        return onDemand;
+    }
+
     @Override
     public ActionType getActionType() {
         return ActionType.SEND_NOTIFICATION;
@@ -115,6 +134,8 @@ public class NotificationRequest implements IRequest {
         private String notificationType;
         private List<String> notificationProcessorTypes;
         private Integer priority;
+        private boolean externalData;
+        private boolean onDemand;
 
         public Builder withNotificationType(String notificationType) {
             this.notificationType = notificationType;
@@ -131,8 +152,20 @@ public class NotificationRequest implements IRequest {
             return this;
         }
 
-        public NotificationRequest build() {
-            return new NotificationRequest(notificationType, notificationProcessorTypes, priority);
+        public Builder withExternalData(boolean externalData) {
+            this.externalData = externalData;
+            return this;
         }
+
+        public Builder withOnDemand(boolean onDemand) {
+            this.onDemand = onDemand;
+            return this;
+        }
+
+        public NotificationRequest build() {
+            return new NotificationRequest(notificationType, notificationProcessorTypes, priority, externalData, onDemand);
+        }
+
     }
+
 }

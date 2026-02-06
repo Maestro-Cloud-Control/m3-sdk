@@ -29,6 +29,7 @@ import io.maestro3.sdk.v3.manager.IAnalyticsManager;
 import io.maestro3.sdk.v3.manager.IApprovalManager;
 import io.maestro3.sdk.v3.manager.IAuditManager;
 import io.maestro3.sdk.v3.manager.IBillingManager;
+import io.maestro3.sdk.v3.manager.ICfTemplateManager;
 import io.maestro3.sdk.v3.manager.IChefManager;
 import io.maestro3.sdk.v3.manager.IFileManager;
 import io.maestro3.sdk.v3.manager.IMetricManager;
@@ -45,6 +46,7 @@ import io.maestro3.sdk.v3.manager.IScriptManager;
 import io.maestro3.sdk.v3.manager.ISecurityManager;
 import io.maestro3.sdk.v3.manager.IServiceManager;
 import io.maestro3.sdk.v3.manager.IStatusManager;
+import io.maestro3.sdk.v3.manager.ISupportManager;
 import io.maestro3.sdk.v3.manager.ITerraformManager;
 import io.maestro3.sdk.v3.manager.impl.AccountManager;
 import io.maestro3.sdk.v3.manager.impl.AdminManager;
@@ -52,6 +54,7 @@ import io.maestro3.sdk.v3.manager.impl.AnalyticsManager;
 import io.maestro3.sdk.v3.manager.impl.ApprovalManager;
 import io.maestro3.sdk.v3.manager.impl.AuditManager;
 import io.maestro3.sdk.v3.manager.impl.BillingManager;
+import io.maestro3.sdk.v3.manager.impl.CfTemplateManager;
 import io.maestro3.sdk.v3.manager.impl.ChefManager;
 import io.maestro3.sdk.v3.manager.impl.FileManager;
 import io.maestro3.sdk.v3.manager.impl.MetricManager;
@@ -68,6 +71,7 @@ import io.maestro3.sdk.v3.manager.impl.ScriptManager;
 import io.maestro3.sdk.v3.manager.impl.SecurityManager;
 import io.maestro3.sdk.v3.manager.impl.ServiceManager;
 import io.maestro3.sdk.v3.manager.impl.StatusManager;
+import io.maestro3.sdk.v3.manager.impl.SupportManager;
 import io.maestro3.sdk.v3.manager.impl.TerraformManager;
 import io.maestro3.sdk.v3.request.IRequest;
 
@@ -100,6 +104,8 @@ public class M3Client implements IM3Client {
     private final IAdminManager adminManager;
     private final IServiceManager serviceManager;
     private final IOperationManager operationManager;
+    private final ISupportManager supportManager;
+    private final ICfTemplateManager cfTemplateManager;
 
     public M3Client(IM3ApiActionExecutor executor, boolean isAsync) {
         this.executor = executor;
@@ -128,6 +134,8 @@ public class M3Client implements IM3Client {
         this.adminManager = new AdminManager(executor, isAsync);
         this.serviceManager = new ServiceManager(executor, isAsync);
         this.operationManager = new OperationManager(executor, isAsync);
+        this.supportManager = new SupportManager(executor, isAsync);
+        this.cfTemplateManager = new CfTemplateManager(executor, isAsync);
     }
 
     @Override
@@ -248,6 +256,16 @@ public class M3Client implements IM3Client {
     @Override
     public IServiceManager serviceManager() {
         return serviceManager;
+    }
+
+    @Override
+    public ISupportManager supportManager() {
+        return supportManager;
+    }
+
+    @Override
+    public ICfTemplateManager cfTemplateManager() {
+        return cfTemplateManager;
     }
 
     @Override

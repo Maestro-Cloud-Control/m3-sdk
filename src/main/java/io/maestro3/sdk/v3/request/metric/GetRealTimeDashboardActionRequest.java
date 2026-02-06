@@ -23,8 +23,6 @@ import io.maestro3.sdk.v3.request.IRequest;
 @JsonDeserialize(builder = GetRealTimeDashboardActionRequest.Builder.class)
 public class GetRealTimeDashboardActionRequest implements IRequest {
 
-    private final String userIdentifier;
-    private final String email;
     private final String cloudName;
     private final String tenantName;
     private final String tenantDisplayName;
@@ -33,8 +31,6 @@ public class GetRealTimeDashboardActionRequest implements IRequest {
     private final boolean hideEmptyMetrics;
 
     private GetRealTimeDashboardActionRequest(Builder builder) {
-        this.userIdentifier = builder.userIdentifier;
-        this.email = builder.email;
         this.cloudName = builder.cloudName;
         this.tenantName = builder.tenantName;
         this.tenantDisplayName = builder.tenantDisplayName;
@@ -45,14 +41,6 @@ public class GetRealTimeDashboardActionRequest implements IRequest {
 
     public static Builder builder() {
         return new Builder();
-    }
-
-    public String getUserIdentifier() {
-        return userIdentifier;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public String getCloudName() {
@@ -86,24 +74,12 @@ public class GetRealTimeDashboardActionRequest implements IRequest {
 
     public static final class Builder {
 
-        private String userIdentifier;
-        private String email;
         private String cloudName;
         private String tenantName;
         private String tenantDisplayName;
         private String regionName;
         private String layoutType;
         private boolean hideEmptyMetrics;
-
-        public Builder withUserIdentifier(String userIdentifier) {
-            this.userIdentifier = userIdentifier;
-            return this;
-        }
-
-        public Builder withEmail(String email) {
-            this.email = email;
-            return this;
-        }
 
         public Builder withCloudName(String cloudName) {
             this.cloudName = cloudName;

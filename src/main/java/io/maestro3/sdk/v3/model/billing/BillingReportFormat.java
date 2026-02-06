@@ -17,5 +17,5 @@
 package io.maestro3.sdk.v3.model.billing;
 
 public enum BillingReportFormat {
-    JSON, EMAIL, S3
+    JSON, JSON_LIMITED, EMAIL, S3
 }

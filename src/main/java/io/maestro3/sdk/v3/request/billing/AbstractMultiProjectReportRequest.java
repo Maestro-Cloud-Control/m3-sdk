@@ -26,6 +26,7 @@ public abstract class AbstractMultiProjectReportRequest implements IRequest {
     private final long to;
     private final String tag;
     private final boolean nativeCurrency;
+    private final boolean includeBillingSource;
     private final boolean cached;
 
     protected AbstractMultiProjectReportRequest(AbstractBuilder<?, ?> builder) {
@@ -33,6 +34,7 @@ public abstract class AbstractMultiProjectReportRequest implements IRequest {
         this.to = builder.to;
         this.tag = builder.tag;
         this.nativeCurrency = builder.nativeCurrency;
+        this.includeBillingSource = builder.includeBillingSource;
         this.cached = builder.cached;
     }
 
@@ -52,6 +54,10 @@ public abstract class AbstractMultiProjectReportRequest implements IRequest {
         return nativeCurrency;
     }
 
+    public boolean isIncludeBillingSource() {
+        return includeBillingSource;
+    }
+
     public boolean isCached() {
         return cached;
     }
@@ -67,11 +73,24 @@ public abstract class AbstractMultiProjectReportRequest implements IRequest {
         private long to;
         private String tag;
         private boolean nativeCurrency;
+        private boolean includeBillingSource;
         private boolean cached;
         
         protected abstract B getThis();
         
         public abstract R build();
+
+        public AbstractBuilder() {
+        }
+
+        public AbstractBuilder(AbstractMultiProjectReportRequest request) {
+            this.from = request.getFrom();
+            this.to = request.getTo();
+            this.tag = request.getTag();
+            this.nativeCurrency = request.isNativeCurrency();
+            this.includeBillingSource = request.isIncludeBillingSource();
+            this.cached = request.isCached();
+        }
 
         public B withFrom(long from) {
             this.from = from;
@@ -90,6 +109,11 @@ public abstract class AbstractMultiProjectReportRequest implements IRequest {
 
         public B withNativeCurrency(boolean nativeCurrency) {
             this.nativeCurrency = nativeCurrency;
+            return getThis();
+        }
+
+        public B withIncludeBillingSource(boolean includeBillingSource) {
+            this.includeBillingSource = includeBillingSource;
             return getThis();
         }
 

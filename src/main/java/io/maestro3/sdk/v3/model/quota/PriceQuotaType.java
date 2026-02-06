@@ -85,6 +85,7 @@ public enum PriceQuotaType {
                 return newList(ALL_PRIVATE, EACH_PRIVATE, DAILY_ALL_OPENSTACK);
             case CSA:
             case VMWARE:
+            case OPEN_NEBULA:
             case VSPHERE:
             case NUTANIX:
                 return newList(ALL_PRIVATE, EACH_PRIVATE);
@@ -111,6 +112,7 @@ public enum PriceQuotaType {
             case OPEN_STACK:
             case VSPHERE:
             case VMWARE:
+            case OPEN_NEBULA:
             case CSA:
             case NUTANIX:
                 return ALL_PRIVATE;
@@ -129,6 +131,7 @@ public enum PriceQuotaType {
             case OPEN_STACK:
             case VSPHERE:
             case VMWARE:
+            case OPEN_NEBULA:
             case CSA:
             case NUTANIX:
             case YANDEX:
@@ -156,10 +159,9 @@ public enum PriceQuotaType {
         return getAllDaily().contains(this);
     }
 
-    public static PriceQuotaType tryToFindByTitle(String cloudSelect, String uiTitle) {
-        SdkCloud cloud = "ALL".equalsIgnoreCase(cloudSelect) ? null : SdkCloud.fromValue(cloudSelect);
+    public static PriceQuotaType tryToFindByTitle(String uiTitle) {
         return VALUES.stream()
-            .filter(type -> type.cloud == cloud && type.uiTitle.equalsIgnoreCase(uiTitle))
+            .filter(type -> type.uiTitle.equalsIgnoreCase(uiTitle))
             .findFirst()
             .orElse(null);
     }

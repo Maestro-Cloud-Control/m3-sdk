@@ -27,11 +27,13 @@ public class GetUserPermissionRequest implements ITenantRequest {
     private final String tenantName;
     private final SdkCloud cloud;
     private final String env;
+    private final String groupName;
 
     private GetUserPermissionRequest(Builder builder) {
         this.tenantName = builder.tenantName;
         this.cloud = builder.cloud;
         this.env = builder.env;
+        this.groupName = builder.groupName;
     }
 
     public static Builder builder() {
@@ -52,6 +54,10 @@ public class GetUserPermissionRequest implements ITenantRequest {
         return env;
     }
 
+    public String getGroupName() {
+        return groupName;
+    }
+
     @Override
     public ActionType getActionType() {
         return ActionType.GET_USER_PERMISSIONS;
@@ -62,6 +68,7 @@ public class GetUserPermissionRequest implements ITenantRequest {
         private String tenantName;
         private SdkCloud cloud;
         private String env;
+        private String groupName;
 
         public Builder withTenantName(String tenantName) {
             this.tenantName = tenantName;
@@ -75,6 +82,11 @@ public class GetUserPermissionRequest implements ITenantRequest {
 
         public Builder withEnv(String env) {
             this.env = env;
+            return this;
+        }
+
+        public Builder withGroupName(String groupName) {
+            this.groupName = groupName;
             return this;
         }
 
