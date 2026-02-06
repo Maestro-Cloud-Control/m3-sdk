@@ -22,7 +22,10 @@ import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.core.IPrincipal;
 import io.maestro3.sdk.v3.core.M3Result;
 import io.maestro3.sdk.v3.manager.IResourceManager;
+import io.maestro3.sdk.v3.model.analytics.SdkVipMonitoring;
+import io.maestro3.sdk.v3.model.asg.SdkAutoScalingGroup;
 import io.maestro3.sdk.v3.model.custodian.SdkCustodianResourceScanResults;
+import io.maestro3.sdk.v3.model.function.SdkFunction;
 import io.maestro3.sdk.v3.model.image.SdkImage;
 import io.maestro3.sdk.v3.model.instance.SdkCloudWatchAgentInstanceInfo;
 import io.maestro3.sdk.v3.model.instance.SdkHashedPassword;
@@ -31,34 +34,48 @@ import io.maestro3.sdk.v3.model.instance.SdkInstances;
 import io.maestro3.sdk.v3.model.instance.SdkKeyPair;
 import io.maestro3.sdk.v3.model.instance.SdkResourceTagDto;
 import io.maestro3.sdk.v3.model.instance.SdkVolume;
+import io.maestro3.sdk.v3.model.kubernetes.SdkKubernetesAuthenticationToken;
 import io.maestro3.sdk.v3.model.kubernetes.SdkKubernetesClusters;
+import io.maestro3.sdk.v3.model.operation.SdkOperation;
+import io.maestro3.sdk.v3.model.recommendation.SdkCustodianRecommendationSetting;
 import io.maestro3.sdk.v3.model.recommendation.SdkRecommendation;
-import io.maestro3.sdk.v3.model.recommendation.SdkRecommendationSetting;
+import io.maestro3.sdk.v3.model.recommendation.SdkRightsizerRecommendationSetting;
 import io.maestro3.sdk.v3.model.resource.SdkRegionInfo;
 import io.maestro3.sdk.v3.model.resource.SdkResource;
 import io.maestro3.sdk.v3.model.resource.SdkTenantInfo;
 import io.maestro3.sdk.v3.model.shape.SdkShapeInfo;
+import io.maestro3.sdk.v3.request.asg.ChangeAutoScalingGroupSizeRequest;
+import io.maestro3.sdk.v3.request.asg.DescribeAutoScalingGroupsRequest;
 import io.maestro3.sdk.v3.request.custodian.CustodianLastK8sClusterScanRequest;
 import io.maestro3.sdk.v3.request.custodian.CustodianLastResourceScanRequest;
+import io.maestro3.sdk.v3.request.function.DescribeFunctionRequest;
+import io.maestro3.sdk.v3.request.function.UpdateFunctionVariablesRequest;
 import io.maestro3.sdk.v3.request.image.CreateImageRequest;
 import io.maestro3.sdk.v3.request.image.DeleteImageRequest;
 import io.maestro3.sdk.v3.request.image.DescribeImageRequest;
 import io.maestro3.sdk.v3.request.instance.DescribeInstanceCloudWatchAgentsRequest;
 import io.maestro3.sdk.v3.request.instance.DescribeInstanceRequest;
+import io.maestro3.sdk.v3.request.instance.DescribeVipInstanceMonitoringRequest;
 import io.maestro3.sdk.v3.request.instance.GetInstanceHashedPasswordRequest;
 import io.maestro3.sdk.v3.request.instance.InstallInstanceCloudWatchAgentRequest;
 import io.maestro3.sdk.v3.request.instance.ManageInstanceTerminationProtectionRequest;
 import io.maestro3.sdk.v3.request.instance.RebootInstanceRequest;
+import io.maestro3.sdk.v3.request.instance.ResizeInstanceRequest;
 import io.maestro3.sdk.v3.request.instance.RunInstanceRequest;
+import io.maestro3.sdk.v3.request.instance.SetupVipInstanceMonitoringRequest;
 import io.maestro3.sdk.v3.request.instance.StartInstanceRequest;
 import io.maestro3.sdk.v3.request.instance.StopInstanceRequest;
 import io.maestro3.sdk.v3.request.instance.TerminateInstanceRequest;
 import io.maestro3.sdk.v3.request.instance.UninstallInstanceCloudWatchAgentRequest;
+import io.maestro3.sdk.v3.request.kubernetes.DescribeKubernetesClusterAutoScalingGroupsRequest;
+import io.maestro3.sdk.v3.request.kubernetes.DescribeKubernetesClusterInstancesRequest;
 import io.maestro3.sdk.v3.request.kubernetes.DescribeKubernetesClusterRequest;
+import io.maestro3.sdk.v3.request.kubernetes.GetKubernetesAuthenticationTokenRequest;
 import io.maestro3.sdk.v3.request.recommendation.DescribeRecommendationSettingsRequest;
 import io.maestro3.sdk.v3.request.recommendation.DescribeRecommendationsRequest;
 import io.maestro3.sdk.v3.request.recommendation.UpdateRecommendationSettingsRequest;
 import io.maestro3.sdk.v3.request.resource.DescribeRegionsRequest;
+import io.maestro3.sdk.v3.request.resource.DescribeResourceRequest;
 import io.maestro3.sdk.v3.request.resource.DescribeTenantsRequest;
 import io.maestro3.sdk.v3.request.resource.ResourceRequest;
 import io.maestro3.sdk.v3.request.shape.DescribeShapesRequest;
@@ -85,11 +102,13 @@ import io.maestro3.sdk.v3.request.volume.RemoveVolumeRequest;
 import io.maestro3.sdk.v3.request.volume.ResizeVolumeRequest;
 
 import java.util.List;
+import java.util.Map;
 
 public class ResourceManager extends AbstractManager implements IResourceManager {
 
     private static final TypeReference<List<SdkVolume>> VOLUME_LIST_RESULT = new TypeReference<List<SdkVolume>>() {};
     private static final TypeReference<List<SdkResource>> RESOURCE_LIST_RESULT = new TypeReference<List<SdkResource>>() {};
+    private static final TypeReference<Map<String, Object>> RESOURCE_RESULT = new TypeReference<Map<String, Object>>() {};
     private static final TypeReference<List<SdkImage>> IMAGE_LIST_RESULT = new TypeReference<List<SdkImage>>() {};
     private static final TypeReference<SdkInstances> INSTANCES_RESULT = new TypeReference<SdkInstances>() {};
     private static final TypeReference<List<SdkCloudWatchAgentInstanceInfo>> CW_AGENT_LIST_RESULT = new TypeReference<List<SdkCloudWatchAgentInstanceInfo>>() {};
@@ -100,14 +119,26 @@ public class ResourceManager extends AbstractManager implements IResourceManager
     private static final TypeReference<List<SdkRegionInfo>> REGIONS_LIST_RESULT = new TypeReference<List<SdkRegionInfo>>() {};
     private static final TypeReference<List<SdkShapeInfo>> REGIONS_SHAPES_LIST_RESULT = new TypeReference<List<SdkShapeInfo>>() {};
     private static final TypeReference<List<SdkRecommendation>> RECOMMENDATION_RESULT = new TypeReference<List<SdkRecommendation>>() {};
-    private static final TypeReference<List<SdkRecommendationSetting>> RECOMMENDATION_SETTINGS_RESULT = new TypeReference<List<SdkRecommendationSetting>>() {};
+    private static final TypeReference<List<SdkRightsizerRecommendationSetting>> RIGHTSIZER_RECOMMENDATION_SETTINGS_RESULT = new TypeReference<>() {};
     private static final TypeReference<SdkHashedPassword> PASS_RESULT = new TypeReference<SdkHashedPassword>() {};
     private static final TypeReference<SdkKubernetesClusters> KUBERNETES_CLUSTERS_RESULT = new TypeReference<SdkKubernetesClusters>() {};
+    private static final TypeReference<SdkInstances> KUBERNETES_CLUSTER_INSTANCES_RESULT = new TypeReference<SdkInstances>() {};
     private static final TypeReference<List<SdkInstance>> INSTANCES_LIST_RESULT = new TypeReference<List<SdkInstance>>() {};
+    private static final TypeReference<SdkFunction> FUNCTION_RESULT = new TypeReference<SdkFunction>() {};
     private static final TypeReference<List<SdkCustodianResourceScanResults>> CUSTODIAN_LAST_RESOURCE_SCAN_RESULT = new TypeReference<>() {};
+    private static final TypeReference<SdkKubernetesAuthenticationToken> KUBERNETES_AUTHENTICATION_TOKEN_RESULT = new TypeReference<>() {};
+    private static final TypeReference<List<SdkAutoScalingGroup>> AUTO_SCALING_GROUPS_LIST_RESULT = new TypeReference<List<SdkAutoScalingGroup>>() {};
+    private static final TypeReference<SdkVipMonitoring> VIP_MONITORING_RESULT = new TypeReference<SdkVipMonitoring>() {};
+    private static final TypeReference<SdkOperation> SDK_OPERATION_RESULT = new TypeReference<SdkOperation>() {};
+    private static final TypeReference<List<SdkCustodianRecommendationSetting>> CUSTODIAN_RECOMMENDATION_SETTINGS_RESULT = new TypeReference<List<SdkCustodianRecommendationSetting>>() {};
 
     public ResourceManager(IM3ApiActionExecutor actionExecutor, boolean isAsync) {
         super(actionExecutor, isAsync);
+    }
+
+    @Override
+    public M3Result<Map<String, Object>> describeResource(IPrincipal principal, DescribeResourceRequest request) {
+        return execute(principal, request, RESOURCE_RESULT);
     }
 
     @Override
@@ -163,6 +194,11 @@ public class ResourceManager extends AbstractManager implements IResourceManager
     @Override
     public M3Result<SdkInstances> rebootInstance(IPrincipal principal, RebootInstanceRequest request) {
         return execute(principal, request, INSTANCES_RESULT);
+    }
+
+    @Override
+    public M3Result<SdkOperation> resizeInstance(IPrincipal principal, ResizeInstanceRequest request) {
+        return execute(principal, request, SDK_OPERATION_RESULT);
     }
 
     @Override
@@ -312,8 +348,8 @@ public class ResourceManager extends AbstractManager implements IResourceManager
     }
 
     @Override
-    public M3Result<List<SdkRecommendationSetting>> getRecommendationSettings(IPrincipal principal, DescribeRecommendationSettingsRequest request) {
-        return execute(principal, request, RECOMMENDATION_SETTINGS_RESULT);
+    public M3Result<List<SdkRightsizerRecommendationSetting>> getRecommendationSettings(IPrincipal principal, DescribeRecommendationSettingsRequest request) {
+        return execute(principal, request, RIGHTSIZER_RECOMMENDATION_SETTINGS_RESULT);
     }
 
     @Override
@@ -332,7 +368,58 @@ public class ResourceManager extends AbstractManager implements IResourceManager
     }
 
     @Override
+    public M3Result<SdkInstances> describeKubernetesClusterInstances(IPrincipal principal, DescribeKubernetesClusterInstancesRequest request) {
+        return execute(principal, request, KUBERNETES_CLUSTER_INSTANCES_RESULT);
+    }
+
+    @Override
+    public M3Result<List<SdkAutoScalingGroup>> describeKubernetesClusterAutoScalingGroups(IPrincipal principal, DescribeKubernetesClusterAutoScalingGroupsRequest request) {
+        return execute(principal, request, AUTO_SCALING_GROUPS_LIST_RESULT);
+    }
+
+    @Override
+    public M3Result<SdkKubernetesAuthenticationToken> getKubernetesClusterAuthenticationToken(IPrincipal principal, GetKubernetesAuthenticationTokenRequest request) {
+        return execute(principal, request, KUBERNETES_AUTHENTICATION_TOKEN_RESULT);
+    }
+
+    @Override
     public M3Result<List<SdkInstance>> describeSshRelatedInstances(IPrincipal principal, DescribeKeyInstancesRequest request) {
         return execute(principal, request, INSTANCES_LIST_RESULT);
     }
+
+    @Override
+    public M3Result<SdkFunction> describeFunction(IPrincipal principal, DescribeFunctionRequest request) {
+        return execute(principal, request, FUNCTION_RESULT);
+    }
+
+    @Override
+    public M3Result<Void> updateFunctionVariables(IPrincipal principal, UpdateFunctionVariablesRequest request) {
+        return execute(principal, request, VOID_RESULT);
+    }
+
+    @Override
+    public M3Result<List<SdkAutoScalingGroup>> describeAutoScalingGroups(IPrincipal principal, DescribeAutoScalingGroupsRequest request) {
+        return execute(principal, request, AUTO_SCALING_GROUPS_LIST_RESULT);
+    }
+
+    @Override
+    public M3Result<SdkVipMonitoring> describeVipInstanceMonitoring(IPrincipal principal, DescribeVipInstanceMonitoringRequest request) {
+        return execute(principal, request, VIP_MONITORING_RESULT);
+    }
+
+    @Override
+    public M3Result<Void> setupVipInstanceMonitoring(IPrincipal principal, SetupVipInstanceMonitoringRequest request) {
+        return execute(principal, request, VOID_RESULT);
+    }
+
+    @Override
+    public M3Result<Void> changeAutoScalingGroupSize(IPrincipal principal, ChangeAutoScalingGroupSizeRequest request) {
+        return execute(principal, request, VOID_RESULT);
+    }
+
+    @Override
+    public M3Result<List<SdkCustodianRecommendationSetting>> describeCustodianRecommendationSettings(IPrincipal principal, DescribeRecommendationSettingsRequest request) {
+        return execute(principal, request, CUSTODIAN_RECOMMENDATION_SETTINGS_RESULT);
+    }
+
 }

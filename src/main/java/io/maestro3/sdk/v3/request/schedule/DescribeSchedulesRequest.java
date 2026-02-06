@@ -34,7 +34,7 @@ public class DescribeSchedulesRequest implements ITenantRequest, IRegionRequest 
     private final String instanceId;
     private final String scheduleType;
     private final String scheduleAction;
-    private String email;
+    private final boolean ignoreScheduleOwnership;
     private final SdkSchedulePriorityFilter filter;
 
     private DescribeSchedulesRequest(Builder builder) {
@@ -46,7 +46,7 @@ public class DescribeSchedulesRequest implements ITenantRequest, IRegionRequest 
         this.instanceId = builder.instanceId;
         this.scheduleType = builder.scheduleType;
         this.scheduleAction = builder.scheduleAction;
-        this.email = builder.email;
+        this.ignoreScheduleOwnership = builder.ignoreScheduleOwnership;
         this.filter = builder.filter;
     }
 
@@ -82,12 +82,12 @@ public class DescribeSchedulesRequest implements ITenantRequest, IRegionRequest 
         return scheduleAction;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public String getInstanceId() {
         return instanceId;
+    }
+
+    public boolean isIgnoreScheduleOwnership() {
+        return ignoreScheduleOwnership;
     }
 
     public SdkSchedulePriorityFilter getFilter() {
@@ -109,7 +109,7 @@ public class DescribeSchedulesRequest implements ITenantRequest, IRegionRequest 
         private String instanceId;
         private String scheduleType;
         private String scheduleAction;
-        private String email;
+        private boolean ignoreScheduleOwnership;
         private SdkSchedulePriorityFilter filter = SdkSchedulePriorityFilter.PRIORITIZED;
 
         private Builder() {
@@ -155,8 +155,8 @@ public class DescribeSchedulesRequest implements ITenantRequest, IRegionRequest 
             return this;
         }
 
-        public Builder withEmail(String email) {
-            this.email = email;
+        public Builder withIgnoreScheduleOwnership(boolean ignoreScheduleOwnership) {
+            this.ignoreScheduleOwnership = ignoreScheduleOwnership;
             return this;
         }
 

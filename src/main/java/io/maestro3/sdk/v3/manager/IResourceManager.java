@@ -18,7 +18,10 @@ package io.maestro3.sdk.v3.manager;
 
 import io.maestro3.sdk.v3.core.IPrincipal;
 import io.maestro3.sdk.v3.core.M3Result;
+import io.maestro3.sdk.v3.model.analytics.SdkVipMonitoring;
+import io.maestro3.sdk.v3.model.asg.SdkAutoScalingGroup;
 import io.maestro3.sdk.v3.model.custodian.SdkCustodianResourceScanResults;
+import io.maestro3.sdk.v3.model.function.SdkFunction;
 import io.maestro3.sdk.v3.model.image.SdkImage;
 import io.maestro3.sdk.v3.model.instance.SdkCloudWatchAgentInstanceInfo;
 import io.maestro3.sdk.v3.model.instance.SdkHashedPassword;
@@ -27,34 +30,48 @@ import io.maestro3.sdk.v3.model.instance.SdkInstances;
 import io.maestro3.sdk.v3.model.instance.SdkKeyPair;
 import io.maestro3.sdk.v3.model.instance.SdkResourceTagDto;
 import io.maestro3.sdk.v3.model.instance.SdkVolume;
+import io.maestro3.sdk.v3.model.kubernetes.SdkKubernetesAuthenticationToken;
 import io.maestro3.sdk.v3.model.kubernetes.SdkKubernetesClusters;
+import io.maestro3.sdk.v3.model.operation.SdkOperation;
+import io.maestro3.sdk.v3.model.recommendation.SdkCustodianRecommendationSetting;
 import io.maestro3.sdk.v3.model.recommendation.SdkRecommendation;
-import io.maestro3.sdk.v3.model.recommendation.SdkRecommendationSetting;
+import io.maestro3.sdk.v3.model.recommendation.SdkRightsizerRecommendationSetting;
 import io.maestro3.sdk.v3.model.resource.SdkRegionInfo;
 import io.maestro3.sdk.v3.model.resource.SdkResource;
 import io.maestro3.sdk.v3.model.resource.SdkTenantInfo;
 import io.maestro3.sdk.v3.model.shape.SdkShapeInfo;
+import io.maestro3.sdk.v3.request.asg.ChangeAutoScalingGroupSizeRequest;
+import io.maestro3.sdk.v3.request.asg.DescribeAutoScalingGroupsRequest;
 import io.maestro3.sdk.v3.request.custodian.CustodianLastK8sClusterScanRequest;
 import io.maestro3.sdk.v3.request.custodian.CustodianLastResourceScanRequest;
+import io.maestro3.sdk.v3.request.function.DescribeFunctionRequest;
+import io.maestro3.sdk.v3.request.function.UpdateFunctionVariablesRequest;
 import io.maestro3.sdk.v3.request.image.CreateImageRequest;
 import io.maestro3.sdk.v3.request.image.DeleteImageRequest;
 import io.maestro3.sdk.v3.request.image.DescribeImageRequest;
 import io.maestro3.sdk.v3.request.instance.DescribeInstanceCloudWatchAgentsRequest;
 import io.maestro3.sdk.v3.request.instance.DescribeInstanceRequest;
+import io.maestro3.sdk.v3.request.instance.DescribeVipInstanceMonitoringRequest;
 import io.maestro3.sdk.v3.request.instance.GetInstanceHashedPasswordRequest;
 import io.maestro3.sdk.v3.request.instance.InstallInstanceCloudWatchAgentRequest;
 import io.maestro3.sdk.v3.request.instance.ManageInstanceTerminationProtectionRequest;
 import io.maestro3.sdk.v3.request.instance.RebootInstanceRequest;
+import io.maestro3.sdk.v3.request.instance.ResizeInstanceRequest;
 import io.maestro3.sdk.v3.request.instance.RunInstanceRequest;
+import io.maestro3.sdk.v3.request.instance.SetupVipInstanceMonitoringRequest;
 import io.maestro3.sdk.v3.request.instance.StartInstanceRequest;
 import io.maestro3.sdk.v3.request.instance.StopInstanceRequest;
 import io.maestro3.sdk.v3.request.instance.TerminateInstanceRequest;
 import io.maestro3.sdk.v3.request.instance.UninstallInstanceCloudWatchAgentRequest;
+import io.maestro3.sdk.v3.request.kubernetes.DescribeKubernetesClusterAutoScalingGroupsRequest;
+import io.maestro3.sdk.v3.request.kubernetes.DescribeKubernetesClusterInstancesRequest;
 import io.maestro3.sdk.v3.request.kubernetes.DescribeKubernetesClusterRequest;
+import io.maestro3.sdk.v3.request.kubernetes.GetKubernetesAuthenticationTokenRequest;
 import io.maestro3.sdk.v3.request.recommendation.DescribeRecommendationSettingsRequest;
 import io.maestro3.sdk.v3.request.recommendation.DescribeRecommendationsRequest;
 import io.maestro3.sdk.v3.request.recommendation.UpdateRecommendationSettingsRequest;
 import io.maestro3.sdk.v3.request.resource.DescribeRegionsRequest;
+import io.maestro3.sdk.v3.request.resource.DescribeResourceRequest;
 import io.maestro3.sdk.v3.request.resource.DescribeTenantsRequest;
 import io.maestro3.sdk.v3.request.resource.ResourceRequest;
 import io.maestro3.sdk.v3.request.shape.DescribeShapesRequest;
@@ -81,8 +98,11 @@ import io.maestro3.sdk.v3.request.volume.RemoveVolumeRequest;
 import io.maestro3.sdk.v3.request.volume.ResizeVolumeRequest;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IResourceManager {
+
+    M3Result<Map<String, Object>> describeResource(IPrincipal principal, DescribeResourceRequest request);
 
     M3Result<List<SdkResource>> listResources(IPrincipal principal, ResourceRequest request);
 
@@ -107,6 +127,8 @@ public interface IResourceManager {
     M3Result<SdkInstances> stopInstance(IPrincipal principal, StopInstanceRequest request);
 
     M3Result<SdkInstances> rebootInstance(IPrincipal principal, RebootInstanceRequest request);
+
+    M3Result<SdkOperation> resizeInstance(IPrincipal principal, ResizeInstanceRequest request);
 
     M3Result<SdkInstances> terminateInstance(IPrincipal principal, TerminateInstanceRequest request);
 
@@ -172,7 +194,7 @@ public interface IResourceManager {
 
     M3Result<List<SdkCustodianResourceScanResults>> getCustodianLastK8sClusterScanResults(IPrincipal principal, CustodianLastK8sClusterScanRequest request);
 
-    M3Result<List<SdkRecommendationSetting>> getRecommendationSettings(IPrincipal principal, DescribeRecommendationSettingsRequest request);
+    M3Result<List<SdkRightsizerRecommendationSetting>> getRecommendationSettings(IPrincipal principal, DescribeRecommendationSettingsRequest request);
 
     M3Result<Void> updateRecommendationSettings(IPrincipal principal, UpdateRecommendationSettingsRequest request);
 
@@ -180,6 +202,26 @@ public interface IResourceManager {
 
     M3Result<SdkKubernetesClusters> describeKubernetesCluster(IPrincipal principal, DescribeKubernetesClusterRequest request);
 
+    M3Result<SdkInstances> describeKubernetesClusterInstances(IPrincipal principal, DescribeKubernetesClusterInstancesRequest request);
+
+    M3Result<List<SdkAutoScalingGroup>> describeKubernetesClusterAutoScalingGroups(IPrincipal principal, DescribeKubernetesClusterAutoScalingGroupsRequest request);
+
+    M3Result<SdkKubernetesAuthenticationToken> getKubernetesClusterAuthenticationToken(IPrincipal principal, GetKubernetesAuthenticationTokenRequest request);
 
     M3Result<List<SdkInstance>> describeSshRelatedInstances(IPrincipal principal, DescribeKeyInstancesRequest request);
+
+    M3Result<SdkFunction> describeFunction(IPrincipal principal, DescribeFunctionRequest request);
+
+    M3Result<Void> updateFunctionVariables(IPrincipal principal, UpdateFunctionVariablesRequest request);
+
+    M3Result<List<SdkAutoScalingGroup>> describeAutoScalingGroups(IPrincipal principal, DescribeAutoScalingGroupsRequest request);
+
+    M3Result<SdkVipMonitoring> describeVipInstanceMonitoring(IPrincipal principal, DescribeVipInstanceMonitoringRequest request);
+
+    M3Result<Void> setupVipInstanceMonitoring(IPrincipal principal, SetupVipInstanceMonitoringRequest request);
+
+    M3Result<Void> changeAutoScalingGroupSize(IPrincipal principal, ChangeAutoScalingGroupSizeRequest request);
+
+    M3Result<List<SdkCustodianRecommendationSetting>> describeCustodianRecommendationSettings(IPrincipal principal, DescribeRecommendationSettingsRequest request);
+
 }

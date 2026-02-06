@@ -17,9 +17,11 @@
 package io.maestro3.sdk.v3.request.quota;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.maestro3.sdk.exception.M3SdkException;
 import io.maestro3.sdk.internal.util.Assert;
+import io.maestro3.sdk.internal.util.CollectionUtils;
+import io.maestro3.sdk.internal.util.StringUtils;
 import io.maestro3.sdk.v3.core.ActionType;
-import io.maestro3.sdk.v3.model.SdkCloud;
 import io.maestro3.sdk.v3.model.quota.PriceQuotaSearchCriteria;
 import io.maestro3.sdk.v3.model.quota.PriceQuotaType;
 import io.maestro3.sdk.v3.request.IRequest;
@@ -29,24 +31,40 @@ import java.util.Set;
 @JsonDeserialize(builder = QuotasByTenantsWithCriteriaRequest.Builder.class)
 public class QuotasByTenantsWithCriteriaRequest implements IRequest {
 
+    private final String tenantGroup;
+    private final Long from;
+    private final Long to;
     private final Set<String> tenantNames;
     private final PriceQuotaSearchCriteria criteria;
-    private final SdkCloud cloud;
     private final boolean compressEachQuota;
     private final Set<PriceQuotaType> priceQuotaTypes;
-    private final Set<String> regionNames;
+    private final String regionName;
 
     private QuotasByTenantsWithCriteriaRequest(Builder builder) {
+        this.tenantGroup = builder.tenantGroup;
+        this.from = builder.from;
+        this.to = builder.to;
         this.tenantNames = builder.tenantNames;
         this.criteria = builder.criteria;
-        this.cloud = builder.cloud;
         this.compressEachQuota = builder.compressEachQuota;
         this.priceQuotaTypes = builder.priceQuotaTypes;
-        this.regionNames = builder.regionNames;
+        this.regionName = builder.regionName;
     }
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public String getTenantGroup() {
+        return tenantGroup;
+    }
+
+    public Long getFrom() {
+        return from;
+    }
+
+    public Long getTo() {
+        return to;
     }
 
     public Set<String> getTenantNames() {
@@ -57,10 +75,6 @@ public class QuotasByTenantsWithCriteriaRequest implements IRequest {
         return criteria;
     }
 
-    public SdkCloud getCloud() {
-        return cloud;
-    }
-
     public boolean isCompressEachQuota() {
         return compressEachQuota;
     }
@@ -69,8 +83,8 @@ public class QuotasByTenantsWithCriteriaRequest implements IRequest {
         return priceQuotaTypes;
     }
 
-    public Set<String> getRegionNames() {
-        return regionNames;
+    public String getRegionName() {
+        return regionName;
     }
 
     @Override
@@ -80,12 +94,29 @@ public class QuotasByTenantsWithCriteriaRequest implements IRequest {
 
     public static final class Builder {
 
+        private String tenantGroup;
+        private Long from;
+        private Long to;
         private Set<String> tenantNames;
         private PriceQuotaSearchCriteria criteria;
-        private SdkCloud cloud;
         private boolean compressEachQuota;
         private Set<PriceQuotaType> priceQuotaTypes;
-        private Set<String> regionNames;
+        private String regionName;
+
+        public Builder withTenantGroup(String tenantGroup) {
+            this.tenantGroup = tenantGroup;
+            return this;
+        }
+
+        public Builder withFrom(Long from) {
+            this.from = from;
+            return this;
+        }
+
+        public Builder withTo(Long to) {
+            this.to = to;
+            return this;
+        }
 
         public Builder withTenantNames(Set<String> tenantNames) {
             this.tenantNames = tenantNames;
@@ -94,11 +125,6 @@ public class QuotasByTenantsWithCriteriaRequest implements IRequest {
 
         public Builder withCriteria(PriceQuotaSearchCriteria criteria) {
             this.criteria = criteria;
-            return this;
-        }
-
-        public Builder withCloud(SdkCloud cloud) {
-            this.cloud = cloud;
             return this;
         }
 
@@ -112,13 +138,23 @@ public class QuotasByTenantsWithCriteriaRequest implements IRequest {
             return this;
         }
 
-        public Builder withRegionNames(Set<String> regionNames) {
-            this.regionNames = regionNames;
+        public Builder withRegionName(String regionName) {
+            this.regionName = regionName;
             return this;
         }
 
         public QuotasByTenantsWithCriteriaRequest build() {
             Assert.notNull(criteria, "criteria");
+
+            if ((StringUtils.isBlank(tenantGroup) && CollectionUtils.isEmpty(tenantNames))
+                    || StringUtils.isNotBlank(tenantGroup) && CollectionUtils.isNotEmpty(tenantNames)) {
+                throw new M3SdkException("tenantGroup or tenantNames must be specified");
+            }
+
+            if (StringUtils.isNotBlank(tenantGroup)) {
+                Assert.notNull(from, "from is required for the tenantGroup parameter");
+                Assert.notNull(to, "to is required for the tenantGroup parameter");
+            }
             return new QuotasByTenantsWithCriteriaRequest(this);
         }
     }

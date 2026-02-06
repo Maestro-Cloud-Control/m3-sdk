@@ -31,7 +31,9 @@ public enum ResourceType {
     SUBNET,
     VPC,
     UNKNOWN,
-    K8S_CLUSTER;
+    K8S_CLUSTER,
+    AUTOSCALING_GROUP
+    ;
 
     @Override
     public String toString() {

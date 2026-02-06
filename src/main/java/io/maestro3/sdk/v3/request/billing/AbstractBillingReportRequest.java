@@ -16,7 +16,9 @@
 
 package io.maestro3.sdk.v3.request.billing;
 
+import io.maestro3.sdk.exception.M3SdkException;
 import io.maestro3.sdk.internal.util.Assert;
+import io.maestro3.sdk.v3.model.billing.BillingFileType;
 import io.maestro3.sdk.v3.model.billing.BillingReportFormat;
 import io.maestro3.sdk.v3.model.billing.SdkBillingReportTarget;
 import io.maestro3.sdk.v3.request.IRequest;
@@ -29,6 +31,7 @@ public abstract class AbstractBillingReportRequest implements IRequest {
     private final long to;
     private final String tag;
     private final BillingReportFormat reportFormat;
+    private final BillingFileType fileType;
     private final SdkBillingReportTarget target;
 
     protected AbstractBillingReportRequest(AbstractBillingReportRequestBuilder<?, ?> builder,
@@ -37,6 +40,7 @@ public abstract class AbstractBillingReportRequest implements IRequest {
         this.to = builder.to;
         this.tag = builder.tag;
         this.reportFormat = Optional.ofNullable(builder.reportFormat).orElse(defaultReportFormat);
+        this.fileType = builder.fileType;
         this.target = builder.target;
     }
 
@@ -56,6 +60,10 @@ public abstract class AbstractBillingReportRequest implements IRequest {
         return reportFormat;
     }
 
+    public BillingFileType getFileType() {
+        return fileType;
+    }
+
     public SdkBillingReportTarget getTarget() {
         return target;
     }
@@ -67,6 +75,7 @@ public abstract class AbstractBillingReportRequest implements IRequest {
         protected long to;
         private String tag;
         private BillingReportFormat reportFormat;
+        private BillingFileType fileType;
         private SdkBillingReportTarget target;
 
         protected abstract B getThis();
@@ -93,6 +102,11 @@ public abstract class AbstractBillingReportRequest implements IRequest {
             return getThis();
         }
 
+        public B withFileType(BillingFileType fileType) {
+            this.fileType = fileType;
+            return getThis();
+        }
+
         public B withTarget(SdkBillingReportTarget target) {
             this.target = target;
             return getThis();
@@ -102,6 +116,9 @@ public abstract class AbstractBillingReportRequest implements IRequest {
             Assert.isPositive(from, "from");
             Assert.isPositive(to, "to");
             Assert.notNull(target, "target");
+            if (reportFormat != BillingReportFormat.S3 && fileType != null) {
+                throw new M3SdkException("File type is only supported when report format is S3");
+            }
         }
     }
 }

@@ -26,14 +26,20 @@ import java.util.Set;
 public class DeleteTagsRequest extends TagsActionRequest {
 
     private final Set<String> tags;
+    private final boolean all;
 
     private DeleteTagsRequest(DeleteTagsRequestBuilder builder) {
         super(builder);
         this.tags = builder.tags;
+        this.all = builder.all;
     }
 
     public Set<String> getTags() {
         return tags;
+    }
+
+    public boolean isAll() {
+        return all;
     }
 
     public static DeleteTagsRequestBuilder builder() {
@@ -50,8 +56,15 @@ public class DeleteTagsRequest extends TagsActionRequest {
 
         private Set<String> tags;
 
+        private boolean all;
+
         public DeleteTagsRequestBuilder withTags(Set<String> tags) {
             this.tags = tags;
+            return getThis();
+        }
+
+        public DeleteTagsRequestBuilder withAll(boolean all) {
+            this.all = all;
             return getThis();
         }
 

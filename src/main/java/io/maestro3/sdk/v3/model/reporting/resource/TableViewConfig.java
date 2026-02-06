@@ -24,11 +24,12 @@ import io.maestro3.sdk.internal.util.CollectionUtils;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TableViewConfig {
 
-    private final Map<String, TableHeaderViewConfig> headerConfigs;
-    private final TableGroupConfig groupConfig;
+    private Map<String, TableHeaderViewConfig> headerConfigs;
+    private TableGroupConfig groupConfig;
 
     @JsonIgnore
     private Integer rowsLimit;
@@ -38,29 +39,51 @@ public class TableViewConfig {
     private Comparator<ITableRecord> rowsComparator;
     @JsonIgnore
     private Boolean configApplied;
+    @JsonIgnore
+    private boolean withOtherRow;
+
+    protected TableViewConfig() {
+        // db
+    }
 
     @JsonCreator
-    protected TableViewConfig(@JsonProperty("headerConfigs") Map<String, TableHeaderViewConfig> headerConfigs,
-                              @JsonProperty("groupConfig") TableGroupConfig groupConfig) {
-        this.headerConfigs = headerConfigs;
+    protected TableViewConfig(@JsonProperty("groupConfig") TableGroupConfig groupConfig) {
+        this.headerConfigs = Map.of();
         this.groupConfig = groupConfig;
     }
 
-    private TableViewConfig(Map<String, TableHeaderViewConfig> headerConfigs, TableGroupConfig groupConfig, Integer rowsLimit, Integer columnsLimit, Comparator<ITableRecord> rowsComparator) {
-        this.headerConfigs = headerConfigs;
-        this.groupConfig = groupConfig;
-        this.rowsLimit = rowsLimit;
-        this.columnsLimit = columnsLimit;
-        this.rowsComparator = rowsComparator;
+    private TableViewConfig(Builder builder) {
+        this.headerConfigs = builder.headerConfigs;
+        this.groupConfig = builder.groupConfig;
+        this.rowsLimit = builder.rowsLimit;
+        this.columnsLimit = builder.columnsLimit;
+        this.rowsComparator = builder.rowsComparator;
+        this.withOtherRow = builder.withOtherRow;
     }
 
     public static Builder builder() {
         return new Builder();
     }
 
+    public Builder toBuilder() {
+        return new Builder()
+            .headerConfigs(this.headerConfigs)
+            .groupConfig(this.groupConfig)
+            .rowsLimit(this.rowsLimit)
+            .columnsLimit(this.columnsLimit)
+            .rowsComparator(this.rowsComparator)
+            .withOtherRow(this.withOtherRow);
+    }
+
     @JsonIgnore
     public TableHeaderViewConfig getHeaderConfig(String headerName) {
         return CollectionUtils.isNotEmpty(headerConfigs) ? headerConfigs.get(headerName) : null;
+    }
+
+    @JsonIgnore
+    public TableHeaderViewConfig getHeaderConfig(TableHeaderCell cell) {
+        return CollectionUtils.isNotEmpty(headerConfigs) && cell.getCellValue() != null && cell.getCellValue().getValue() != null
+            ? headerConfigs.get(cell.getCellValue().getValue().toString()) : null;
     }
 
     public Map<String, TableHeaderViewConfig> getHeaderConfigs() {
@@ -91,15 +114,27 @@ public class TableViewConfig {
         this.configApplied = configApplied;
     }
 
+    public boolean isWithOtherRow() {
+        return withOtherRow;
+    }
+
     public static class Builder {
         private final Map<String, TableHeaderViewConfig> headerConfigs = new LinkedHashMap<>();
         private TableGroupConfig groupConfig;
         private Integer rowsLimit;
         private Integer columnsLimit;
         private Comparator<ITableRecord> rowsComparator;
+        private boolean withOtherRow;
 
         public Builder headerConfigs(Map<String, TableHeaderViewConfig> headerConfigs) {
             this.headerConfigs.putAll(headerConfigs);
+            return this;
+        }
+
+        public Builder headerCellConfigs(Map<TableHeaderCell, TableHeaderViewConfig> headerConfigs) {
+            Map<String, TableHeaderViewConfig> collect = headerConfigs.entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().getCellValue().getValue().toString(), Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
+            this.headerConfigs.putAll(collect);
             return this;
         }
 
@@ -108,8 +143,18 @@ public class TableViewConfig {
             return this;
         }
 
+        public Builder header(TableHeaderCell headerName, TableHeaderViewConfig headerConfig) {
+            this.headerConfigs.put(headerName.getCellValue().getValue().toString(), headerConfig);
+            return this;
+        }
+
         public Builder header(String headerName, TableHeaderViewConfig.Builder headerConfigBuilder) {
             this.headerConfigs.put(headerName, headerConfigBuilder.build());
+            return this;
+        }
+
+        public Builder header(TableHeaderCell tableHeaderCell, TableHeaderViewConfig.Builder headerConfigBuilder) {
+            this.headerConfigs.put(tableHeaderCell.getCellValue().getValue().toString(), headerConfigBuilder.build());
             return this;
         }
 
@@ -133,8 +178,18 @@ public class TableViewConfig {
             return this;
         }
 
+        public Builder withOtherRow(boolean withOtherRow) {
+            this.withOtherRow = withOtherRow;
+            return this;
+        }
+
+        public Builder withOtherRow() {
+            this.withOtherRow = true;
+            return this;
+        }
+
         public TableViewConfig build() {
-            return new TableViewConfig(headerConfigs, groupConfig, rowsLimit, columnsLimit, rowsComparator);
+            return new TableViewConfig(this);
         }
     }
 

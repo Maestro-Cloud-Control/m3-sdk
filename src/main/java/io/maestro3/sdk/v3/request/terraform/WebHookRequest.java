@@ -18,6 +18,7 @@ package io.maestro3.sdk.v3.request.terraform;
 
 import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.model.SdkCloud;
+import io.maestro3.sdk.v3.model.annotation.SecuredParams;
 import io.maestro3.sdk.v3.request.ITenantRequest;
 
 public abstract class WebHookRequest implements ITenantRequest {
@@ -26,6 +27,7 @@ public abstract class WebHookRequest implements ITenantRequest {
     private final String tenantName;
     private final String templateName;
     private final String username;
+    @SecuredParams
     private final String password;
     private final String gitUrl;
     private final String branch;

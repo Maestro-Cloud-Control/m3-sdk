@@ -1,11 +1,11 @@
 /*
- * Copyright 2023 Maestro Cloud Control LLC
+ * Copyright 2024 Maestro Cloud Control LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.maestro3.sdk.v3.model.instance.SdkResourceTag;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -29,7 +30,9 @@ public class SdkBillingReportResponse {
     private String s3ReportLink;
     private List<SdkResourceTag> tags;
     private BigDecimal grandTotal;
+    private String currencyCode;
     private String message;
+    private Date lastBillingUpdate;
 
     public SdkBillingReportResponse() {
     }
@@ -46,6 +49,12 @@ public class SdkBillingReportResponse {
     public SdkBillingReportResponse(List<ReportRecord> records, BigDecimal grandTotal) {
         this.records = records;
         this.grandTotal = grandTotal;
+    }
+
+    public SdkBillingReportResponse(List<ReportRecord> records, BigDecimal grandTotal, String currencyCode) {
+        this.records = records;
+        this.grandTotal = grandTotal;
+        this.currencyCode = currencyCode;
     }
 
     public SdkBillingReportResponse(List<ReportRecord> records, BigDecimal grandTotal, List<SdkResourceTag> tags) {
@@ -86,12 +95,28 @@ public class SdkBillingReportResponse {
         this.grandTotal = grandTotal;
     }
 
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
+    }
+
     public String getMessage() {
         return message;
     }
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Date getLastBillingUpdate() {
+        return lastBillingUpdate;
+    }
+
+    public void setLastBillingUpdate(Date lastBillingUpdate) {
+        this.lastBillingUpdate = lastBillingUpdate;
     }
 
     @Override

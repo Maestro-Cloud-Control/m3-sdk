@@ -1,11 +1,11 @@
 /*
- * Copyright 2023 Maestro Cloud Control LLC
+ * Copyright 2024 Maestro Cloud Control LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,6 +25,7 @@ public class MetricValueRequest {
     private String tenant;
     private String tenantDisplayName;
     private String cloud;
+    private String subCloud;
     private String metricType;
     private String instanceId;
     @JsonAlias("identityId")
@@ -80,6 +81,14 @@ public class MetricValueRequest {
 
     public void setCloud(String cloud) {
         this.cloud = cloud;
+    }
+
+    public String getSubCloud() {
+        return subCloud;
+    }
+
+    public void setSubCloud(String subCloud) {
+        this.subCloud = subCloud;
     }
 
     public String getMetricType() {

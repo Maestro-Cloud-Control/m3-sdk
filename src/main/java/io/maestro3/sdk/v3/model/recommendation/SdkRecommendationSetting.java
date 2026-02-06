@@ -16,14 +16,28 @@
 
 package io.maestro3.sdk.v3.model.recommendation;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.maestro3.sdk.v3.model.SdkCloud;
 import io.maestro3.sdk.v3.model.ownership.ResourceType;
 
-public class SdkRecommendationSetting {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "source",
+        visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = SdkRightsizerRecommendationSetting.class, name = "RIGHTSIZER"),
+        @JsonSubTypes.Type(value = SdkCustodianRecommendationSetting.class, name = "CUSTODIAN"),
+})
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public abstract class SdkRecommendationSetting {
+
     private SdkCloud cloud;
     private String tenantName;
     private String regionName;
-    private SdkRecommendationCategory category;
     private SdkUiRecommendationSource source;
     private String resourceId;
     private ResourceType resourceType;
@@ -58,14 +72,6 @@ public class SdkRecommendationSetting {
 
     public void setRegionName(String regionName) {
         this.regionName = regionName;
-    }
-
-    public SdkRecommendationCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(SdkRecommendationCategory category) {
-        this.category = category;
     }
 
     public SdkUiRecommendationSource getSource() {
@@ -106,7 +112,6 @@ public class SdkRecommendationSetting {
             "cloud=" + cloud +
             ", tenantName='" + tenantName + '\'' +
             ", regionName='" + regionName + '\'' +
-            ", category=" + category +
             ", source=" + source +
             ", resourceId='" + resourceId + '\'' +
             ", resourceType=" + resourceType +

@@ -31,14 +31,12 @@ public class UnlockTerraformTemplateRequest implements ITenantRequest {
     private final String tenantName;
     private final String templateName;
     private final String description;
-    private final String userEmail;
 
     private UnlockTerraformTemplateRequest(Builder builder) {
         this.cloud = builder.cloud;
         this.tenantName = builder.tenantName;
         this.templateName = builder.templateName;
         this.description = builder.description;
-        this.userEmail = builder.userEmail;
     }
 
     public static Builder builder() {
@@ -61,10 +59,6 @@ public class UnlockTerraformTemplateRequest implements ITenantRequest {
         return description;
     }
 
-    public String getUserEmail() {
-        return userEmail;
-    }
-
     @Override
     public ActionType getActionType() {
         return ActionType.UNLOCK_TERRAFORM_TEMPLATE;
@@ -76,7 +70,6 @@ public class UnlockTerraformTemplateRequest implements ITenantRequest {
         private String tenantName;
         private String templateName;
         private String description;
-        private String userEmail;
 
         public Builder withCloud(SdkCloud cloud) {
             this.cloud = cloud;
@@ -98,17 +91,11 @@ public class UnlockTerraformTemplateRequest implements ITenantRequest {
             return this;
         }
 
-        public Builder withUserEmail(String userEmail) {
-            this.userEmail = userEmail;
-            return this;
-        }
-
         public UnlockTerraformTemplateRequest build() {
             Assert.notNull(cloud, "cloud");
             Assert.hasText(tenantName, "tenantName");
             Assert.hasText(templateName, "templateName");
             Assert.hasText(description, "description");
-            Assert.hasText(userEmail, "userEmail");
             return new UnlockTerraformTemplateRequest(this);
         }
     }

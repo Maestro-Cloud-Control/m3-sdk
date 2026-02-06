@@ -16,12 +16,39 @@
 
 package io.maestro3.sdk.v3.request;
 
+import io.maestro3.sdk.exception.M3SdkException;
+import io.maestro3.sdk.internal.util.StringUtils;
 import io.maestro3.sdk.v3.model.SdkCloud;
 
+import java.util.Objects;
+
 public interface ITenantRequest extends IRequest {
+
+    default String getAccountId() {
+        return null;
+    }
+
+    default String getTenantId() {
+        return null;
+    }
 
     // tenant display name
     String getTenantName();
 
     SdkCloud getCloud();
+
+    static void validateRequest(String tenantId, String accountId, String tenantName, SdkCloud cloud) {
+        boolean tenantIsValid = false;
+        if (StringUtils.isNotBlank(tenantId)) {
+            tenantIsValid = true;
+        } else if (StringUtils.isNotBlank(accountId) && Objects.nonNull(cloud)) {
+            tenantIsValid = true;
+        } else if (StringUtils.isNotBlank(tenantName) && Objects.nonNull(cloud)) {
+            tenantIsValid = true;
+        }
+        if (!tenantIsValid) {
+            throw new M3SdkException("Request should either have valid: tenantId OR (accountId AND cloud) OR (tenantName AND cloud). " +
+                    "Same order is used when the tenant will be resolved from request.");
+        }
+    }
 }

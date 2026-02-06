@@ -29,13 +29,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     visible = true)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = BasicRecord.class, name = ITableRecord.BASIC_RECORD),
-    @JsonSubTypes.Type(value = BasicNamedRecord.class, name = ITableRecord.BASIC_NAMED_RECORD),
     @JsonSubTypes.Type(value = ComplexRecord.class, name = ITableRecord.COMPLEX_RECORD),
 })
 public interface ITableRecord {
 
     String BASIC_RECORD = "b";
-    String BASIC_NAMED_RECORD = "n";
     String COMPLEX_RECORD = "c";
 
     void setValue(int headerIndex, Object value);

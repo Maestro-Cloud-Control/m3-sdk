@@ -30,6 +30,7 @@ import io.maestro3.sdk.v3.model.reporting.SdkBillingCostObjectDetailsResponse;
 import io.maestro3.sdk.v3.model.reporting.SdkBillingInvoicesResponse;
 import io.maestro3.sdk.v3.model.reporting.SdkBillingReportResponse;
 import io.maestro3.sdk.v3.model.reporting.SdkBillingTabularReportResponse;
+import io.maestro3.sdk.v3.model.status.M3BillingStatus;
 import io.maestro3.sdk.v3.request.billing.AddAdjustmentRequest;
 import io.maestro3.sdk.v3.request.billing.AddConsumptionDetailsRequest;
 import io.maestro3.sdk.v3.request.billing.AddConsumptionRequest;
@@ -52,6 +53,7 @@ import io.maestro3.sdk.v3.request.billing.MultiProjectEmailReportRequest;
 import io.maestro3.sdk.v3.request.billing.ResourceBillingReportRequest;
 import io.maestro3.sdk.v3.request.billing.SubTotalBillingReportRequest;
 import io.maestro3.sdk.v3.request.billing.TotalBillingReportRequest;
+import io.maestro3.sdk.v3.request.status.BillingStatusRequest;
 
 public class BillingManager extends AbstractManager implements IBillingManager {
 
@@ -99,11 +101,15 @@ public class BillingManager extends AbstractManager implements IBillingManager {
             .withFormat(request.getFormat());
         SdkMultiProjectBillingReportTarget reportUnitDetails = request.getTarget();
         multiprojectRequestBuilder.withEoAccount(reportUnitDetails.getAccountId())
+            .withUnitId(reportUnitDetails.getUnitId())
+            .withUnitContactId(reportUnitDetails.getUnitContactId())
+            .withUnitContactRole(reportUnitDetails.getUnitContactRole())
             .withRegion(reportUnitDetails.getRegion())
             .withTenantGroups(reportUnitDetails.getTenantGroups())
             .withTenantNames(reportUnitDetails.getTenantNames())
             .withReportProjectType(request.getType().name())
             .withNativeCurrency(request.isNativeCurrency())
+            .withIncludeBillingSource(request.isIncludeBillingSource())
             .withCached(request.isCached());
         ReportUnit reportUnit = reportUnitDetails.getReportUnit();
         switch (reportUnit) {
@@ -255,11 +261,19 @@ public class BillingManager extends AbstractManager implements IBillingManager {
 
     @Override
     public M3Result<Object> deleteAdjustment(IPrincipal principal, DeleteAdjustmentRequest request) {
-        return execute(principal, request, new TypeReference<>() {});
+        return execute(principal, request, new TypeReference<>() {
+        });
     }
 
     @Override
     public M3Result<Object> checkTenantStatusRequest(IPrincipal principal, CheckTenantStatusRequest request) {
-        return execute(principal, request, new TypeReference<>() {});
+        return execute(principal, request, new TypeReference<>() {
+        });
+    }
+
+    @Override
+    public M3Result<M3BillingStatus> checkBillingStatus(IPrincipal principal, BillingStatusRequest request) {
+        return execute(principal, request, new TypeReference<M3BillingStatus>() {
+        });
     }
 }

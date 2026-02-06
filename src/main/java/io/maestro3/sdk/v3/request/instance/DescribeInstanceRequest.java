@@ -16,6 +16,9 @@
 
 package io.maestro3.sdk.v3.request.instance;
 
+import com.fasterxml.jackson.annotation.JsonClassDescription;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.core.ActionType;
@@ -28,8 +31,11 @@ import java.util.Set;
 
 @JsonDeserialize(builder = DescribeInstanceRequest.Builder.class)
 public class DescribeInstanceRequest implements IRegionRequest {
-
+    @JsonPropertyDescription("The display name of the tenant in which the instances will be described")
+    @JsonProperty(required = true)
     private final String tenantName;
+    @JsonPropertyDescription("The name of the tenant region in which the instances will be described")
+    @JsonProperty(required = true)
     private final String region;
     private final Set<String> instanceIds;
     private final SdkResourceTag resourceTag;

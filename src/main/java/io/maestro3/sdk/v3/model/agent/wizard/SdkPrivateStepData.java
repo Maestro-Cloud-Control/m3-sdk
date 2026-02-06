@@ -1,11 +1,11 @@
 /*
- * Copyright 2023 Maestro Cloud Control LLC
+ * Copyright 2024 Maestro Cloud Control LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -129,10 +129,6 @@ public class SdkPrivateStepData {
         this.text = text;
     }
 
-    public void setText(SdkTextItem text) {
-        this.text = new ArrayList<>(Collections.singleton(text));
-    }
-
     public void addText(SdkTextItem text) {
         this.text.add(text);
     }
@@ -146,10 +142,6 @@ public class SdkPrivateStepData {
 
     public void setSelect(List<SdkSelectItem> select) {
         this.select = select;
-    }
-
-    public void setSelect(SdkSelectItem select) {
-        this.select = new ArrayList<>(Collections.singleton(select));
     }
 
     public void addSelect(SdkSelectItem... sdkSelectItems) {
@@ -176,22 +168,12 @@ public class SdkPrivateStepData {
         this.message = message;
     }
 
-    public void setMessage(SdkMessageItem message) {
-        if (message != null) {
-            this.message = new ArrayList<>(Collections.singleton(message));
-        }
-    }
-
     public List<SdkTextAreaItem> getTextArea() {
         return textArea;
     }
 
     public void setTextArea(List<SdkTextAreaItem> textArea) {
         this.textArea = textArea;
-    }
-
-    public void setTextArea(SdkTextAreaItem textArea) {
-        this.textArea = new ArrayList<>(Collections.singleton(textArea));
     }
 
     public void addTextArea(SdkTextAreaItem textArea) {

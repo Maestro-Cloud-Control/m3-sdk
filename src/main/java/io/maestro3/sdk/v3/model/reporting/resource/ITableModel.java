@@ -1,11 +1,11 @@
 /*
- * Copyright 2023 Maestro Cloud Control LLC
+ * Copyright 2024 Maestro Cloud Control LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.List;
+import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -32,7 +33,7 @@ import java.util.List;
 @JsonSubTypes({
     @JsonSubTypes.Type(value = BasicTable.class, name = ITableModel.BASIC_TABLE),
     @JsonSubTypes.Type(value = BasicTableView.class, name = ITableModel.BASIC_TABLE_WITH_VIEW),
-    @JsonSubTypes.Type(value = BasicTableViewWithDataset.class, name = ITableModel.BASIC_TABLE_WITH_DATASET),
+    @JsonSubTypes.Type(value = BasicTable.class, name = ITableModel.BASIC_TABLE_WITH_DATASET),
 })
 public interface ITableModel<R extends ITableRecord> {
 
@@ -40,8 +41,15 @@ public interface ITableModel<R extends ITableRecord> {
     String BASIC_TABLE_WITH_VIEW = "tableWithView";
     String BASIC_TABLE_WITH_DATASET = "tableWithDataset";
 
-    List<String> getHeaders();
+    List<TableHeaderCell> getHeaders();
 
     List<R> getRecords();
 
+    R getOthersRecord();
+
+    R getTotalRecord();
+
+    List<Object> getAdditionalDataset();
+
+    Map<String, Object> getProperties();
 }

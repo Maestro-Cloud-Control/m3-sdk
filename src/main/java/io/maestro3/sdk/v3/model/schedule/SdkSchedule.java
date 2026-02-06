@@ -40,7 +40,7 @@ public class SdkSchedule {
     private SdkCloud cloud;
     private String executeProperty;
     private String whenToExecute;
-    private List<Map> instances;
+    private List<Map<String, Object>> instances;
     private String serviceEntryId;
     private boolean periodical;
 
@@ -206,11 +206,11 @@ public class SdkSchedule {
         return this;
     }
 
-    public List<Map> getInstances() {
+    public List<Map<String, Object>> getInstances() {
         return instances;
     }
 
-    public SdkSchedule setInstances(List<Map> instances) {
+    public SdkSchedule setInstances(List<Map<String, Object>> instances) {
         this.instances = instances;
         return this;
     }

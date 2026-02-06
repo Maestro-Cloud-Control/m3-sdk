@@ -16,6 +16,9 @@
 
 package io.maestro3.sdk.v3.model.shape;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SdkShapeInfo {
 
     private String name;
@@ -23,6 +26,9 @@ public class SdkShapeInfo {
     private int cpuCount;
     private double memory;
     private int storageGb;
+    private int maxAdditionalStorageCount;
+    private String generation;
+    private String nativeInstanceType;
 
     public String getName() {
         return name;
@@ -63,4 +69,29 @@ public class SdkShapeInfo {
     public void setStorageGb(int storageGb) {
         this.storageGb = storageGb;
     }
+
+    public int getMaxAdditionalStorageCount() {
+        return maxAdditionalStorageCount;
+    }
+
+    public void setMaxAdditionalStorageCount(int maxAdditionalStorageCount) {
+        this.maxAdditionalStorageCount = maxAdditionalStorageCount;
+    }
+
+    public String getGeneration() {
+        return generation;
+    }
+
+    public void setGeneration(String generation) {
+        this.generation = generation;
+    }
+
+    public String getNativeInstanceType() {
+        return nativeInstanceType;
+    }
+
+    public void setNativeInstanceType(String nativeInstanceType) {
+        this.nativeInstanceType = nativeInstanceType;
+    }
+
 }

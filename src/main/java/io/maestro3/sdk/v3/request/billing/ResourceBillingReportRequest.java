@@ -28,7 +28,7 @@ public class ResourceBillingReportRequest extends AbstractBillingReportRequest {
     private final List<String> instanceIds;
 
     private ResourceBillingReportRequest(Builder builder) {
-        super(builder, BillingReportFormat.JSON);
+        super(builder, BillingReportFormat.JSON_LIMITED);
         this.instanceIds = builder.instanceIds;
     }
 

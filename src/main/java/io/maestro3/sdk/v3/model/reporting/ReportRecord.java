@@ -28,6 +28,7 @@ public class ReportRecord {
     private Integer number;
     private String recordType;
     private String customer;
+    private String cloud;
     private String zone;
     private String projectCode;
     private String originalProjectCode;
@@ -87,6 +88,9 @@ public class ReportRecord {
 
     private String tenantName;
     private String originalTenantName;
+    private String accountId;
+
+    private String billingSource;
 
     public ReportRecord() {
         //json
@@ -114,6 +118,14 @@ public class ReportRecord {
 
     public void setCustomer(String customer) {
         this.customer = customer;
+    }
+
+    public String getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(String cloud) {
+        this.cloud = cloud;
     }
 
     public String getZone() {
@@ -476,6 +488,22 @@ public class ReportRecord {
         this.originalTenantName = originalTenantName;
     }
 
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getBillingSource() {
+        return billingSource;
+    }
+
+    public void setBillingSource(String billingSource) {
+        this.billingSource = billingSource;
+    }
+
     public String getNativeResourceId() {
         return nativeResourceId;
     }
@@ -489,18 +517,19 @@ public class ReportRecord {
         if (this == o) return true;
         if (!(o instanceof ReportRecord)) return false;
         ReportRecord that = (ReportRecord) o;
-        return Objects.equals(number, that.number) && Objects.equals(recordType, that.recordType) && Objects.equals(customer, that.customer) && Objects.equals(zone, that.zone) && Objects.equals(projectCode, that.projectCode) && Objects.equals(originalProjectCode, that.originalProjectCode) && Objects.equals(projectType, that.projectType) && Objects.equals(billingPeriodStartDate, that.billingPeriodStartDate) && Objects.equals(billingPeriodEndDate, that.billingPeriodEndDate) && Objects.equals(productName, that.productName) && Objects.equals(resource, that.resource) && Objects.equals(usageType, that.usageType) && Objects.equals(resourceType, that.resourceType) && Objects.equals(operation, that.operation) && Objects.equals(resourceId, that.resourceId) && Objects.equals(resourceName, that.resourceName) && Objects.equals(resourceDescription, that.resourceDescription) && Objects.equals(operationSystem, that.operationSystem) && Objects.equals(virtualDataCenter, that.virtualDataCenter) && Objects.equals(instance, that.instance) && Objects.equals(description, that.description) && Objects.equals(usageStartDate, that.usageStartDate) && Objects.equals(usageEndDate, that.usageEndDate) && Objects.equals(quantity, that.quantity) && Objects.equals(unit, that.unit) && Objects.equals(currencyCode, that.currencyCode) && Objects.equals(totalPrice, that.totalPrice) && Objects.equals(zoneTypesTotalPrice, that.zoneTypesTotalPrice) && Objects.equals(yearTotalPrice, that.yearTotalPrice) && Objects.equals(monthOverMonth, that.monthOverMonth) && Objects.equals(businessUnitName, that.businessUnitName) && Objects.equals(tag, that.tag) && Objects.equals(costCenterName, that.costCenterName) && Objects.equals(additionalInfo, that.additionalInfo) && Objects.equals(accountManager, that.accountManager) && Objects.equals(projectSponsor, that.projectSponsor) && Objects.equals(projectDeactivationDate, that.projectDeactivationDate) && Objects.equals(projectUpsaDeactivationDate, that.projectUpsaDeactivationDate) && Objects.equals(comments, that.comments) && Objects.equals(serverOwner, that.serverOwner) && Objects.equals(serverName, that.serverName) && Objects.equals(serverUsage, that.serverUsage) && Objects.equals(invoiceId, that.invoiceId) && Objects.equals(invoiceDate, that.invoiceDate) && Objects.equals(subscriptionId, that.subscriptionId) && Objects.equals(azureBillingProvider, that.azureBillingProvider) && Objects.equals(tenantName, that.tenantName) && Objects.equals(originalTenantName, that.originalTenantName);
+        return Objects.equals(number, that.number) && Objects.equals(recordType, that.recordType) && Objects.equals(customer, that.customer) && Objects.equals(cloud, that.cloud) && Objects.equals(zone, that.zone) && Objects.equals(projectCode, that.projectCode) && Objects.equals(originalProjectCode, that.originalProjectCode) && Objects.equals(projectType, that.projectType) && Objects.equals(billingPeriodStartDate, that.billingPeriodStartDate) && Objects.equals(billingPeriodEndDate, that.billingPeriodEndDate) && Objects.equals(productName, that.productName) && Objects.equals(resource, that.resource) && Objects.equals(usageType, that.usageType) && Objects.equals(resourceType, that.resourceType) && Objects.equals(operation, that.operation) && Objects.equals(resourceId, that.resourceId) && Objects.equals(resourceName, that.resourceName) && Objects.equals(resourceDescription, that.resourceDescription) && Objects.equals(operationSystem, that.operationSystem) && Objects.equals(virtualDataCenter, that.virtualDataCenter) && Objects.equals(instance, that.instance) && Objects.equals(description, that.description) && Objects.equals(usageStartDate, that.usageStartDate) && Objects.equals(usageEndDate, that.usageEndDate) && Objects.equals(quantity, that.quantity) && Objects.equals(unit, that.unit) && Objects.equals(currencyCode, that.currencyCode) && Objects.equals(totalPrice, that.totalPrice) && Objects.equals(zoneTypesTotalPrice, that.zoneTypesTotalPrice) && Objects.equals(yearTotalPrice, that.yearTotalPrice) && Objects.equals(monthOverMonth, that.monthOverMonth) && Objects.equals(businessUnitName, that.businessUnitName) && Objects.equals(tag, that.tag) && Objects.equals(costCenterName, that.costCenterName) && Objects.equals(additionalInfo, that.additionalInfo) && Objects.equals(accountManager, that.accountManager) && Objects.equals(projectSponsor, that.projectSponsor) && Objects.equals(projectDeactivationDate, that.projectDeactivationDate) && Objects.equals(projectUpsaDeactivationDate, that.projectUpsaDeactivationDate) && Objects.equals(comments, that.comments) && Objects.equals(serverOwner, that.serverOwner) && Objects.equals(serverName, that.serverName) && Objects.equals(serverUsage, that.serverUsage) && Objects.equals(invoiceId, that.invoiceId) && Objects.equals(invoiceDate, that.invoiceDate) && Objects.equals(subscriptionId, that.subscriptionId) && Objects.equals(azureBillingProvider, that.azureBillingProvider) && Objects.equals(tenantName, that.tenantName) && Objects.equals(originalTenantName, that.originalTenantName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, recordType, customer, zone, projectCode, originalProjectCode, projectType, billingPeriodStartDate, billingPeriodEndDate, productName, resource, usageType, resourceType, operation, resourceId, resourceName, resourceDescription, operationSystem, virtualDataCenter, instance, description, usageStartDate, usageEndDate, quantity, unit, currencyCode, totalPrice, zoneTypesTotalPrice, yearTotalPrice, monthOverMonth, businessUnitName, tag, costCenterName, additionalInfo, accountManager, projectSponsor, projectDeactivationDate, projectUpsaDeactivationDate, comments, serverOwner, serverName, serverUsage, invoiceId, invoiceDate, subscriptionId, azureBillingProvider, tenantName, originalTenantName);
+        return Objects.hash(number, recordType, customer, cloud, zone, projectCode, originalProjectCode, projectType, billingPeriodStartDate, billingPeriodEndDate, productName, resource, usageType, resourceType, operation, resourceId, resourceName, resourceDescription, operationSystem, virtualDataCenter, instance, description, usageStartDate, usageEndDate, quantity, unit, currencyCode, totalPrice, zoneTypesTotalPrice, yearTotalPrice, monthOverMonth, businessUnitName, tag, costCenterName, additionalInfo, accountManager, projectSponsor, projectDeactivationDate, projectUpsaDeactivationDate, comments, serverOwner, serverName, serverUsage, invoiceId, invoiceDate, subscriptionId, azureBillingProvider, tenantName, originalTenantName);
     }
 
     @Override
     public String toString() {
         return "ReportRecord{" +
             "recordType='" + recordType + '\'' +
+            ", cloud='" + cloud + '\'' +
             ", zone='" + zone + '\'' +
             ", projectCode='" + projectCode + '\'' +
             ", totalPrice=" + totalPrice +

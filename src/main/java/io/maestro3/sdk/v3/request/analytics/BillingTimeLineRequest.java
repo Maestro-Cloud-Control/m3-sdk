@@ -22,6 +22,7 @@ import io.maestro3.sdk.v3.core.ActionType;
 import io.maestro3.sdk.v3.request.IRequest;
 
 import java.util.List;
+import java.util.Set;
 
 @JsonDeserialize(builder = BillingTimeLineRequest.Builder.class)
 public class BillingTimeLineRequest implements IRequest {
@@ -29,13 +30,13 @@ public class BillingTimeLineRequest implements IRequest {
     private final List<String> zoneIds;
     private final List<String> types;
     private final String tenantName;
-    private final String resourceId;
+    private final Set<String> resourceIds;
 
     private BillingTimeLineRequest(Builder builder) {
         this.zoneIds = builder.zoneIds;
         this.types = builder.types;
         this.tenantName = builder.tenantName;
-        this.resourceId = builder.resourceId;
+        this.resourceIds = builder.resourceIds;
     }
 
     public static Builder builder() {
@@ -54,8 +55,8 @@ public class BillingTimeLineRequest implements IRequest {
         return tenantName;
     }
 
-    public String getResourceId() {
-        return resourceId;
+    public Set<String> getResourceIds() {
+        return resourceIds;
     }
 
     @Override
@@ -68,7 +69,7 @@ public class BillingTimeLineRequest implements IRequest {
         private List<String> zoneIds;
         private List<String> types;
         private String tenantName;
-        private String resourceId;
+        private Set<String> resourceIds;
 
         public Builder withZoneIds(List<String> zoneIds) {
             this.zoneIds = zoneIds;
@@ -85,8 +86,8 @@ public class BillingTimeLineRequest implements IRequest {
             return this;
         }
 
-        public Builder withResourceId(String resourceId) {
-            this.resourceId = resourceId;
+        public Builder withResourceIds(Set<String> resourceIds) {
+            this.resourceIds = resourceIds;
             return this;
         }
 

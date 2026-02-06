@@ -37,6 +37,7 @@ public enum SdkCloud {
     WORKSPACE(false),
     AOS(false),
     NUTANIX(false),
+    OPEN_NEBULA(false),
     HYPERV(false);
 
     private static final SdkCloud[] VALUES = values();

@@ -50,6 +50,9 @@ public final class OwnershipCloudParamNames {
     // VMWARE
     public static final String VMWARE_PROJECT_ID = "vmwareProjectId";
 
+    // OPEN_NEBULA
+    public static final String OPEN_NEBULA_PROJECT_ID = "openNebulaProjectId";
+
     //Enterprise
     public static final String ENTERPRISE_PROJECT_ID = "enterpriseProjectId";
 

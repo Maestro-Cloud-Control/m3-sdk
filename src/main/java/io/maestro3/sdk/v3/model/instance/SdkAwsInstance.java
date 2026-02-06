@@ -28,6 +28,7 @@ public class SdkAwsInstance extends SdkInstance {
     private List<String> deviceNames;
     private List<SdkAwsDiskInfo> diskInfos;
     private String nativeInstanceType;
+    private boolean spot;
 
     public SdkAwsInstance() {
         this.setCloud(SdkCloud.AWS);
@@ -71,6 +72,14 @@ public class SdkAwsInstance extends SdkInstance {
 
     public void setNativeInstanceType(String nativeInstanceType) {
         this.nativeInstanceType = nativeInstanceType;
+    }
+
+    public boolean isSpot() {
+        return spot;
+    }
+
+    public void setSpot(boolean spot) {
+        this.spot = spot;
     }
 
     @Override

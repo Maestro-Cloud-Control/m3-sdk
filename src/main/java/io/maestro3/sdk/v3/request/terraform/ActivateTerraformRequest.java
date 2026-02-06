@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.core.ActionType;
 import io.maestro3.sdk.v3.model.SdkCloud;
+import io.maestro3.sdk.v3.model.annotation.SecuredParams;
 import io.maestro3.sdk.v3.model.credentials.ICredentials;
 import io.maestro3.sdk.v3.request.IServiceRequest;
 import io.maestro3.sdk.v3.request.ITenantRequest;
@@ -30,13 +31,16 @@ import java.util.Map;
 @JsonDeserialize(builder = ActivateTerraformRequest.Builder.class)
 public class ActivateTerraformRequest implements IServiceRequest, ITenantRequest {
 
+    private final String applicationId;
     private final SdkCloud cloud;
     private final String tenantName;
+    @SecuredParams
     private final ICredentials credentials;
     private final Map<String, Object> additionalParameters;
 
     private ActivateTerraformRequest(Builder builder) {
         this.cloud = builder.cloud;
+        this.applicationId = builder.applicationId;
         this.tenantName = builder.tenantName;
         this.credentials = builder.credentials;
         this.additionalParameters = builder.additionalParameters;
@@ -49,6 +53,10 @@ public class ActivateTerraformRequest implements IServiceRequest, ITenantRequest
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public String getApplicationId() {
+        return applicationId;
     }
 
     @Override
@@ -70,10 +78,16 @@ public class ActivateTerraformRequest implements IServiceRequest, ITenantRequest
     }
 
     public static final class Builder {
+        private String applicationId;
         private SdkCloud cloud;
         private String tenantName;
         private ICredentials credentials;
         private final Map<String, Object> additionalParameters = new HashMap<>();
+
+        public Builder withApplicationId(String applicationId) {
+            this.applicationId = applicationId;
+            return this;
+        }
 
         public Builder withTenantName(String tenantName) {
             this.tenantName = tenantName;

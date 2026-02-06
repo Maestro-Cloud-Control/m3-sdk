@@ -17,12 +17,15 @@
 package io.maestro3.sdk.v3.request.instance;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.exception.M3SdkException;
 import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.internal.util.CollectionUtils;
 import io.maestro3.sdk.internal.util.StringUtils;
 import io.maestro3.sdk.v3.core.ActionType;
+import io.maestro3.sdk.v3.model.annotation.SecuredParams;
 import io.maestro3.sdk.v3.request.IRegionRequest;
 
 import java.util.List;
@@ -31,13 +34,27 @@ import java.util.Map;
 @JsonDeserialize(builder = RunInstanceRequest.Builder.class)
 public class RunInstanceRequest implements IRegionRequest {
 
+    @JsonProperty(required = true)
+    @JsonPropertyDescription("Tenant display name were new virtual machine will be started")
     private final String tenantName;
+    @JsonProperty(required = true)
+    @JsonPropertyDescription("Region name were new virtual machine will be started")
     private final String region;
+    @JsonProperty(required = true)
+    @JsonPropertyDescription("Instance name that will be used for new virtual machine")
     private final String instanceName;
+    @JsonProperty(required = true)
+    @JsonPropertyDescription("Image name that will be used as source for virtual machine")
     private final String imageId;
+    @JsonProperty(required = true)
+    @JsonPropertyDescription("Virtual machine size. Represent count of vCpu, RAM and storage")
     private final String shape;
     private final String instanceType;
+    @JsonProperty(required = true)
+    @JsonPropertyDescription("Email of the request initiator")
     private final String owner;
+    @JsonProperty(required = true)
+    @JsonPropertyDescription("Name of user ssh key")
     private final String keyName;
     private final int count;
     private final Integer stopAfter;
@@ -45,15 +62,19 @@ public class RunInstanceRequest implements IRegionRequest {
     private final String chefProfile;
     private final boolean installChefClient;
     private final String insanceChefUuid;
+    @SecuredParams
     private final String initScript;
     private final String userScriptId;
+    private final String userScriptName;
     private final String username;
+    @SecuredParams
     private final String password;
     private final String availabilityZone;
     private final Map<String, String> additionalData;
     private final Map<String, String> tags;
     private final Boolean lockedTermination;
     private final List<String> networks;
+    private final String subNetwork;
     private final List<String> securityGroups;
     private final String ip;
 
@@ -74,6 +95,7 @@ public class RunInstanceRequest implements IRegionRequest {
         this.count = builder.count;
         this.initScript = builder.initScript;
         this.userScriptId = builder.userScriptId;
+        this.userScriptName = builder.userScriptName;
         this.username = builder.username;
         this.password = builder.password;
         this.availabilityZone = builder.availabilityZone;
@@ -81,16 +103,48 @@ public class RunInstanceRequest implements IRegionRequest {
         this.tags = builder.tags;
         this.lockedTermination = builder.lockedTermination;
         this.networks = builder.networks;
+        this.subNetwork = builder.subNetwork;
         this.securityGroups = builder.securityGroups;
         this.ip = builder.ip;
     }
 
-    public String getInitScript() {
-        return initScript;
-    }
-
     public static Builder builder() {
         return new Builder();
+    }
+
+    public Builder toBuilder() {
+        return builder()
+            .withTenantName(tenantName)
+            .withRegion(region)
+            .withInstanceName(instanceName)
+            .withImageId(imageId)
+            .withShape(shape)
+            .withInstanceType(instanceType)
+            .withOwner(owner)
+            .withKeyName(keyName)
+            .withCount(count)
+            .withStopAfter(stopAfter)
+            .withTerminateAfter(terminateAfter)
+            .withChefProfile(chefProfile)
+            .withInstallChefClient(installChefClient)
+            .withInsanceChefUuid(insanceChefUuid)
+            .withInitScript(initScript)
+            .withUserScriptId(userScriptId)
+            .withUserScriptName(userScriptName)
+            .withUsername(username)
+            .withPassword(password)
+            .withAvailabilityZone(availabilityZone)
+            .withAdditionalData(additionalData)
+            .withTags(tags)
+            .withLockedTermination(lockedTermination)
+            .withNetworks(networks)
+            .withSubNetwork(subNetwork)
+            .withSecurityGroups(securityGroups)
+            .withIp(ip);
+    }
+
+    public String getInitScript() {
+        return initScript;
     }
 
     public Integer getStopAfter() {
@@ -153,6 +207,10 @@ public class RunInstanceRequest implements IRegionRequest {
         return userScriptId;
     }
 
+    public String getUserScriptName() {
+        return userScriptName;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -183,6 +241,10 @@ public class RunInstanceRequest implements IRegionRequest {
 
     public List<String> getSecurityGroups() {
         return securityGroups;
+    }
+
+    public String getSubNetwork() {
+        return subNetwork;
     }
 
     @JsonIgnore
@@ -217,6 +279,7 @@ public class RunInstanceRequest implements IRegionRequest {
         private String chefProfile;
         private String initScript;
         private String userScriptId;
+        private String userScriptName;
         private String username;
         private String password;
         private String availabilityZone;
@@ -224,6 +287,7 @@ public class RunInstanceRequest implements IRegionRequest {
         private Map<String, String> tags;
         private Boolean lockedTermination;
         private List<String> networks;
+        private String subNetwork;
         private List<String> securityGroups;
         private String ip;
 
@@ -234,6 +298,11 @@ public class RunInstanceRequest implements IRegionRequest {
 
         public Builder withNetworks(List<String> networks) {
             this.networks = networks;
+            return this;
+        }
+
+        public Builder withSubNetwork(String subNetwork) {
+            this.subNetwork = subNetwork;
             return this;
         }
 
@@ -319,6 +388,11 @@ public class RunInstanceRequest implements IRegionRequest {
 
         public Builder withUserScriptId(String userScriptId) {
             this.userScriptId = userScriptId;
+            return this;
+        }
+
+        public Builder withUserScriptName(String userScriptName) {
+            this.userScriptName = userScriptName;
             return this;
         }
 

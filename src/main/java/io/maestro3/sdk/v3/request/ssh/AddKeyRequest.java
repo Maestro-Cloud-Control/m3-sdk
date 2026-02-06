@@ -16,6 +16,8 @@
 
 package io.maestro3.sdk.v3.request.ssh;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.core.ActionType;
@@ -27,6 +29,8 @@ import java.util.Optional;
 @JsonDeserialize(builder = AddKeyRequest.Builder.class)
 public class AddKeyRequest implements IRequest {
 
+    @JsonProperty(required = true)
+    @JsonPropertyDescription("Name of the ssh key")
     private final String name;
     private final String publicKey;
 
@@ -34,6 +38,8 @@ public class AddKeyRequest implements IRequest {
     private final String tenantName;
     private final SdkCloud cloud;
     private final String region;
+    @JsonProperty
+    @JsonPropertyDescription("This parameter specify that key will be added to all available tenant")
     private final Boolean allTenants;
 
     private AddKeyRequest(Builder builder) {

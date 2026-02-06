@@ -25,7 +25,6 @@ public class ApprovalResult {
     private String jobId;
     private ApprovalActionType actionType;
     private Map<String, Object> placeHolders;
-    private String markUpMessage;
 
     public ApprovalResult() {
     }
@@ -44,14 +43,12 @@ public class ApprovalResult {
                           ResultStatus status,
                           String jobId,
                           ApprovalActionType actionType,
-                          Map<String, Object> placeHolders,
-                          String markUpMessage) {
+                          Map<String, Object> placeHolders) {
         this.message = message;
         this.status = status;
         this.jobId = jobId;
         this.actionType = actionType;
         this.placeHolders = placeHolders;
-        this.markUpMessage = markUpMessage;
     }
 
     public String getMessage() {
@@ -94,14 +91,6 @@ public class ApprovalResult {
         this.placeHolders = placeHolders;
     }
 
-    public String getMarkUpMessage() {
-        return markUpMessage;
-    }
-
-    public void setMarkUpMessage(String markUpMessage) {
-        this.markUpMessage = markUpMessage;
-    }
-
     public static Builder builder() {
         return new Builder();
     }
@@ -112,7 +101,6 @@ public class ApprovalResult {
         private String jobId;
         private ApprovalActionType actionType;
         private Map<String, Object> placeHolders;
-        private String markUpMessage;
 
         public Builder withMessage(String message) {
             this.message = message;
@@ -139,18 +127,12 @@ public class ApprovalResult {
             return this;
         }
 
-        public Builder withMarkUpMessage(String markUpMessage) {
-            this.markUpMessage = markUpMessage;
-            return this;
-        }
-
         public ApprovalResult build() {
             return new ApprovalResult(message,
                 status,
                 jobId,
                 actionType,
-                placeHolders,
-                markUpMessage);
+                placeHolders);
         }
     }
 
@@ -162,7 +144,6 @@ public class ApprovalResult {
             ", jobId='" + jobId + '\'' +
             ", actionType=" + actionType +
             ", placeHolders=" + placeHolders +
-            ", markUpMessage='" + markUpMessage + '\'' +
             '}';
     }
 }

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.util.List;
 import java.util.Map;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
@@ -44,6 +45,7 @@ public abstract class SdkKubernetesCluster {
     private String state;
     private Boolean deleted;
     private Map<String, Object> properties;
+    private List<String> autoScalingGroups;
 
     public String getClusterId() {
         return clusterId;
@@ -115,5 +117,17 @@ public abstract class SdkKubernetesCluster {
 
     public void setProperties(Map<String, Object> properties) {
         this.properties = properties;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public List<String> getAutoScalingGroups() {
+        return autoScalingGroups;
+    }
+
+    public void setAutoScalingGroups(List<String> autoScalingGroups) {
+        this.autoScalingGroups = autoScalingGroups;
     }
 }

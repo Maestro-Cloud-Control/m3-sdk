@@ -27,6 +27,7 @@ import io.maestro3.sdk.internal.provider.IM3CredentialsProvider;
 import io.maestro3.sdk.internal.provider.IM3ServerContextProvider;
 import io.maestro3.sdk.internal.signer.impl.M3Signer;
 import io.maestro3.sdk.internal.util.Assert;
+import io.maestro3.sdk.internal.util.StringUtils;
 import io.maestro3.sdk.v3.client.IM3Client;
 
 import java.net.URLEncoder;
@@ -137,6 +138,7 @@ public final class M3Sdk {
             private String host;
             private int port = 5672;
             private int timeoutMillis = ClientConfiguration.DEFAULT_RABBIT_CONNECTION_TIMEOUT_MILLIS;
+            private String url;
             private String virtualHost = "/";
             private String username;
             private String password;
@@ -151,12 +153,20 @@ public final class M3Sdk {
                 this.clientBuilder = clientBuilder;
             }
 
+            public RabbitExecutorBuilder withUrl(String url) {
+                Assert.hasText(url, "url");
+                this.url = url;
+                return this;
+            }
+
+            @Deprecated
             public RabbitExecutorBuilder withHost(String host) {
                 Assert.hasText(host, "host");
                 this.host = host;
                 return this;
             }
 
+            @Deprecated
             public RabbitExecutorBuilder withPort(int port) {
                 Assert.isPositive(port, "port");
                 this.port = port;
@@ -169,18 +179,21 @@ public final class M3Sdk {
                 return this;
             }
 
+            @Deprecated
             public RabbitExecutorBuilder withVirtualHost(String virtualHost) {
                 Assert.hasText(virtualHost, "virtualHost");
                 this.virtualHost = virtualHost;
                 return this;
             }
 
+            @Deprecated
             public RabbitExecutorBuilder withUsername(String username) {
                 Assert.hasText(username, "username");
                 this.username = username;
                 return this;
             }
 
+            @Deprecated
             public RabbitExecutorBuilder withPassword(String password) {
                 Assert.hasText(password, "password");
                 this.password = password;
@@ -216,35 +229,38 @@ public final class M3Sdk {
                 return this;
             }
 
+            @Deprecated
             public RabbitExecutorBuilder sslEnabled(boolean sslEnabled) {
                 this.sslEnabled = sslEnabled;
                 return this;
             }
 
             public IM3Client build() {
-                Assert.hasText(host, "host");
-                Assert.isPositive(port, "port");
                 Assert.isPositive(timeoutMillis, "timeoutMillis");
-                Assert.hasText(virtualHost, "virtualHost");
-                Assert.hasText(username, "username");
-                Assert.hasText(password, "password");
                 Assert.hasText(requestExchangeName, "requestExchangeName");
                 Assert.hasText(responseQueue, "responseQueue");
                 Assert.hasText(syncRequestQueueName, "syncRequestQueueName");
                 Assert.hasText(asyncRequestQueueName, "asyncRequestQueueName");
                 ConnectionFactory connectionFactory = new ConnectionFactory();
-                String uriPattern = sslEnabled ? AMQPS_URI_PLACEHOLDER : AMQP_URI_PLACEHOLDER;
-                String uri = String.format(uriPattern,
-                    URLEncoder.encode(username, StandardCharsets.US_ASCII),
-                    URLEncoder.encode(password, StandardCharsets.US_ASCII),
-                    host, port);
+                if (StringUtils.isBlank(url)) {
+                    Assert.hasText(host, "host");
+                    Assert.isPositive(port, "port");
+                    Assert.hasText(virtualHost, "virtualHost");
+                    Assert.hasText(username, "username");
+                    Assert.hasText(password, "password");
+                    String uriPattern = sslEnabled ? AMQPS_URI_PLACEHOLDER : AMQP_URI_PLACEHOLDER;
+                    url = String.format(uriPattern,
+                        URLEncoder.encode(username, StandardCharsets.US_ASCII),
+                        URLEncoder.encode(password, StandardCharsets.US_ASCII),
+                        host, port);
+                    connectionFactory.setVirtualHost(virtualHost);
+                }
                 try {
-                    connectionFactory.setUri(uri);
+                    connectionFactory.setUri(url);
                 } catch (Exception e) {
                     throw new IllegalArgumentException(e);
                 }
                 connectionFactory.setConnectionTimeout(timeoutMillis);
-                connectionFactory.setVirtualHost(virtualHost);
 
                 clientBuilder.actionExecutor = new RabbitMqM3ApiActionExecutor(clientBuilder.accessKeyProvider,
                         new M3Signer(clientBuilder.credentialsProvider), connectionFactory, requestExchangeName,

@@ -17,6 +17,7 @@
 package io.maestro3.sdk.v3.request.billing;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.maestro3.sdk.internal.util.StringUtils;
 import io.maestro3.sdk.v3.core.ActionType;
 
 @JsonDeserialize(builder = DeleteConsumptionRequest.DeleteConsumptionRequestBuilder.class)
@@ -41,6 +42,22 @@ public class DeleteConsumptionRequest extends AbstractConsumptionRequest {
         @Override
         protected DeleteConsumptionRequestBuilder getThis() {
             return this;
+        }
+
+        @Override
+        protected void validateParams() {
+            boolean removeSeveral = year != null
+                    && month != null
+                    && StringUtils.isNotBlank(description)
+                    && StringUtils.isNotBlank(serviceName);
+
+            boolean removeSpecific = targetTenant != null || targetAccountNumber != null ||
+                    targetRegion != null || targetCloud != null || sourceAccountNumber != null ||
+                    sourceTenant != null;
+
+            if (removeSpecific || !removeSeveral) {
+                super.validateParams();
+            }
         }
 
         @Override

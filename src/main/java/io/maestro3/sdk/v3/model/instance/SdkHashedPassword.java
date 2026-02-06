@@ -16,7 +16,11 @@
 
 package io.maestro3.sdk.v3.model.instance;
 
+import io.maestro3.sdk.v3.model.annotation.SecuredParams;
+
 public class SdkHashedPassword {
+
+    @SecuredParams
     private String password;
 
     public SdkHashedPassword() {

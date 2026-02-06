@@ -17,14 +17,18 @@
 package io.maestro3.sdk.v3.model.terraform.template;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.maestro3.sdk.v3.model.annotation.SecuredParams;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SdkTerraformTemplateVariable {
 
     private String name;
     private VariableType type;
+    @SecuredParams
     private Object allowedValue;
+    @SecuredParams
     private Object value;
+    @SecuredParams
     private Object defaultValue;
     private String description;
     private boolean sensitive;

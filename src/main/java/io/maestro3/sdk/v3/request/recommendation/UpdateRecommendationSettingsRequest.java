@@ -1,11 +1,11 @@
 /*
- * Copyright 2023 Maestro Cloud Control LLC
+ * Copyright 2025 Maestro Cloud Control LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,29 +19,34 @@ package io.maestro3.sdk.v3.request.recommendation;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.core.ActionType;
+import io.maestro3.sdk.v3.model.SdkCloud;
+import io.maestro3.sdk.v3.model.recommendation.SdkRecommendationSettingAction;
 import io.maestro3.sdk.v3.model.recommendation.SdkRecommendationSetting;
-import io.maestro3.sdk.v3.request.IRegionRequest;
-
+import io.maestro3.sdk.v3.request.ITenantRequest;
 import java.util.List;
 
 @JsonDeserialize(builder = UpdateRecommendationSettingsRequest.Builder.class)
-public class UpdateRecommendationSettingsRequest implements IRegionRequest {
+public class UpdateRecommendationSettingsRequest implements ITenantRequest {
+
+    private final SdkCloud cloud;
     private final String tenantName;
-    private final String region;
     private final List<SdkRecommendationSetting> settings;
+    private final SdkRecommendationSettingAction action;
 
     private UpdateRecommendationSettingsRequest(Builder builder) {
+        this.cloud = builder.cloud;
         this.tenantName = builder.tenantName;
-        this.region = builder.region;
         this.settings = builder.settings;
+        this.action = builder.action;
     }
 
-    public static UpdateRecommendationSettingsRequest.Builder builder() {
-        return new UpdateRecommendationSettingsRequest.Builder();
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public List<SdkRecommendationSetting> getSettings() {
-        return settings;
+    @Override
+    public SdkCloud getCloud() {
+        return cloud;
     }
 
     @Override
@@ -49,9 +54,12 @@ public class UpdateRecommendationSettingsRequest implements IRegionRequest {
         return tenantName;
     }
 
-    @Override
-    public String getRegion() {
-        return region;
+    public List<SdkRecommendationSetting> getSettings() {
+        return settings;
+    }
+
+    public SdkRecommendationSettingAction getAction() {
+        return action;
     }
 
     @Override
@@ -60,29 +68,37 @@ public class UpdateRecommendationSettingsRequest implements IRegionRequest {
     }
 
     public static final class Builder {
-        private String tenantName;
-        private String region;
-        private List<SdkRecommendationSetting> settings;
 
-        public UpdateRecommendationSettingsRequest.Builder withTenantName(String tenantName) {
+        private SdkCloud cloud;
+        private String tenantName;
+        private List<SdkRecommendationSetting> settings;
+        private SdkRecommendationSettingAction action;
+
+        public Builder withCloud(SdkCloud cloud) {
+            this.cloud = cloud;
+            return this;
+        }
+
+        public Builder withTenantName(String tenantName) {
             this.tenantName = tenantName;
             return this;
         }
 
-        public UpdateRecommendationSettingsRequest.Builder withRegion(String region) {
-            this.region = region;
-            return this;
-        }
-
-        public UpdateRecommendationSettingsRequest.Builder withSettings(List<SdkRecommendationSetting> settings) {
+        public Builder withSettings(List<SdkRecommendationSetting> settings) {
             this.settings = settings;
             return this;
         }
 
+        public Builder withAction(SdkRecommendationSettingAction action) {
+            this.action = action;
+            return this;
+        }
+
         public UpdateRecommendationSettingsRequest build() {
+            Assert.notNull(cloud, "cloud");
             Assert.hasText(tenantName, "tenantName");
-            Assert.hasText(region, "region");
             Assert.notEmpty(settings, "settings");
+            Assert.notNull(action, "action");
             return new UpdateRecommendationSettingsRequest(this);
         }
 

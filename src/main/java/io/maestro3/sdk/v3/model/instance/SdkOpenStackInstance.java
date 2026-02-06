@@ -21,6 +21,7 @@ import io.maestro3.sdk.v3.model.SdkCloud;
 public class SdkOpenStackInstance extends SdkInstance {
 
     private long diskSize;
+    private String vlanName;
 
     public SdkOpenStackInstance() {
         this.cloud = SdkCloud.OPEN_STACK;
@@ -32,5 +33,13 @@ public class SdkOpenStackInstance extends SdkInstance {
 
     public void setDiskSize(long diskSize) {
         this.diskSize = diskSize;
+    }
+
+    public String getVlanName() {
+        return vlanName;
+    }
+
+    public void setVlanName(String vlanName) {
+        this.vlanName = vlanName;
     }
 }

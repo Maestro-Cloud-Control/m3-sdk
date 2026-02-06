@@ -16,19 +16,28 @@
 
 package io.maestro3.sdk.v3.request.image;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.core.ActionType;
 import io.maestro3.sdk.v3.request.IRegionRequest;
+import java.util.List;
 
 @JsonDeserialize(builder = DescribeImageRequest.Builder.class)
 public class DescribeImageRequest implements IRegionRequest {
-
+    @JsonProperty(required = true)
+    @JsonPropertyDescription("Name of the tenant where user want to describe image")
     private final String tenantName;
+    @JsonProperty(required = true)
+    @JsonPropertyDescription("Name of the region in tenant where user want to describe image")
     private final String region;
+    private final List<String> imageAliases;
 
     private DescribeImageRequest(Builder builder) {
         this.tenantName = builder.tenantName;
         this.region = builder.region;
+        this.imageAliases = builder.imageAliases;
     }
 
     public static Builder builder() {
@@ -43,6 +52,10 @@ public class DescribeImageRequest implements IRegionRequest {
         return region;
     }
 
+    public List<String> getImageAliases() {
+        return imageAliases;
+    }
+
     @Override
     public ActionType getActionType() {
         return ActionType.DESCRIBE_IMAGE;
@@ -52,6 +65,7 @@ public class DescribeImageRequest implements IRegionRequest {
 
         private String tenantName;
         private String region;
+        private List<String> imageAliases;
 
         public Builder withTenantName(String tenantName) {
             this.tenantName = tenantName;
@@ -63,8 +77,22 @@ public class DescribeImageRequest implements IRegionRequest {
             return this;
         }
 
+        /**
+         * Describes images by aliases for specified region in tenant from the cloud
+         *
+         * @param imageAliases list of image aliases
+         */
+        public Builder withImageAliases(List<String> imageAliases) {
+            this.imageAliases = imageAliases;
+            return this;
+        }
+
         public DescribeImageRequest build() {
+            Assert.hasText(tenantName, "tenantName");
+            Assert.hasText(region, "region");
             return new DescribeImageRequest(this);
         }
+
     }
+
 }

@@ -16,13 +16,21 @@
 
 package io.maestro3.sdk.v3.request.instance;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.request.IRegionRequest;
 
 public abstract class InstanceActionRequest implements IRegionRequest {
 
+    @JsonProperty(required = true)
+    @JsonPropertyDescription("Tenant display name were instance action will be executed")
     private final String tenantName;
+    @JsonProperty(required = true)
+    @JsonPropertyDescription("Region name were instance action will be executed")
     private final String region;
+    @JsonProperty(required = true)
+    @JsonPropertyDescription("The identifier of the instance on which action will be executed")
     private final String instanceId;
     private final String availabilityZone;
 

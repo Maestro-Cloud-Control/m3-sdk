@@ -61,6 +61,8 @@ public interface IQuotaManager {
 
     M3Result<List<SdkPriceQuota>> getDepletedActiveQuotasByTenantDisplayNameAndRegionName(IPrincipal principal, DepletedActiveQuotaActionsRequest request);
 
+    M3Result<List<SdkPriceQuota>> getDepletedActiveUserQuotas(IPrincipal principal);
+
     M3Result<List<SdkPriceQuota>> getQuotasByTenantAndCriteria(IPrincipal principal, QuotasByTenantsWithCriteriaRequest request);
 
     M3Result<List<SdkPriceQuota>> getQuotasByTenant(IPrincipal principal, QuotasByTenantRequest request);

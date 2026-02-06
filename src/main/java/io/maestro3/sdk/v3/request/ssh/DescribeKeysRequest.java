@@ -26,7 +26,6 @@ import java.util.List;
 
 @JsonDeserialize(builder = DescribeKeysRequest.Builder.class)
 public class DescribeKeysRequest implements ITenantRequest, IRegionRequest {
-
     private final String tenantName;
     private final SdkCloud cloud;
     private final String region;

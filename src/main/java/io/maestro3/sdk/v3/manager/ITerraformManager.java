@@ -18,6 +18,7 @@ package io.maestro3.sdk.v3.manager;
 
 import io.maestro3.sdk.v3.core.IPrincipal;
 import io.maestro3.sdk.v3.core.M3Result;
+import io.maestro3.sdk.v3.model.cf.SdkTemplate;
 import io.maestro3.sdk.v3.model.locks.SdkLock;
 import io.maestro3.sdk.v3.model.terraform.SdkDeleteInfrastructureTemplateResponse;
 import io.maestro3.sdk.v3.model.terraform.SdkSetupInfrastructureTemplateResponse;
@@ -26,6 +27,8 @@ import io.maestro3.sdk.v3.model.terraform.TerraformPolicies;
 import io.maestro3.sdk.v3.model.terraform.resource.SdkInfrastructureResources;
 import io.maestro3.sdk.v3.model.terraform.template.SdkInfrastructureStack;
 import io.maestro3.sdk.v3.model.terraform.template.SdkInfrastructureTemplate;
+import io.maestro3.sdk.v3.request.resource.template.GetStackResourcesRequest;
+import io.maestro3.sdk.v3.request.resource.template.GetTemplateContentRequest;
 import io.maestro3.sdk.v3.request.terraform.ActivateTerraformRequest;
 import io.maestro3.sdk.v3.request.terraform.DeactivateTerraformRequest;
 import io.maestro3.sdk.v3.request.terraform.DeleteTerraformTemplateRequest;
@@ -120,4 +123,9 @@ public interface ITerraformManager extends IManager {
     M3Result<String> downloadResourcesFile(IPrincipal principal, DownloadTerraformResourcesFileRequest request);
 
     M3Result<String> exportTemplate(IPrincipal principal, ExportTerraformTemplateRequest request);
+
+    M3Result<SdkTemplate> getTemplateContent(IPrincipal principal, GetTemplateContentRequest request);
+
+    M3Result<String> getStackResources(IPrincipal principal, GetStackResourcesRequest request);
+
 }

@@ -18,6 +18,7 @@ package io.maestro3.sdk.v3.manager.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.maestro3.sdk.internal.executor.IM3ApiActionExecutor;
+import io.maestro3.sdk.v3.core.ActionType;
 import io.maestro3.sdk.v3.core.IPrincipal;
 import io.maestro3.sdk.v3.core.M3Result;
 import io.maestro3.sdk.v3.manager.IQuotaManager;
@@ -88,6 +89,11 @@ public class QuotaManager extends AbstractManager implements IQuotaManager {
     @Override
     public M3Result<List<SdkPriceQuota>> getDepletedActiveQuotasByTenantDisplayNameAndRegionName(IPrincipal principal, DepletedActiveQuotaActionsRequest request) {
         return execute(principal, request, QUOTA_LIST_RESULT);
+    }
+
+    @Override
+    public M3Result<List<SdkPriceQuota>> getDepletedActiveUserQuotas(IPrincipal principal) {
+        return execute(principal, () -> ActionType.GET_DEPLETED_ACTIVE_USER_QUOTAS, QUOTA_LIST_RESULT);
     }
 
     @Override

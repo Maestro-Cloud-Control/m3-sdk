@@ -35,10 +35,13 @@ import java.util.List;
     @JsonSubTypes.Type(value = SdkAzureInstance.class, name = "AZURE"),
     @JsonSubTypes.Type(value = SdkYandexInstance.class, name = "YANDEX"),
     @JsonSubTypes.Type(value = SdkGoogleInstance.class, name = "GOOGLE"),
+    @JsonSubTypes.Type(value = SdkOpenNebulaInstance.class, name = "OPEN_NEBULA"),
     @JsonSubTypes.Type(value = SdkVMWareInstance.class, name = "VMWARE"),
     @JsonSubTypes.Type(value = SdkVSphereInstance.class, name = "VSPHERE"),
     @JsonSubTypes.Type(value = SdkNutanixInstance.class, name = "NUTANIX"),
-    @JsonSubTypes.Type(value = SdkHypervInstance.class, name = "HYPERV")
+    @JsonSubTypes.Type(value = SdkHypervInstance.class, name = "HYPERV"),
+    @JsonSubTypes.Type(value = SdkHardwareInstance.class, name = "HARDWARE"),
+    @JsonSubTypes.Type(value = SdkEnterpriseInstance.class, name = "ENTERPRISE")
 })
 public abstract class SdkInstance {
 
@@ -77,6 +80,8 @@ public abstract class SdkInstance {
     private String nextScheduledAction;
     private String nextScheduledActionAt;
     private long nextScheduleActionTimestamp;
+    private boolean terminationProtection;
+    private boolean exposed;
 
     public List<SdkResourceTag> getTags() {
         return tags;
@@ -356,6 +361,22 @@ public abstract class SdkInstance {
 
     public void setNextScheduleActionTimestamp(long nextScheduleActionTimestamp) {
         this.nextScheduleActionTimestamp = nextScheduleActionTimestamp;
+    }
+
+    public boolean isTerminationProtection() {
+        return terminationProtection;
+    }
+
+    public void setTerminationProtection(boolean terminationProtection) {
+        this.terminationProtection = terminationProtection;
+    }
+
+    public boolean isExposed() {
+        return exposed;
+    }
+
+    public void setExposed(boolean exposed) {
+        this.exposed = exposed;
     }
 
     @Override

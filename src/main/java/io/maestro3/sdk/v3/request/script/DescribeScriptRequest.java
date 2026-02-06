@@ -27,6 +27,7 @@ public class DescribeScriptRequest implements ITenantRequest {
 
     private final SdkCloud cloud;
     private final String tenantName;
+    private final boolean presignedUrl;
 
     //optional: if specified will return file with it`s content
     private final String fileName;
@@ -35,6 +36,7 @@ public class DescribeScriptRequest implements ITenantRequest {
         this.cloud = builder.cloud;
         this.tenantName = builder.tenantName;
         this.fileName = builder.fileName;
+        this.presignedUrl = builder.presignedUrl;
     }
 
     public SdkCloud getCloud() {
@@ -47,6 +49,10 @@ public class DescribeScriptRequest implements ITenantRequest {
 
     public String getFileName() {
         return fileName;
+    }
+
+    public boolean shouldIncludePresignedUrl() {
+        return presignedUrl;
     }
 
     public static Builder builder() {
@@ -63,6 +69,7 @@ public class DescribeScriptRequest implements ITenantRequest {
         private SdkCloud cloud;
         private String tenantName;
         private String fileName;
+        private boolean presignedUrl;
 
         public Builder withCloud(SdkCloud cloud) {
             this.cloud = cloud;
@@ -76,6 +83,11 @@ public class DescribeScriptRequest implements ITenantRequest {
 
         public Builder withFileName(String fileName) {
             this.fileName = fileName;
+            return this;
+        }
+
+        public Builder withPresignedUrl(boolean presignedUrl) {
+            this.presignedUrl = presignedUrl;
             return this;
         }
 

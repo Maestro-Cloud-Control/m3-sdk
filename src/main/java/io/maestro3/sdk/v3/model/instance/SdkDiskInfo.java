@@ -19,6 +19,7 @@ package io.maestro3.sdk.v3.model.instance;
 public abstract class SdkDiskInfo {
 
     private boolean system;
+    private Boolean deleteOnTermination;
 
     public SdkDiskInfo() {
     }
@@ -33,5 +34,13 @@ public abstract class SdkDiskInfo {
 
     public void setSystem(boolean system) {
         this.system = system;
+    }
+
+    public Boolean getDeleteOnTermination() {
+        return deleteOnTermination;
+    }
+
+    public void setDeleteOnTermination(Boolean deleteOnTermination) {
+        this.deleteOnTermination = deleteOnTermination;
     }
 }

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.core.ActionType;
+import io.maestro3.sdk.v3.model.annotation.SecuredParams;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(builder = SetupTerraformTemplateWithGitRequest.Builder.class)
@@ -27,6 +28,7 @@ public class SetupTerraformTemplateWithGitRequest extends AbstractTerraformTaskR
 
     private final String gitUrl;
     private final String gitUsername;
+    @SecuredParams
     private final String gitPassword;
     private final String gitBranch;
     private final String gitTerraformDirectoryPath;

@@ -32,7 +32,7 @@ public enum SdkTemplateType {
     AZURE("Azure", false, Collections.singletonList(SdkCloud.AZURE)),
     AZURE_BICEP("Azure Bicep", true, Collections.singletonList(SdkCloud.AZURE)),
     TERRAFORM("Terraform", true, Arrays.asList(SdkCloud.AWS, SdkCloud.GOOGLE, SdkCloud.AZURE, SdkCloud.YANDEX,
-        SdkCloud.OPEN_STACK, SdkCloud.VMWARE, SdkCloud.VSPHERE));
+        SdkCloud.OPEN_STACK, SdkCloud.VMWARE, SdkCloud.OPEN_NEBULA, SdkCloud.VSPHERE));
 
     private static final SdkTemplateType[] VALUES = values();
     private String title;

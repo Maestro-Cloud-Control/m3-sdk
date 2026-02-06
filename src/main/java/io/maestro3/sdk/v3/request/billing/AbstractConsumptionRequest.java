@@ -56,10 +56,10 @@ public abstract class AbstractConsumptionRequest extends AbstractConsumptionApiR
         <B extends AbstractConsumptionRequest.AbstractConsumptionRequestBuilder<B, R>, R extends AbstractConsumptionRequest>
         extends AbstractConsumptionApiRequestBuilder<B, R> {
 
-        private String sourceTenant;
-        private String sourceAccountNumber;
-        private String description;
-        private String serviceName;
+        protected String sourceTenant;
+        protected String sourceAccountNumber;
+        protected String description;
+        protected String serviceName;
 
         @JsonAlias("source_project")
         public B withSourceTenant(String sourceTenant) {

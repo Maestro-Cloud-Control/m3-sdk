@@ -27,6 +27,7 @@ public class SdkGoogleInstance extends SdkInstance {
     private String nativeInstanceType;
     private String networkLink;
     private String subNetworkLink;
+    private boolean spot;
 
     public SdkGoogleInstance() {
         this.setCloud(SdkCloud.GOOGLE);
@@ -70,5 +71,13 @@ public class SdkGoogleInstance extends SdkInstance {
 
     public void setSubNetworkLink(String subNetworkLink) {
         this.subNetworkLink = subNetworkLink;
+    }
+
+    public boolean isSpot() {
+        return spot;
+    }
+
+    public void setSpot(boolean spot) {
+        this.spot = spot;
     }
 }

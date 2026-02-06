@@ -55,6 +55,8 @@ public class SdkImage {
 
     private Integer minStorageSizeGb;
 
+    private Integer sizeMb;
+
     private String virtualizationType;
 
     private String architecture;
@@ -181,6 +183,14 @@ public class SdkImage {
         this.minStorageSizeGb = minStorageSizeGb;
     }
 
+    public Integer getSizeMb() {
+        return sizeMb;
+    }
+
+    public void setSizeMb(Integer sizeMb) {
+        this.sizeMb = sizeMb;
+    }
+
     public String getVirtualizationType() {
         return virtualizationType;
     }
@@ -253,6 +263,7 @@ public class SdkImage {
                 ", cloud=" + cloud +
                 ", regionId='" + regionId + '\'' +
                 ", minStorageSizeGb='" + minStorageSizeGb + '\'' +
+                ", sizeMb='" + sizeMb + '\'' +
                 ", minMemoryGb='" + minMemoryGb + '\'' +
                 ", deleted='" + deleted + '\'' +
                 '}';

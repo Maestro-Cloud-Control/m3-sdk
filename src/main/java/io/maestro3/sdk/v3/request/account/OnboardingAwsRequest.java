@@ -18,6 +18,7 @@ package io.maestro3.sdk.v3.request.account;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.maestro3.sdk.v3.core.ActionType;
+import io.maestro3.sdk.v3.model.annotation.SecuredParams;
 
 @JsonDeserialize(builder = OnboardingAwsRequest.OnboardingAwsRequestBuilder.class)
 public class OnboardingAwsRequest extends AbstractOnboardingRequest {
@@ -25,6 +26,7 @@ public class OnboardingAwsRequest extends AbstractOnboardingRequest {
     private final String tenantDisplayName;
     private final String accountId;
     private final String accessKey;
+    @SecuredParams
     private final String secretKey;
 
     private OnboardingAwsRequest(OnboardingAwsRequestBuilder builder) {

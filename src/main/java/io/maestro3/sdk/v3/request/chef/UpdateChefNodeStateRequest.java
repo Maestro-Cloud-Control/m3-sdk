@@ -22,6 +22,7 @@ import io.maestro3.sdk.v3.core.ActionType;
 import io.maestro3.sdk.v3.request.IRequest;
 
 import java.util.List;
+import java.util.Map;
 
 @JsonDeserialize(builder = UpdateChefNodeStateRequest.UpdateChefNodeStateRequestBuilder.class)
 public class UpdateChefNodeStateRequest implements IRequest {
@@ -30,6 +31,7 @@ public class UpdateChefNodeStateRequest implements IRequest {
     private final String chefServer;
     private final String state;
     private final List<String> receivedRoles;
+    private final Map<String, String> meta;
 
     private UpdateChefNodeStateRequest(UpdateChefNodeStateRequestBuilder builder) {
         this.nodeId = builder.nodeId;
@@ -37,6 +39,7 @@ public class UpdateChefNodeStateRequest implements IRequest {
         this.state = builder.state;
         this.sourceIp = builder.sourceIp;
         this.receivedRoles = builder.receivedRoles;
+        this.meta = builder.meta;
     }
 
     public static UpdateChefNodeStateRequestBuilder builder() {
@@ -59,6 +62,10 @@ public class UpdateChefNodeStateRequest implements IRequest {
         return state;
     }
 
+    public Map<String, String> getMeta() {
+        return meta;
+    }
+
     public List<String> getReceivedRoles() {
         return receivedRoles;
     }
@@ -74,9 +81,15 @@ public class UpdateChefNodeStateRequest implements IRequest {
         private String sourceIp;
         private String state;
         private List<String> receivedRoles;
+        private Map<String, String> meta;
 
         public UpdateChefNodeStateRequestBuilder withNodeId(String nodeId) {
             this.nodeId = nodeId;
+            return this;
+        }
+
+        public UpdateChefNodeStateRequestBuilder withMeta(Map<String, String> meta) {
+            this.meta = meta;
             return this;
         }
 
