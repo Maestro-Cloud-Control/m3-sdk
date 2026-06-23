@@ -23,23 +23,33 @@ import io.maestro3.sdk.internal.http.EnumRequestConfig;
 import io.maestro3.sdk.internal.http.EnumRetryPolicy;
 import io.maestro3.sdk.v3.core.M3ApiRequest;
 import io.maestro3.sdk.v3.core.M3ServerContext;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.HttpHostConnectException;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.ConnectTimeoutException;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Objects;
 
 public class M3HttpClient extends AbstractM3HttpClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(M3HttpClient.class);
 
-    private HttpClient httpClient;
+    private final CloseableHttpClient httpClient;
+
+    private static final HttpClientResponseHandler<String> STRING_RESPONSE_HANDLER = response -> {
+        int statusCode = response.getCode();
+        String responseEntity = EntityUtils.toString(response.getEntity());
+        LOG.debug("Request executed with status code: {}, entity: {}", statusCode, responseEntity);
+
+        if (statusCode != HttpStatus.SC_OK) {
+            throw new M3SdkException(String.format("Failed to execute request with code: %s body: %s", statusCode, responseEntity));
+        }
+
+        return responseEntity;
+    };
 
     public M3HttpClient(M3ServerContext serverContext,
                         EnumRetryPolicy retryPolicy,
@@ -53,38 +63,22 @@ public class M3HttpClient extends AbstractM3HttpClient {
                          EnumRetryPolicy retryPolicy,
                          EnumRequestConfig requestConfig) {
         super(serverContext);
-        this.httpClient = HttpClientBuilder.create()
+        this.httpClient = HttpClients.custom()
                 .setConnectionManager(poolingConnectionManager.getManager())
-                .setRetryHandler(retryPolicy.getPolicy())
+                .setRetryStrategy(retryPolicy.getPolicy())
                 .setDefaultRequestConfig(requestConfig.getConfig())
                 .build();
     }
 
     @Override
     public String executePost(M3ApiRequest request) {
-        HttpPost httpRequest = null;
         try {
-            httpRequest = getHttpRequest(request, false);
-
-            HttpResponse response = httpClient.execute(httpRequest);
-            checkResponse(response);
-            return EntityUtils.toString(response.getEntity());
-        } catch (HttpHostConnectException ex) {
+            HttpPost httpRequest = getHttpRequest(request, false);
+            return httpClient.execute(httpRequest, STRING_RESPONSE_HANDLER);
+        } catch (ConnectTimeoutException ex) {
             throw new M3SdkHostConnectException("Error during request execution", ex);
         } catch (Exception ex) {
             throw new M3SdkException("Error during request execution", ex);
-        } finally {
-            if (Objects.nonNull(httpRequest)) {
-                httpRequest.releaseConnection();
-            }
-        }
-    }
-
-    private void checkResponse(HttpResponse response) {
-        int statusCode = response.getStatusLine().getStatusCode();
-        LOG.debug("Request executed with status code: {}", statusCode);
-        if (statusCode != HttpStatus.SC_OK) {
-            throw new M3SdkException("Failed to execute request with code: " + statusCode);
         }
     }
 }

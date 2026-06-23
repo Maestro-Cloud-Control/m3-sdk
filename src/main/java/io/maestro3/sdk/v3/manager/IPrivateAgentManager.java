@@ -21,6 +21,7 @@ import io.maestro3.sdk.v3.core.M3Result;
 import io.maestro3.sdk.v3.model.agent.SdkPrivateAgentInfo;
 import io.maestro3.sdk.v3.model.agent.SdkPrivateAgentRegion;
 import io.maestro3.sdk.v3.model.agent.SdkPrivateAgentShapeInfo;
+import io.maestro3.sdk.v3.model.agent.SdkResourceAvailabilityCheckResponse;
 import io.maestro3.sdk.v3.model.agent.diagnostic.SdkAgentDiagnosticResult;
 import io.maestro3.sdk.v3.model.agent.diagnostic.SdkCheckResult;
 import io.maestro3.sdk.v3.model.agent.diagnostic.SdkFixResult;
@@ -38,6 +39,7 @@ import io.maestro3.sdk.v3.request.agent.ActivateVLANRequest;
 import io.maestro3.sdk.v3.request.agent.AdditionalParametersRequest;
 import io.maestro3.sdk.v3.request.agent.AllocateIpRequest;
 import io.maestro3.sdk.v3.request.agent.AssociateIpRequest;
+import io.maestro3.sdk.v3.request.agent.CheckResourceAvailabilityRequest;
 import io.maestro3.sdk.v3.request.agent.CreatePrivateAgentRequest;
 import io.maestro3.sdk.v3.request.agent.DeactivateVLANRequest;
 import io.maestro3.sdk.v3.request.agent.DeallocateStaticIpRequest;
@@ -113,4 +115,6 @@ public interface IPrivateAgentManager extends IManager {
     M3Result<SdkStaticIpAddress> disassociateIp(IPrincipal principal, DisassociateStaticIpRequest request);
 
     M3Result<SdkVlanResponse> moveToVlan(IPrincipal principal, MoveToDmzRequest request);
+
+    M3Result<SdkResourceAvailabilityCheckResponse> checkResourceAvailability(IPrincipal principal, CheckResourceAvailabilityRequest request);
 }

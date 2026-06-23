@@ -223,14 +223,15 @@ class TokenBucket {
 
         @Override
         public T get() {
-            String prefix = Thread.currentThread().getName();
+            Thread currentThread = Thread.currentThread();
+            String prefix = currentThread.isVirtual() ? currentThread.toString() : currentThread.getName();
             startedTimestamp = System.currentTimeMillis();
             T result;
             try {
-                Thread.currentThread().setName(prefix + ":" + tokenBucket.scope);
+                currentThread.setName(prefix + ":" + tokenBucket.scope);
                 result = origin.get();
             } finally {
-                Thread.currentThread().setName(prefix);
+                currentThread.setName(prefix);
             }
             endedTimestamp = System.currentTimeMillis();
             tokenBucket.finishTask(this);

@@ -16,13 +16,10 @@
 
 package io.maestro3.sdk.internal.http;
 
-import org.apache.http.conn.HttpClientConnectionManager;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.impl.nio.conn.PoolingNHttpClientConnectionManager;
-import org.apache.http.impl.nio.reactor.DefaultConnectingIOReactor;
-import org.apache.http.nio.conn.NHttpClientConnectionManager;
-import org.apache.http.nio.reactor.ConnectingIOReactor;
-import org.apache.http.nio.reactor.IOReactorException;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManager;
+import org.apache.hc.client5.http.io.HttpClientConnectionManager;
+import org.apache.hc.client5.http.nio.AsyncClientConnectionManager;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -38,9 +35,8 @@ public enum EnumPoolingConnectionManager {
         }
 
         @Override
-        NHttpClientConnectionManager createAsyncManager(int maxConnections, int maxConnectionsPerRoute) throws IOReactorException {
-            ConnectingIOReactor ioReactor = new DefaultConnectingIOReactor();
-            PoolingNHttpClientConnectionManager connectionManager = new PoolingNHttpClientConnectionManager(ioReactor);
+        AsyncClientConnectionManager createAsyncManager(int maxConnections, int maxConnectionsPerRoute) {
+            PoolingAsyncClientConnectionManager connectionManager = new PoolingAsyncClientConnectionManager();
             connectionManager.setMaxTotal(maxConnections);
             connectionManager.setDefaultMaxPerRoute(maxConnectionsPerRoute);
             return connectionManager;
@@ -48,7 +44,7 @@ public enum EnumPoolingConnectionManager {
     };
 
     private final AtomicReference<HttpClientConnectionManager> clientConnectionManager = new AtomicReference<>();
-    private final AtomicReference<NHttpClientConnectionManager> asyncClientConnectionManager = new AtomicReference<>();
+    private final AtomicReference<AsyncClientConnectionManager> asyncClientConnectionManager = new AtomicReference<>();
 
     private final int maxConnections;
     private final int maxConnectionsPerRoute;
@@ -72,18 +68,14 @@ public enum EnumPoolingConnectionManager {
         return clientConnectionManagerLocal;
     }
 
-    public NHttpClientConnectionManager getAsyncManager() {
-        NHttpClientConnectionManager asyncClientConnectionManagerLocal = asyncClientConnectionManager.get();
+    public AsyncClientConnectionManager getAsyncManager() {
+        AsyncClientConnectionManager asyncClientConnectionManagerLocal = asyncClientConnectionManager.get();
         if (asyncClientConnectionManagerLocal == null) {
             synchronized (this) {
                 asyncClientConnectionManagerLocal = asyncClientConnectionManager.get();
                 if (asyncClientConnectionManagerLocal == null) {
-                    try {
-                        asyncClientConnectionManagerLocal = createAsyncManager(maxConnections, maxConnectionsPerRoute);
-                        asyncClientConnectionManager.set(asyncClientConnectionManagerLocal);
-                    } catch (IOReactorException e) {
-                        throw new RuntimeException(e.getMessage(), e);
-                    }
+                    asyncClientConnectionManagerLocal = createAsyncManager(maxConnections, maxConnectionsPerRoute);
+                    asyncClientConnectionManager.set(asyncClientConnectionManagerLocal);
                 }
             }
         }
@@ -92,5 +84,5 @@ public enum EnumPoolingConnectionManager {
 
     abstract HttpClientConnectionManager createManager(int maxConnections, int maxConnectionsPerRoute);
 
-    abstract NHttpClientConnectionManager createAsyncManager(int maxConnections, int maxConnectionsPerRoute) throws IOReactorException;
+    abstract AsyncClientConnectionManager createAsyncManager(int maxConnections, int maxConnectionsPerRoute);
 }

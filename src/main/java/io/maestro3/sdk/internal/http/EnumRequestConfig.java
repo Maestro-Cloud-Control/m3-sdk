@@ -16,7 +16,8 @@
 
 package io.maestro3.sdk.internal.http;
 
-import org.apache.http.client.config.RequestConfig;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.core5.util.Timeout;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -26,8 +27,8 @@ public enum EnumRequestConfig {
         @Override
         RequestConfig createConfig(int connectionTimeout, int socketTimeout) {
             return RequestConfig.custom()
-                    .setConnectTimeout(connectionTimeout)
-                    .setSocketTimeout(socketTimeout).build();
+                    .setConnectTimeout(Timeout.ofMilliseconds(connectionTimeout))
+                    .setResponseTimeout(Timeout.ofMilliseconds(socketTimeout)).build();
         }
     };
 

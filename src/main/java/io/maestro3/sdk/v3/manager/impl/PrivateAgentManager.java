@@ -26,6 +26,7 @@ import io.maestro3.sdk.v3.manager.IPrivateAgentManager;
 import io.maestro3.sdk.v3.model.agent.SdkPrivateAgentInfo;
 import io.maestro3.sdk.v3.model.agent.SdkPrivateAgentRegion;
 import io.maestro3.sdk.v3.model.agent.SdkPrivateAgentShapeInfo;
+import io.maestro3.sdk.v3.model.agent.SdkResourceAvailabilityCheckResponse;
 import io.maestro3.sdk.v3.model.agent.diagnostic.SdkAgentDiagnosticResult;
 import io.maestro3.sdk.v3.model.agent.diagnostic.SdkCheckResult;
 import io.maestro3.sdk.v3.model.agent.diagnostic.SdkFixResult;
@@ -44,6 +45,7 @@ import io.maestro3.sdk.v3.request.agent.ActivateVLANRequest;
 import io.maestro3.sdk.v3.request.agent.AdditionalParametersRequest;
 import io.maestro3.sdk.v3.request.agent.AllocateIpRequest;
 import io.maestro3.sdk.v3.request.agent.AssociateIpRequest;
+import io.maestro3.sdk.v3.request.agent.CheckResourceAvailabilityRequest;
 import io.maestro3.sdk.v3.request.agent.CreatePrivateAgentRequest;
 import io.maestro3.sdk.v3.request.agent.DeactivateVLANRequest;
 import io.maestro3.sdk.v3.request.agent.DeallocateStaticIpRequest;
@@ -103,6 +105,8 @@ public class PrivateAgentManager extends AbstractManager implements IPrivateAgen
     private static final TypeReference<List<SdkStaticIpAddress>> LIST_IP_ADDRESS_TYPE_REFERENCE = new TypeReference<List<SdkStaticIpAddress>>() {
     };
     private static final TypeReference<Boolean> BOOLEAN = new TypeReference<Boolean>() {
+    };
+    private static final TypeReference<SdkResourceAvailabilityCheckResponse> RESOURCE_AVAILABILITY_RESPONSE = new TypeReference<SdkResourceAvailabilityCheckResponse>() {
     };
 
     public PrivateAgentManager(IM3ApiActionExecutor actionExecutor, boolean isAsync) {
@@ -258,5 +262,10 @@ public class PrivateAgentManager extends AbstractManager implements IPrivateAgen
     @Override
     public M3Result<SdkVlanResponse> moveToVlan(IPrincipal principal, MoveToDmzRequest request) {
         return execute(principal, request, VLAN_RESPONSE_TYPE_REFERENCE);
+    }
+
+    @Override
+    public M3Result<SdkResourceAvailabilityCheckResponse> checkResourceAvailability(IPrincipal principal, CheckResourceAvailabilityRequest request) {
+        return execute(principal, request, RESOURCE_AVAILABILITY_RESPONSE);
     }
 }

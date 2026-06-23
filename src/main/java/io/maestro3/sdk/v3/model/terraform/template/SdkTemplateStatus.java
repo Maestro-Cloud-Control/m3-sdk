@@ -39,6 +39,7 @@ public enum SdkTemplateStatus {
     APPROVAL_FAILED("Failed to start approval", false),
     APPROVAL_REJECTED("Approve request rejected", false),
     PRICE_QUOTA_EXCEEDED("Price quota exceeded", false),
+    RESOURCE_UNAVAILABLE("Resource unavailable", false),
 
     PENDING_CREATION("Pending creation", false),
     STACK_CREATING("Stack creating", true),
@@ -69,7 +70,7 @@ public enum SdkTemplateStatus {
                 return templateStatus;
             }
         }
-        throw new M3SdkException("Failed to find job status by specified name: " + name);
+        throw new M3SdkException("Failed to find template status by specified name: " + name);
     }
 
     public static List<SdkTemplateStatus> getNonTransitionalStatuses() {

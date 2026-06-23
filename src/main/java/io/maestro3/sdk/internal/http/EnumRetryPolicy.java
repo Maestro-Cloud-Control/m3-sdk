@@ -16,10 +16,12 @@
 
 package io.maestro3.sdk.internal.http;
 
-import org.apache.http.client.HttpRequestRetryHandler;
-import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-import org.apache.http.impl.execchain.RequestAbortedException;
+import java.util.List;
+import org.apache.hc.client5.http.ConnectTimeoutException;
+import org.apache.hc.client5.http.impl.DefaultHttpRequestRetryStrategy;
+import org.apache.hc.client5.http.impl.classic.RequestAbortedException;
+import org.apache.hc.core5.http.HttpRequest;
+import org.apache.hc.core5.util.TimeValue;
 
 import javax.net.ssl.SSLException;
 import java.io.InterruptedIOException;
@@ -35,11 +37,16 @@ public enum EnumRetryPolicy {
      */
     DEFAULT_RETRY_POLICY(ClientConfiguration.DEFAULT_RETRY_NUMBER, ClientConfiguration.DEFAULT_RETRY_NON_IDEMPOTENT_ENABLE) {
         @Override
-        public HttpRequestRetryHandler createPolicy(int retryNumber, boolean retry) {
-            return new DefaultHttpRequestRetryHandler(retryNumber, retry, Arrays.asList(
+        public DefaultHttpRequestRetryStrategy createPolicy(int retryNumber, boolean retry) {
+            return new DefaultHttpRequestRetryStrategy(retryNumber, TimeValue.ofSeconds(1), Arrays.asList(
                     InterruptedIOException.class,
                     UnknownHostException.class,
-                    SSLException.class)) {};
+                    SSLException.class), List.of()) {
+                @Override
+                protected boolean handleAsIdempotent(HttpRequest request) {
+                    return super.handleAsIdempotent(request) || retry;
+                }
+            };
         }
     },
 
@@ -48,19 +55,24 @@ public enum EnumRetryPolicy {
      */
     RETRY_READ_TIMEOUT_POLICY(ClientConfiguration.DEFAULT_RETRY_NUMBER, ClientConfiguration.DEFAULT_RETRY_NON_IDEMPOTENT_ENABLE) {
         @Override
-        public HttpRequestRetryHandler createPolicy(int retryNumber, boolean retry) {
-            return new DefaultHttpRequestRetryHandler(retryNumber, retry, Arrays.asList(
+        public DefaultHttpRequestRetryStrategy createPolicy(int retryNumber, boolean retry) {
+            return new DefaultHttpRequestRetryStrategy(retryNumber, TimeValue.ofSeconds(1), Arrays.asList(
                 ConnectTimeoutException.class,
                 RequestAbortedException.class,
 
                 UnknownHostException.class,
                 ConnectException.class,
-                SSLException.class)) {};
+                SSLException.class), List.of()) {
+                @Override
+                protected boolean handleAsIdempotent(HttpRequest request) {
+                    return super.handleAsIdempotent(request) || retry;
+                }
+            };
         }
     },
     ;
 
-    private final AtomicReference<HttpRequestRetryHandler> handler = new AtomicReference<>();
+    private final AtomicReference<DefaultHttpRequestRetryStrategy> handler = new AtomicReference<>();
 
     private final int retryNumber;
     private final boolean requestSentRetryEnabled;
@@ -70,9 +82,8 @@ public enum EnumRetryPolicy {
         this.requestSentRetryEnabled = requestSentRetryEnabled;
     }
 
-
-    public HttpRequestRetryHandler getPolicy() {
-        HttpRequestRetryHandler handlerLocal = handler.get();
+    public DefaultHttpRequestRetryStrategy getPolicy() {
+        DefaultHttpRequestRetryStrategy handlerLocal = handler.get();
         if (handlerLocal == null) {
             synchronized (this) {
                 handlerLocal = handler.get();
@@ -85,5 +96,5 @@ public enum EnumRetryPolicy {
         return handlerLocal;
     }
 
-    abstract HttpRequestRetryHandler createPolicy(int retryNumber, boolean retry);
+    abstract DefaultHttpRequestRetryStrategy createPolicy(int retryNumber, boolean requestSentRetryEnabled);
 }

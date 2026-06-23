@@ -40,6 +40,7 @@ import io.maestro3.sdk.v3.manager.IPlatformServiceManager;
 import io.maestro3.sdk.v3.manager.IPriceManager;
 import io.maestro3.sdk.v3.manager.IPrivateAgentManager;
 import io.maestro3.sdk.v3.manager.IQuotaManager;
+import io.maestro3.sdk.v3.manager.IRawRequestManager;
 import io.maestro3.sdk.v3.manager.IResourceManager;
 import io.maestro3.sdk.v3.manager.IScheduleManager;
 import io.maestro3.sdk.v3.manager.IScriptManager;
@@ -65,6 +66,7 @@ import io.maestro3.sdk.v3.manager.impl.PlatformServiceManager;
 import io.maestro3.sdk.v3.manager.impl.PriceManager;
 import io.maestro3.sdk.v3.manager.impl.PrivateAgentManager;
 import io.maestro3.sdk.v3.manager.impl.QuotaManager;
+import io.maestro3.sdk.v3.manager.impl.RawRequestManager;
 import io.maestro3.sdk.v3.manager.impl.ResourceManager;
 import io.maestro3.sdk.v3.manager.impl.ScheduleManager;
 import io.maestro3.sdk.v3.manager.impl.ScriptManager;
@@ -104,6 +106,7 @@ public class M3Client implements IM3Client {
     private final IAdminManager adminManager;
     private final IServiceManager serviceManager;
     private final IOperationManager operationManager;
+    private final IRawRequestManager rawRequestManager;
     private final ISupportManager supportManager;
     private final ICfTemplateManager cfTemplateManager;
 
@@ -125,6 +128,7 @@ public class M3Client implements IM3Client {
         this.chefManager = new ChefManager(executor, isAsync);
         this.approvalManager = new ApprovalManager(executor, isAsync);
         this.scheduleManager = new ScheduleManager(executor, isAsync);
+        this.rawRequestManager = new RawRequestManager(executor, isAsync);
         this.privateAgentManager = new PrivateAgentManager(executor, isAsync);
         this.priceManager = new PriceManager(executor, isAsync);
         this.accountManager = new AccountManager(executor, isAsync);
@@ -146,6 +150,11 @@ public class M3Client implements IM3Client {
     @Override
     public IBillingManager billingManager() {
         return billingManager;
+    }
+
+    @Override
+    public IRawRequestManager rawRequestManager() {
+        return rawRequestManager;
     }
 
     @Override

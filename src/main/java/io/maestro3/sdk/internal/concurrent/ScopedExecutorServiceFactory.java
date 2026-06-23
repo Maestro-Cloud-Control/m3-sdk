@@ -20,6 +20,7 @@ import io.maestro3.sdk.internal.util.Assert;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.AbstractExecutorService;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,16 +35,20 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class ScopedExecutorServiceFactory extends AbstractExecutorService implements ExecutorService {
+public class ScopedExecutorServiceFactory implements AutoCloseable {
 
     private final Map<String, TokenBucket> tokenBuckets = new ConcurrentHashMap<>();
-    private final ThreadPoolExecutor tasksExecutor;
+    private final ExecutorService tasksExecutor;
     private final ExecutorService tokenAcquisitionExecutor = Executors.newSingleThreadExecutor();
     private final UniqueBlockingQueue<String> completedScopes = new UniqueBlockingQueue<>();
 
     public ScopedExecutorServiceFactory(long keepAliveTime, TimeUnit unit) {
-        this.tasksExecutor = new ThreadPoolExecutor(1, 1, keepAliveTime, unit,
-            new SynchronousQueue<>(), new MaestroThreadFactory("scoped", "-"));
+        this(new ThreadPoolExecutor(1, 1, keepAliveTime, unit,
+            new SynchronousQueue<>(), new MaestroThreadFactory("scoped", "-")));
+    }
+
+    public ScopedExecutorServiceFactory(ExecutorService tasksExecutor) {
+        this.tasksExecutor = tasksExecutor;
         consumeExecutedTasks();
     }
 
@@ -60,7 +65,7 @@ public class ScopedExecutorServiceFactory extends AbstractExecutorService implem
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     String scope = completedScopes.take();
-                    tokenBuckets.get(scope).processTasks();
+                    Optional.ofNullable(tokenBuckets.get(scope)).ifPresent(TokenBucket::processTasks);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
@@ -70,8 +75,8 @@ public class ScopedExecutorServiceFactory extends AbstractExecutorService implem
     }
 
     private void increaseCore(int amount) {
-        if (amount != 0) {
-            tasksExecutor.setMaximumPoolSize(tasksExecutor.getMaximumPoolSize() + amount);
+        if (amount != 0 && tasksExecutor instanceof ThreadPoolExecutor executor) {
+            executor.setMaximumPoolSize(executor.getMaximumPoolSize() + amount);
         }
     }
 
@@ -111,40 +116,18 @@ public class ScopedExecutorServiceFactory extends AbstractExecutorService implem
         }
     }
 
-    @Override
-    public void execute(Runnable command) {
+    private void execute(Runnable command) {
         if (command == null) {
             throw new IllegalArgumentException("Command must not be null");
         }
-        if (!(command instanceof ScopedExecutorService.QueueingFuture)) {
+        if (!(command instanceof ScopedExecutorService.QueueingFuture<?> scopedCommand)) {
             throw new IllegalArgumentException("Command must be of type ScopedExecutor.QueueingFuture");
         }
 
-        ScopedExecutorService.QueueingFuture<?> scopedCommand = (ScopedExecutorService.QueueingFuture<?>) command;
         submitTask(scopedCommand.scope, () -> {
             command.run();
             return null;
         });
-    }
-
-    @Override
-    public List<Runnable> shutdownNow() {
-        return tasksExecutor.shutdownNow();
-    }
-
-    @Override
-    public boolean isShutdown() {
-        return tasksExecutor.isShutdown();
-    }
-
-    @Override
-    public boolean isTerminated() {
-        return tasksExecutor.isTerminated();
-    }
-
-    @Override
-    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-        return tasksExecutor.awaitTermination(timeout, unit);
     }
 
     public int cancelPotentiallyLeaked(String scope, long durationThresholdMillis) {
@@ -153,23 +136,21 @@ public class ScopedExecutorServiceFactory extends AbstractExecutorService implem
         return tokenBucket.cancelPotentiallyLeaked(durationThresholdMillis);
     }
 
-    public void shutdown() {
+    @Override
+    public void close() {
         tokenAcquisitionExecutor.shutdownNow();
-        tasksExecutor.shutdown();
-        try {
-            if (!tasksExecutor.awaitTermination(60, TimeUnit.SECONDS)) {
-                tasksExecutor.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        tasksExecutor.close();
     }
 
     @Override
     public String toString() {
-        return String.format("active count=%s, current pool size=%s, largest pool size=%s, total threads created since startup=%s",
-            tasksExecutor.getActiveCount(), tasksExecutor.getPoolSize(), tasksExecutor.getLargestPoolSize(),
-            MaestroThreadFactory.getThreadsCount());
+        if (tasksExecutor instanceof ThreadPoolExecutor executor) {
+            return String.format("active count=%s, current pool size=%s, largest pool size=%s, total threads created since startup=%s",
+                executor.getActiveCount(), executor.getPoolSize(), executor.getLargestPoolSize(),
+                MaestroThreadFactory.getThreadsCount());
+        } else {
+            return tasksExecutor.getClass().getSimpleName();
+        }
     }
 
     public static class ScopedExecutorService extends AbstractExecutorService implements ExecutorService {
@@ -246,7 +227,7 @@ public class ScopedExecutorServiceFactory extends AbstractExecutorService implem
 
         @Override
         public boolean awaitTermination(long timeout, TimeUnit unit) {
-            return false;
+            return terminated.get();
         }
 
         public int getCorePoolSize() {

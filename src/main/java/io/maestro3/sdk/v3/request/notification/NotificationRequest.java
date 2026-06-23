@@ -28,9 +28,9 @@ import java.util.Map;
 
 public class NotificationRequest implements IRequest {
 
-    protected static final int ON_DEMAND_NOTIFICATION_PRIORITY = 4;
+    protected static final int ON_DEMAND_NOTIFICATION_PRIORITY = 2;
     protected static final int DEFAULT_NOTIFICATION_PRIORITY = 3;
-    protected static final int SCHEDULED_NOTIFICATION_PRIORITY = 2;
+    protected static final int SCHEDULED_NOTIFICATION_PRIORITY = 4;
 
     private final String notificationType;
     private final List<String> notificationProcessorTypes;

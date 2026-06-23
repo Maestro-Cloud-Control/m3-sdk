@@ -36,6 +36,7 @@ import io.maestro3.sdk.v3.manager.IPlatformServiceManager;
 import io.maestro3.sdk.v3.manager.IPriceManager;
 import io.maestro3.sdk.v3.manager.IPrivateAgentManager;
 import io.maestro3.sdk.v3.manager.IQuotaManager;
+import io.maestro3.sdk.v3.manager.IRawRequestManager;
 import io.maestro3.sdk.v3.manager.IResourceManager;
 import io.maestro3.sdk.v3.manager.IScheduleManager;
 import io.maestro3.sdk.v3.manager.IScriptManager;
@@ -52,6 +53,8 @@ import java.util.Collection;
 public interface IM3Client extends AutoCloseable{
 
     IBillingManager billingManager();
+
+    IRawRequestManager rawRequestManager();
 
     IAnalyticsManager analyticsManager();
 
