@@ -64,18 +64,7 @@ abstract class AbstractManager implements IManager {
     protected final <R extends IRequest, RESP> M3Result<RESP> execute(IPrincipal principal, R request, TypeReference<RESP> responseType) {
         M3ApiAction apiAction = SdkUtils.convert(request);
 
-        M3RawResult result;
-        try {
-            if (isAsync) {
-                result = actionExecutor.executeAsyncAction(principal, getVersion(), apiAction);
-            } else {
-                result = actionExecutor.executeAction(principal, getVersion(), apiAction);
-            }
-        } catch (M3SdkHostConnectException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new M3SdkException("Cannot execute action: " + apiAction.getType() + " with request ID: " + apiAction.getId(), e);
-        }
+        M3RawResult result = getM3RawResult(principal, apiAction);
 
         if (result == null || result.getStatus() == null) {
             throw new M3SdkException("Received malformed result: " + result);
@@ -98,6 +87,22 @@ abstract class AbstractManager implements IManager {
                 return M3Result.error(result.getId(), result.getError());
             }
         }
+    }
+
+    protected M3RawResult getM3RawResult(IPrincipal principal, M3ApiAction apiAction) {
+        M3RawResult result;
+        try {
+            if (isAsync) {
+                result = actionExecutor.executeAsyncAction(principal, getVersion(), apiAction);
+            } else {
+                result = actionExecutor.executeAction(principal, getVersion(), apiAction);
+            }
+        } catch (M3SdkHostConnectException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new M3SdkException("Cannot execute action: " + apiAction.getType() + " with request ID: " + apiAction.getId(), e);
+        }
+        return result;
     }
 
     protected final <R extends IRequest> M3BatchResult executeBatch(IPrincipal principal, Collection<R> requests) {

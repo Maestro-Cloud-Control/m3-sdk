@@ -20,11 +20,10 @@ import io.maestro3.sdk.internal.M3SdkConstants;
 import io.maestro3.sdk.internal.http.IM3HttpClient;
 import io.maestro3.sdk.v3.core.M3ApiRequest;
 import io.maestro3.sdk.v3.core.M3ServerContext;
-import org.apache.http.HttpHeaders;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-
-import java.io.UnsupportedEncodingException;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpHeaders;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 
 public abstract class AbstractM3HttpClient implements IM3HttpClient {
 
@@ -34,10 +33,10 @@ public abstract class AbstractM3HttpClient implements IM3HttpClient {
         this.serverContext = serverContext;
     }
 
-    protected HttpPost getHttpRequest(M3ApiRequest request, boolean isAsync) throws UnsupportedEncodingException {
+    protected HttpPost getHttpRequest(M3ApiRequest request, boolean isAsync) {
         HttpPost httpRequest = new HttpPost(serverContext.getServerUrl());
-        httpRequest.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-        httpRequest.addHeader(HttpHeaders.ACCEPT, "application/json");
+        httpRequest.addHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
+        httpRequest.addHeader(HttpHeaders.ACCEPT, ContentType.APPLICATION_JSON.getMimeType());
         httpRequest.addHeader(M3SdkConstants.AUTHENTICATION_HEADER, request.getSignature());
         httpRequest.addHeader(M3SdkConstants.USER_IDENTIFIER_HEADER, request.getUserIdentifier());
         httpRequest.addHeader(M3SdkConstants.DATE_HEADER, String.valueOf(request.getTimestamp()));
@@ -45,7 +44,7 @@ public abstract class AbstractM3HttpClient implements IM3HttpClient {
         httpRequest.addHeader(M3SdkConstants.SDK_VERSION_HEADER, request.getSdkVersion());
         httpRequest.addHeader(M3SdkConstants.IS_ASYNC, String.valueOf(isAsync));
 
-        httpRequest.setEntity(new StringEntity(request.getRequestBody()));
+        httpRequest.setEntity(new StringEntity(request.getRequestBody(), ContentType.APPLICATION_JSON));
         return httpRequest;
     }
 }

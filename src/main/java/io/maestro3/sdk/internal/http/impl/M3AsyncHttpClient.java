@@ -22,11 +22,12 @@ import io.maestro3.sdk.internal.http.EnumRequestConfig;
 import io.maestro3.sdk.internal.util.StringUtils;
 import io.maestro3.sdk.v3.core.M3ApiRequest;
 import io.maestro3.sdk.v3.core.M3ServerContext;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.concurrent.FutureCallback;
-import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
-import org.apache.http.impl.nio.client.HttpAsyncClients;
+import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
+import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
+import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
+import org.apache.hc.core5.concurrent.FutureCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,18 +51,17 @@ public class M3AsyncHttpClient extends AbstractM3HttpClient {
                 .setConnectionManager(poolingConnectionManager.getAsyncManager())
                 .setDefaultRequestConfig(requestConfig.getConfig())
                 .build();
+        this.asyncHttpClient.start();
     }
 
     @Override
     public String executePost(M3ApiRequest request) {
-        if (!asyncHttpClient.isRunning()) {
-            asyncHttpClient.start();
-        }
         try {
-            final HttpPost httpRequest = getHttpRequest(request, true);
-            asyncHttpClient.execute(httpRequest, new FutureCallback<HttpResponse>() {
+            HttpPost httpPost = getHttpRequest(request, true);
+            SimpleHttpRequest httpRequest = SimpleHttpRequest.copy(httpPost);
+            asyncHttpClient.execute(httpRequest, new FutureCallback<SimpleHttpResponse>() {
                 @Override
-                public void completed(HttpResponse httpResponse) {
+                public void completed(SimpleHttpResponse httpResponse) {
                     LOG.info("Finished processing request : {} . Response : {}", request, httpResponse);
                 }
 

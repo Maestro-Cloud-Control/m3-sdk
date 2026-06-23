@@ -17,6 +17,7 @@
 package io.maestro3.sdk.v3.request.ownership;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.maestro3.sdk.internal.util.Assert;
 import io.maestro3.sdk.v3.model.SdkCloud;
@@ -25,7 +26,21 @@ import io.maestro3.sdk.v3.model.ownership.ResourceType;
 import java.util.Map;
 import java.util.Objects;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = AwsResourceIdRequest.class,        name = "AWS"),
+    @JsonSubTypes.Type(value = AzureResourceIdRequest.class,      name = "AZURE"),
+    @JsonSubTypes.Type(value = GoogleResourceIdRequest.class,     name = "GOOGLE"),
+    @JsonSubTypes.Type(value = OpenStackResourceIdRequest.class,  name = "OPEN_STACK"),
+    @JsonSubTypes.Type(value = YandexResourceIdRequest.class,     name = "YANDEX"),
+    @JsonSubTypes.Type(value = CSAResourceIdRequest.class,        name = "CSA"),
+    @JsonSubTypes.Type(value = HardwareResourceIdRequest.class,   name = "HARDWARE"),
+    @JsonSubTypes.Type(value = EnterpriseResourceIdRequest.class, name = "ENTERPRISE"),
+    @JsonSubTypes.Type(value = VmwareResourceIdRequest.class,     name = "VMWARE"),
+    @JsonSubTypes.Type(value = VSphereResourceIdRequest.class,    name = "VSPHERE"),
+    @JsonSubTypes.Type(value = NutanixResourceIdRequest.class,    name = "NUTANIX"),
+    @JsonSubTypes.Type(value = HypervResourceIdRequest.class,     name = "HYPERV"),
+})
 public abstract class ResourceIdRequest {
 
     private final String resourceId;
